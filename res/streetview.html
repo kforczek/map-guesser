@@ -32,17 +32,18 @@
                 position: location,
                 pov: { heading: 210, pitch: 10 },
                 zoom: 1,
+                addressControl: false,
+                linksControl: false,
+                panControl: false,
+                motionTrackingControl: false,
+                enableCloseButton: false,
+                disableDefaultUI: true,
                 // Performance optimizations
                 motionTracking: false,  // Disable motion tracking
-                motionTrackingControl: false,
-                addressControl: false,   // Reduce UI elements
-                linksControl: true,
-                panControl: true,
-                enableCloseButton: false,
                 // Better quality settings
                 clickToGo: true,
                 scrollwheel: true,
-                disableDefaultUI: false
+                showRoadLabels: false
             }
         );
     }
