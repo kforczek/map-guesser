@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qt + Google Street View</title>
+    <style>
+        html, body, #pano {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        /* Force hardware acceleration */
+        #pano {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="pano"></div>
+
+<script>
+    function initMap() {
+        const location = { lat: 50.059925, lng: 19.948085 };
+        const panorama = new google.maps.StreetViewPanorama(
+            document.getElementById("pano"),
+            {
+                position: location,
+                pov: { heading: 210, pitch: 10 },
+                zoom: 1,
+                // Performance optimizations
+                motionTracking: false,  // Disable motion tracking
+                motionTrackingControl: false,
+                addressControl: false,   // Reduce UI elements
+                linksControl: true,
+                panControl: true,
+                enableCloseButton: false,
+                // Better quality settings
+                clickToGo: true,
+                scrollwheel: true,
+                disableDefaultUI: false
+            }
+        );
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=__API_KEY__&callback=initMap&loading=async">
+</script>
+</body>
+</html>
