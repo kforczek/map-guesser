@@ -20,10 +20,15 @@ set(Qt6_DIR /home/kuba/Qt/6.9.2/gcc_64/lib/cmake/Qt6)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 
-add_executable(map_guesser main.cpp)
+add_executable(map_guesser main.cpp
+        src/streetview/token.h
+        src/streetview/token.cpp
+        src/common/location.h
+        src/streetview/streetview.h
+        src/streetview/streetview.cpp)
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets)
 
-file(COPY ${CMAKE_SOURCE_DIR}/res DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/src/streetview/streetview.html DESTINATION ${CMAKE_BINARY_DIR}/res)
 
 # Optional: Print current build type
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
