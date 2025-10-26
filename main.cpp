@@ -9,7 +9,7 @@
 #include <filesystem>
 
 #include "./src/streetview/streetview.h"
-#include "src/common/location.h"
+#include "src/geo/location.h"
 
 int main(int argc, char *argv[]) {
     // IMPORTANT: Set these BEFORE creating QApplication
@@ -35,7 +35,8 @@ int main(int argc, char *argv[]) {
     sv::StreetView view;
 
     // TODO location randomization
-    view.setLocation(Location{});
+    geo::Location fixedLoc{50.059925, 19.948085};
+    view.setLocation(fixedLoc);
     view.show();
 
     return app.exec();

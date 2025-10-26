@@ -23,9 +23,10 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 add_executable(map_guesser main.cpp
         src/streetview/token.h
         src/streetview/token.cpp
-        src/common/location.h
+        src/geo/location.h
         src/streetview/streetview.h
         src/streetview/streetview.cpp
+        src/geo/location.cpp
 )
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets)
 

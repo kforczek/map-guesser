@@ -1,6 +1,6 @@
 #include "streetview.h"
 #include "token.h"
-#include "../common/location.h"
+#include "../geo/location.h"
 
 #include <QFile>
 #include <QWebEngineSettings>
@@ -34,7 +34,7 @@ StreetView::StreetView(QWidget* parent /*= nullptr*/)
     m_view.resize(1024, 768);
 }
 
-void StreetView::setLocation(const Location& location)
+void StreetView::setLocation(const geo::Location& location)
 {
     QString fullHtml = m_htmlTemplate;
     fullHtml.replace("__LOCATION__", location.toStr());

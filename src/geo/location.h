@@ -2,14 +2,19 @@
 #include <QString>
 
 
-class Location
+namespace geo
 {
 
+class Location
+{
 public:
-    QString toStr() const {return "";} // TODO
+    Location(double latitude, double longitude);
+
+    QString toStr() const;
 
 private:
     double m_latitude = 0;
     double m_longitude = 0;
 };
 
+}
