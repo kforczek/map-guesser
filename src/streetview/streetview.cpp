@@ -1,6 +1,6 @@
 #include "streetview.h"
 #include "token.h"
-#include "../geo/location.h"
+#include "geo/location.h"
 
 #include <QFile>
 #include <QWebEngineSettings>

@@ -1,15 +1,9 @@
 #include <QApplication>
-#include <QWebEngineView>
 #include <QWebEngineSettings>
-#include <QWebEngineProfile>
-#include <QUrl>
-#include <QDebug>
 #include <QLoggingCategory>
-#include <QFile>
-#include <filesystem>
 
-#include "./src/streetview/streetview.h"
-#include "src/geo/location.h"
+#include "streetview/streetview.h"
+#include "geo/location.h"
 
 int main(int argc, char *argv[]) {
     // IMPORTANT: Set these BEFORE creating QApplication
