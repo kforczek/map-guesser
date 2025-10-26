@@ -25,7 +25,8 @@ add_executable(map_guesser main.cpp
         src/streetview/token.cpp
         src/common/location.h
         src/streetview/streetview.h
-        src/streetview/streetview.cpp)
+        src/streetview/streetview.cpp
+)
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets)
 
 file(COPY ${CMAKE_SOURCE_DIR}/src/streetview/streetview.html DESTINATION ${CMAKE_BINARY_DIR}/res)

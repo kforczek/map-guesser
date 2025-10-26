@@ -6,7 +6,7 @@ namespace sv
 {
 
 // TODO use
-class TokenLoadingError final: public std::runtime_error
+class TokenLoadingError final : public std::runtime_error
 {
 public:
     using std::runtime_error::runtime_error;

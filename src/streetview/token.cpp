@@ -3,8 +3,7 @@
 namespace
 {
 
-// TODO: actual save/load for user tokens
-const QString API_TOKEN = "SECRET";
+const char* ENV_VAR_NAME = "MAP_GUESSER_API_TOKEN";
 
 }
 
@@ -13,7 +12,11 @@ namespace sv
 
 QString LoadApiToken()
 {
-    return API_TOKEN;
+    const char* token = std::getenv(ENV_VAR_NAME);
+    if (!token)
+        throw TokenLoadingError(std::string("No token is set under env variable ") + ENV_VAR_NAME);
+
+    return token;
 }
 
 }

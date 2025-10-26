@@ -35,7 +35,8 @@ int main(int argc, char *argv[]) {
     sv::StreetView view;
 
     // TODO location randomization
-    view.show(Location{});
+    view.setLocation(Location{});
+    view.show();
 
     return app.exec();
 }

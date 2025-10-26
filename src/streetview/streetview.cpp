@@ -8,13 +8,17 @@
 namespace
 {
 
-inline QString loadHtmlTemplate()
+QString loadHtmlTemplate()
 {
     static const QString htmlPath = "res/streetview.html";
 
     QFile file(htmlPath);
     file.open(QIODevice::ReadOnly);
-    return file.readAll();
+
+    QString htmlTemplate = file.readAll();
+    htmlTemplate.replace("__API_KEY__", sv::LoadApiToken());
+
+    return htmlTemplate;
 }
 
 }
@@ -27,16 +31,19 @@ StreetView::StreetView(QWidget* parent /*= nullptr*/)
     , m_htmlTemplate(loadHtmlTemplate())
 {
     initViewSettings();
-    initHtmlTemplate();
     m_view.resize(1024, 768);
 }
 
-void StreetView::show(const Location& location)
+void StreetView::setLocation(const Location& location)
 {
     QString fullHtml = m_htmlTemplate;
     fullHtml.replace("__LOCATION__", location.toStr());
 
-    m_view.setHtml(m_htmlTemplate);
+    m_view.setHtml(fullHtml);
+}
+
+void StreetView::show()
+{
     m_view.show();
 }
 
@@ -57,16 +64,6 @@ void StreetView::initViewSettings() const
     settings->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, false);
     settings->setAttribute(QWebEngineSettings::ScrollAnimatorEnabled, true);
     settings->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
-}
-
-void StreetView::initHtmlTemplate()
-{
-    std::unordered_map<QString, QString> replacements{
-        {"__API_KEY__", sv::LoadApiToken()}
-    };
-
-    for (const auto& [key, value] : replacements)
-        m_htmlTemplate.replace(key, value);
 }
 
 }
