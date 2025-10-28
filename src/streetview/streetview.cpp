@@ -37,7 +37,7 @@ StreetView::StreetView(QWidget* parent /*= nullptr*/)
 void StreetView::setLocation(const geo::Location& location)
 {
     QString fullHtml = m_htmlTemplate;
-    fullHtml.replace("__LOCATION__", location.toStr());
+    fullHtml.replace("__LOCATION__", location.toHtmlStr());
 
     m_view.setHtml(fullHtml);
 }

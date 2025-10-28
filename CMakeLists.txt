@@ -16,8 +16,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
 # Debug flags (these are usually set by default, but can be explicit)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 
-set(Qt6_DIR /home/kuba/Qt/6.9.2/gcc_64/lib/cmake/Qt6)
-
 find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 
 add_executable(map_guesser main.cpp
@@ -27,10 +25,15 @@ add_executable(map_guesser main.cpp
         src/streetview/streetview.h
         src/streetview/streetview.cpp
         src/geo/location.cpp
+        src/streetview/coverage.h
+        src/streetview/coverage.cpp
+        src/game/randomizer.h
+        src/db/location_pool.h
+        src/game/randomizer.cpp
 )
 
 target_include_directories(map_guesser PRIVATE ${CMAKE_SOURCE_DIR}/src)
-target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets)
+target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets curl)
 
 file(COPY ${CMAKE_SOURCE_DIR}/src/streetview/streetview.html DESTINATION ${CMAKE_BINARY_DIR}/res)
 

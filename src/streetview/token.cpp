@@ -10,7 +10,7 @@ const char* ENV_VAR_NAME = "MAP_GUESSER_API_TOKEN";
 namespace sv
 {
 
-QString LoadApiToken()
+const char* LoadApiToken()
 {
     const char* token = std::getenv(ENV_VAR_NAME);
     if (!token)

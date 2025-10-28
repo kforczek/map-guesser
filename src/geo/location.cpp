@@ -3,22 +3,42 @@
 #include <iomanip>
 #include <sstream>
 
+namespace
+{
+
+std::ostream& formatCoord(std::ostream& os)
+{
+    return os << std::fixed << std::setprecision(6);
+}
+
+}
+
 namespace geo
 {
 
-Location::Location(const double latitude, const double longitude)
+Location::Location(double latitude, double longitude)
     : m_latitude(latitude)
     , m_longitude(longitude) { }
 
-QString Location::toStr() const
+QString Location::toHtmlStr() const
 {
     std::ostringstream formatter;
     formatter << "lat: ";
-    formatter << std::fixed << std::setprecision(6) << m_latitude;
+    formatter << formatCoord << m_latitude;
     formatter << ", lng: ";
-    formatter << std::fixed << std::setprecision(6) << m_longitude;
+    formatter << formatCoord << m_longitude;
 
     return formatter.str().c_str();
+}
+
+std::string Location::toUrlStr() const
+{
+    std::ostringstream formatter;
+    formatter << formatCoord << m_latitude;
+    formatter << ",";
+    formatter << formatCoord << m_longitude;
+
+    return formatter.str();
 }
 
 }

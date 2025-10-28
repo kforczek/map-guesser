@@ -1,18 +1,17 @@
 #pragma once
-#include <filesystem>
-#include <QString>
+#include <optional>
+#include "geo/location.h"
 
 namespace sv
 {
 
 // ##########################################################
 
-/* Attempts to load API token from the default location */
-const char* LoadApiToken();
+std::optional<geo::Location> GetClosestCoverage(const geo::Location& location);
 
 // ##########################################################
 
-class TokenLoadingError final : public std::runtime_error
+class CoverageLookupError final : public std::runtime_error
 {
 public:
     using std::runtime_error::runtime_error;
