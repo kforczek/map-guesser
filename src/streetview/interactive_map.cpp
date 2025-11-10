@@ -20,10 +20,17 @@ InteractiveMap::InteractiveMap(QWidget* parent, const geo::Location& startLocati
     initHtmlContent(startLocation);
 }
 
+const std::optional<geo::Location>& InteractiveMap::currLocation() const
+{
+    return m_coordsBridge.location();
+}
+
 void InteractiveMap::initCoordsListener()
 {
     m_channel.registerObject("coordsReceiver", &m_coordsBridge);
     page()->setWebChannel(&m_channel);
+
+    connect(&m_coordsBridge, &CoordsReceiver::locationSet, this, [this](){ emit locationSet(); });
 }
 
 void InteractiveMap::initHtmlContent(const geo::Location& startLocation)

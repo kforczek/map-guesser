@@ -11,6 +11,9 @@ public:
     Location() = default;
     Location(double latitude, double longitude);
 
+    double latitude() const;
+    double longitude() const;
+
     // "lat: 123.123456, lng: 123.123456"
     [[nodiscard]] QString toHtmlStr() const;
 

@@ -11,6 +11,7 @@ const std::optional<geo::Location>& CoordsReceiver::location() const
 void CoordsReceiver::onCoordsChanged(double lat, double lng)
 {
     m_currLocation = geo::Location{lat, lng};
+    emit locationSet();
 }
 
 }

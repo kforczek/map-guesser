@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Fixed Map</title>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=__API_KEY__&callback=initMap&libraries=marker"
+            async defer>
+    </script>
+
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    let map;
+    let markerA, markerB;
+    let line;
+    let distanceUpdater = null;
+
+    function setMarkerA(lat, lng) {
+        const pos = {lat, lng};
+        if (!markerA) {
+            markerA = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "A" });
+        } else {
+            markerA.position = pos;
+        }
+        updateLine();
+    }
+
+    function setMarkerB(lat, lng) {
+        const pos = {lat, lng};
+        if (!markerB) {
+            markerB = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "B" });
+        } else {
+            markerB.position = pos;
+        }
+        updateLine();
+    }
+
+    function updateLine() {
+        if (markerA && markerB) {
+            line.setPath([markerA.position, markerB.position]);
+        }
+    }
+
+    function initMap() {
+        const center = { __CENTER__ };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 6,
+            center: center,
+            disableDefaultUI: true,
+            clickableIcons: false,
+            mapId: "FixedMap"
+        });
+
+        line = new google.maps.Polyline({
+            path: [],
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.7,
+            strokeWeight: 2,
+            strokeDasharray: [5, 5],
+            map: map
+        });
+
+        new QWebChannel(qt.webChannelTransport, (channel) => {
+            distanceUpdater = channel.objects.distanceUpdater;
+            distanceUpdater.updateMarkerA.connect(setMarkerA);
+            distanceUpdater.updateMarkerB.connect(setMarkerB);
+        });
+    }
+</script>
+
+
+</body>
+</html>

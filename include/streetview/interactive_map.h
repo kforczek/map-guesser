@@ -14,8 +14,14 @@ namespace sv
 
 class InteractiveMap : public QWebEngineView
 {
+    Q_OBJECT
 public:
     InteractiveMap(QWidget* parent, const geo::Location& startLocation);
+
+    const std::optional<geo::Location>& currLocation() const;
+
+signals:
+    void locationSet();
 
 private:
     QWebChannel m_channel;

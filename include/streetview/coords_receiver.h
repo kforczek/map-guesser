@@ -16,6 +16,9 @@ public:
 
     const std::optional<geo::Location>& location() const;
 
+signals:
+    void locationSet();
+
 public slots:
     void onCoordsChanged(double lat, double lng);
 

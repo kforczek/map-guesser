@@ -7,6 +7,7 @@
 #include "include/game/randomizer.h"
 #include "include/geo/location.h"
 #include "include/streetview/interactive_map.h"
+#include "streetview/distance_map.h"
 #include "streetview/streetview.h"
 
 namespace
@@ -46,6 +47,7 @@ int main(int argc, char *argv[]) {
     auto pt = game::GetRandomStreetViewPoint(pool);
     window.setLocation(pt);
     window.show();
+
 
     return app.exec();
 }
