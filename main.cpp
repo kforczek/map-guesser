@@ -3,6 +3,7 @@
 #include <QLoggingCategory>
 
 #include "db/location_pool.h"
+#include "game/game_window.h"
 #include "include/game/randomizer.h"
 #include "include/geo/location.h"
 #include "include/streetview/interactive_map.h"
@@ -39,8 +40,12 @@ int main(int argc, char *argv[]) {
     // view.setLocation(streetViewPoint);
     // view.show();
 
-    auto* test = new sv::InteractiveMap(nullptr, geo::Location{50.0874, 14.4207});
-    test->show();
+    db::LocationPool pool;
+
+    game::GameWindow window(pool.center());
+    auto pt = game::GetRandomStreetViewPoint(pool);
+    window.setLocation(pt);
+    window.show();
 
     return app.exec();
 }

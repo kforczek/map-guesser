@@ -11,16 +11,14 @@ class Location;
 namespace sv
 {
 
-class StreetView
+class StreetView : public QWebEngineView
 {
 public:
-    explicit StreetView(QWidget* parent = nullptr);
+    StreetView(QWidget* parent = nullptr);
 
     void setLocation(const geo::Location& location);
-    void show();
 
 private:
-    QWebEngineView m_view;
     QString m_htmlTemplate;
 
     void initViewSettings() const;
