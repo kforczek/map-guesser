@@ -33,14 +33,8 @@ void initQtFlags()
 int main(int argc, char *argv[]) {
     initQtFlags();
     QApplication app(argc, argv);
-    
-    // sv::StreetView view;
-    //
-    // // TODO location randomization
-    // geo::Location streetViewPoint = game::GetRandomStreetViewPoint(db::LocationPool{});
-    // view.setLocation(streetViewPoint);
-    // view.show();
 
+    // TODO load actual pool
     db::LocationPool pool;
 
     game::GameWindow window(pool.center());
