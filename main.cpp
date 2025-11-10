@@ -6,9 +6,6 @@
 #include "game/game_window.h"
 #include "include/game/randomizer.h"
 #include "include/geo/location.h"
-#include "include/streetview/interactive_map.h"
-#include "streetview/distance_map.h"
-#include "streetview/streetview.h"
 
 namespace
 {

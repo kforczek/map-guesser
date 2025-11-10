@@ -32,6 +32,7 @@
             markerA.position = pos;
         }
         updateLine();
+        updateMapCenter();
     }
 
     function setMarkerB(lat, lng) {
@@ -42,11 +43,21 @@
             markerB.position = pos;
         }
         updateLine();
+        updateMapCenter();
     }
 
     function updateLine() {
         if (markerA && markerB) {
             line.setPath([markerA.position, markerB.position]);
+        }
+    }
+
+    function updateMapCenter() {
+        if (markerA && markerB) {
+            const lat = (markerA.position.lat + markerB.position.lat) / 2;
+            const lng = (markerA.position.lng + markerB.position.lng) / 2;
+            const center = {lat: lat, lng: lng};
+            map.setCenter(center);
         }
     }
 
