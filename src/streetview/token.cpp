@@ -1,4 +1,4 @@
-#include "token.h"
+#include "streetview/token.h"
 
 namespace
 {

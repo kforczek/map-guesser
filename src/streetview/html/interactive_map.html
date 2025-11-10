@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive map</title>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=__API_KEY__&callback=initMap&libraries=marker"
+            async defer>
+    </script>
+
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+    let map;
+    let marker;
+    let coordsReceiver = null;
+
+    new QWebChannel(qt.webChannelTransport, (channel) => {
+        coordsReceiver = channel.objects.coordsReceiver;
+    });
+
+    function initMap() {
+        const center = { __CENTER__ };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 6,
+            center: center,
+            disableDefaultUI: true,
+            clickableIcons: false,
+            mapId: "InteractiveMap"
+        });
+
+        map.addListener("click", (event) => {
+            const pos = event.latLng;
+
+            if (marker) {
+                marker.position = pos;
+            } else {
+                marker = new google.maps.marker.AdvancedMarkerElement({
+                    map,
+                    position: pos
+                });
+            }
+
+            const lat = pos.lat();
+            const lng = pos.lng();
+
+            coordsReceiver.onCoordsChanged(lat, lng);
+        });
+    }
+</script>
+</body>
+</html>

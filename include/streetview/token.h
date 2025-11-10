@@ -1,6 +1,5 @@
 #pragma once
 #include <filesystem>
-#include <QString>
 
 namespace sv
 {

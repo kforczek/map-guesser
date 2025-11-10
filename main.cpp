@@ -3,8 +3,9 @@
 #include <QLoggingCategory>
 
 #include "db/location_pool.h"
-#include "game/randomizer.h"
-#include "geo/location.h"
+#include "include/game/randomizer.h"
+#include "include/geo/location.h"
+#include "include/streetview/interactive_map.h"
 #include "streetview/streetview.h"
 
 namespace
@@ -31,12 +32,15 @@ int main(int argc, char *argv[]) {
     initQtFlags();
     QApplication app(argc, argv);
     
-    sv::StreetView view;
+    // sv::StreetView view;
+    //
+    // // TODO location randomization
+    // geo::Location streetViewPoint = game::GetRandomStreetViewPoint(db::LocationPool{});
+    // view.setLocation(streetViewPoint);
+    // view.show();
 
-    // TODO location randomization
-    geo::Location streetViewPoint = game::GetRandomStreetViewPoint(db::LocationPool{});
-    view.setLocation(streetViewPoint);
-    view.show();
+    auto* test = new sv::InteractiveMap(nullptr, geo::Location{50.0874, 14.4207});
+    test->show();
 
     return app.exec();
 }

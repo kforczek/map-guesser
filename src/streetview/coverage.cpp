@@ -1,8 +1,8 @@
-#include "coverage.h"
+#include "streetview/coverage.h"
 
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
-#include "token.h"
+#include "streetview/token.h"
 
 namespace
 {

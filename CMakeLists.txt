@@ -19,23 +19,32 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 
 add_executable(map_guesser main.cpp
-        src/streetview/token.h
+        include/streetview/token.h
         src/streetview/token.cpp
-        src/geo/location.h
-        src/streetview/streetview.h
+        include/geo/location.h
+        include/streetview/streetview.h
         src/streetview/streetview.cpp
         src/geo/location.cpp
-        src/streetview/coverage.h
+        include/streetview/coverage.h
         src/streetview/coverage.cpp
-        src/game/randomizer.h
-        src/db/location_pool.h
+        include/game/randomizer.h
+        include/db/location_pool.h
         src/game/randomizer.cpp
+        include/streetview/interactive_map.h
+        src/streetview/interactive_map.cpp
+        include/streetview/html_reader.h
+        src/streetview/html_reader.cpp
+        include/streetview/coords_receiver.h
+        src/streetview/coords_receiver.cpp
 )
 
-target_include_directories(map_guesser PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(map_guesser
+        PUBLIC ${CMAKE_SOURCE_DIR}/include
+        PRIVATE ${CMAKE_SOURCE_DIR}/src
+)
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets curl)
 
-file(COPY ${CMAKE_SOURCE_DIR}/src/streetview/streetview.html DESTINATION ${CMAKE_BINARY_DIR}/res)
+file(COPY ${CMAKE_SOURCE_DIR}/src/streetview/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
 
 # Optional: Print current build type
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")

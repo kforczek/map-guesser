@@ -1,4 +1,4 @@
-#include "location.h"
+#include "geo/location.h"
 
 #include <iomanip>
 #include <sstream>

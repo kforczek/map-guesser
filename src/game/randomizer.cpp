@@ -1,4 +1,4 @@
-#include "randomizer.h"
+#include "game/randomizer.h"
 
 #include <random>
 #include "geo/location.h"

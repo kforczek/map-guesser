@@ -1,5 +1,6 @@
-#include "streetview.h"
-#include "token.h"
+#include "streetview/streetview.h"
+#include "streetview/token.h"
+#include "streetview/html_reader.h"
 #include "geo/location.h"
 
 #include <QFile>
@@ -7,20 +8,7 @@
 
 namespace
 {
-
-QString loadHtmlTemplate()
-{
-    static const QString htmlPath = "res/streetview.html";
-
-    QFile file(htmlPath);
-    file.open(QIODevice::ReadOnly);
-
-    QString htmlTemplate = file.readAll();
-    htmlTemplate.replace("__API_KEY__", sv::LoadApiToken());
-
-    return htmlTemplate;
-}
-
+const QString HTML_PATH = "html/streetview.html";
 }
 
 namespace sv
@@ -28,7 +16,7 @@ namespace sv
 
 StreetView::StreetView(QWidget* parent /*= nullptr*/)
     : m_view(parent)
-    , m_htmlTemplate(loadHtmlTemplate())
+    , m_htmlTemplate(sv::ReadAndFillApiToken(HTML_PATH))
 {
     initViewSettings();
     m_view.resize(1024, 768);
