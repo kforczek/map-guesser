@@ -7,7 +7,7 @@
 namespace sv
 {
 
-class CoordsReceiver : public QObject
+class InteractiveMapBridge : public QObject
 {
     Q_OBJECT
 

@@ -3,17 +3,17 @@
 namespace sv
 {
 
-const std::optional<geo::Location>& CoordsReceiver::location() const
+const std::optional<geo::Location>& InteractiveMapBridge::location() const
 {
     return m_currLocation;
 }
 
-void CoordsReceiver::removeLocationMarker()
+void InteractiveMapBridge::removeLocationMarker()
 {
     emit markerRemoveRequest();
 }
 
-void CoordsReceiver::onCoordsChanged(double lat, double lng)
+void InteractiveMapBridge::onCoordsChanged(double lat, double lng)
 {
     m_currLocation = geo::Location{lat, lng};
     emit locationSet();

@@ -14,28 +14,28 @@ namespace sv
 
 InteractiveMap::InteractiveMap(QWidget* parent, const geo::Location& startLocation)
     : QWebEngineView(parent)
-    , m_coordsBridge(this)
+    , m_bridge(this)
 {
-    initCoordsListener();
+    initBridge();
     initHtmlContent(startLocation);
 }
 
 const std::optional<geo::Location>& InteractiveMap::currLocation() const
 {
-    return m_coordsBridge.location();
+    return m_bridge.location();
 }
 
 void InteractiveMap::removeLocationMarker()
 {
-    m_coordsBridge.removeLocationMarker();
+    m_bridge.removeLocationMarker();
 }
 
-void InteractiveMap::initCoordsListener()
+void InteractiveMap::initBridge()
 {
-    m_channel.registerObject("coordsReceiver", &m_coordsBridge);
+    m_channel.registerObject("bridge", &m_bridge);
     page()->setWebChannel(&m_channel);
 
-    connect(&m_coordsBridge, &CoordsReceiver::locationSet, this, [this](){ emit guessMarkerPlaced(); });
+    connect(&m_bridge, &InteractiveMapBridge::locationSet, this, [this](){ emit guessMarkerPlaced(); });
 }
 
 void InteractiveMap::initHtmlContent(const geo::Location& startLocation)

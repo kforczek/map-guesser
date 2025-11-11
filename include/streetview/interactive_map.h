@@ -2,7 +2,7 @@
 #include <QWebChannel>
 #include <QWebEngineView>
 
-#include "coords_receiver.h"
+#include "interactive_map_bridge.h"
 
 namespace geo
 {
@@ -26,9 +26,9 @@ signals:
 
 private:
     QWebChannel m_channel;
-    CoordsReceiver m_coordsBridge;
+    InteractiveMapBridge m_bridge;
 
-    void initCoordsListener();
+    void initBridge();
     void initHtmlContent(const geo::Location& startLocation);
 };
 

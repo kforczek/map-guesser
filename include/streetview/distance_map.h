@@ -23,9 +23,9 @@ public:
 
 private:
     QWebChannel m_channel;
-    DistanceUpdater m_distanceUpdater;
+    DistanceMapBridge m_bridge;
 
-    void initDistanceConnector();
+    void initBridge();
     void initHtmlContent(const geo::Location& mapCenter);
 };
 

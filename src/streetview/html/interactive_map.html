@@ -23,7 +23,7 @@
 <script>
     let map;
     let marker;
-    let coordsReceiver = null;
+    let bridge = null;
 
     function removeMarker() {
         if (marker) {
@@ -44,8 +44,8 @@
         });
 
         new QWebChannel(qt.webChannelTransport, (channel) => {
-            coordsReceiver = channel.objects.coordsReceiver;
-            coordsReceiver.markerRemoveRequest.connect(removeMarker);
+            bridge = channel.objects.bridge;
+            bridge.markerRemoveRequest.connect(removeMarker);
         });
 
         map.addListener("click", (event) => {
@@ -69,7 +69,7 @@
             const lat = pos.lat();
             const lng = pos.lng();
 
-            coordsReceiver.onCoordsChanged(lat, lng);
+            bridge.onCoordsChanged(lat, lng);
         });
     }
 </script>

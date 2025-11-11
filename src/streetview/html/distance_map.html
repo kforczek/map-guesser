@@ -23,7 +23,7 @@
     let markerActual, markerGuessed;
     let distance;
     let line;
-    let distanceUpdater = null;
+    let bridge = null;
 
     function getZoom(distance) {
         const magic = 156543.03;
@@ -108,10 +108,10 @@
         });
 
         new QWebChannel(qt.webChannelTransport, (channel) => {
-            distanceUpdater = channel.objects.distanceUpdater;
-            distanceUpdater.updateMarkerActual.connect(setMarkerActual);
-            distanceUpdater.updateMarkerGuessed.connect(setMarkerGuessed);
-            distanceUpdater.updateDistance.connect(setDistance)
+            bridge = channel.objects.bridge;
+            bridge.updateMarkerActual.connect(setMarkerActual);
+            bridge.updateMarkerGuessed.connect(setMarkerGuessed);
+            bridge.updateDistance.connect(setDistance)
         });
     }
 </script>

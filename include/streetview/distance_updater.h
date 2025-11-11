@@ -9,7 +9,7 @@ class Location;
 namespace sv
 {
 
-class DistanceUpdater : public QObject {
+class DistanceMapBridge : public QObject {
     Q_OBJECT
 public:
     using QObject::QObject;

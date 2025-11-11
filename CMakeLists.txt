@@ -34,15 +34,15 @@ add_executable(map_guesser main.cpp
         src/streetview/interactive_map.cpp
         include/streetview/html_reader.h
         src/streetview/html_reader.cpp
-        include/streetview/coords_receiver.h
-        src/streetview/coords_receiver.cpp
+        include/streetview/interactive_map_bridge.h
+        src/streetview/interactive_map_bridge.cpp
         include/game/game_window.h
         src/game/game_window.cpp
         src/db/location_pool.cpp
         include/streetview/distance_map.h
         src/streetview/distance_map.cpp
         include/streetview/distance_updater.h
-        src/streetview/distance_updater.cpp
+        src/streetview/distance_map_bridge.cpp
         include/game/pages/street_view.h
         src/game/pages/street_view.cpp
         include/game/pages/round_results.h

@@ -14,28 +14,28 @@ namespace sv
 DistanceMap::DistanceMap(QWidget* parent, const geo::Location& mapCenter)
     : QWebEngineView(parent)
 {
-    initDistanceConnector();
+    initBridge();
     initHtmlContent(mapCenter);
 }
 
 void DistanceMap::setActualLocation(const geo::Location& location)
 {
-    m_distanceUpdater.setMarkerActual(location);
+    m_bridge.setMarkerActual(location);
 }
 
 void DistanceMap::setGuessedLocation(const geo::Location& location)
 {
-    m_distanceUpdater.setMarkerGuessed(location);
+    m_bridge.setMarkerGuessed(location);
 }
 
 void DistanceMap::setDistance(const double distance)
 {
-    m_distanceUpdater.setDistance(distance);
+    m_bridge.setDistance(distance);
 }
 
-void DistanceMap::initDistanceConnector()
+void DistanceMap::initBridge()
 {
-    m_channel.registerObject("distanceUpdater", &m_distanceUpdater);
+    m_channel.registerObject("bridge", &m_bridge);
     page()->setWebChannel(&m_channel);
 }
 
