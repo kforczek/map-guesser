@@ -46,9 +46,15 @@
             if (marker) {
                 marker.position = pos;
             } else {
+                const pin = new google.maps.marker.PinElement({
+                    background: "#0f9fea",
+                    borderColor: "#594040",
+                    glyphColor: "#000000",
+                });
                 marker = new google.maps.marker.AdvancedMarkerElement({
                     map,
-                    position: pos
+                    position: pos,
+                    content: pin.element,
                 });
             }
 
