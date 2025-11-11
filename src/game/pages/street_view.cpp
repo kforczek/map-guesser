@@ -11,18 +11,10 @@ StreetViewPage::StreetViewPage(QWidget* parent, const geo::Location& mapCenter)
 {
     // TODO remove fixed sizes
     setContentsMargins(0, 0, 0, 0);
-    setFixedSize(1000, 800);
+
     m_streetView.setGeometry(rect());
-    m_interactiveMap.setFixedSize(400, 300);
-    m_guessButton.setFixedSize(100, 40);
-
-    m_interactiveMap.move(width() - m_interactiveMap.width() - 10,
-                          height() - m_interactiveMap.height() - 50);
-
-    m_guessButton.move(
-        m_interactiveMap.x() + m_interactiveMap.width() - m_guessButton.width(),
-        m_interactiveMap.y() + m_interactiveMap.height() + 5
-    );
+    m_interactiveMap.setMinimumSize(400, 300);
+    m_guessButton.setMinimumSize(100, 40);
 
     m_guessButton.setEnabled(false);
 
@@ -35,7 +27,18 @@ void StreetViewPage::setStreetViewLocation(const geo::Location& location)
     m_streetView.setLocation(location);
 }
 
-// TODO resizeEvent
+void StreetViewPage::resizeEvent(QResizeEvent* event)
+{
+    m_streetView.resize(width(), height());
+
+    m_interactiveMap.move(width() - m_interactiveMap.width() - 10,
+                            height() - m_interactiveMap.height() - 50);
+
+    m_guessButton.move(
+        m_interactiveMap.x() + m_interactiveMap.width() - m_guessButton.width(),
+        m_interactiveMap.y() + m_interactiveMap.height() + 5
+    );
+}
 
 void StreetViewPage::onGuessMarkerPlaced()
 {

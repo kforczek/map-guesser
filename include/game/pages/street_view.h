@@ -22,6 +22,8 @@ public:
 
     void setStreetViewLocation(const geo::Location& location);
 
+    void resizeEvent(QResizeEvent* event) override;
+
 signals:
     void guessMade(const geo::Location& location);
 

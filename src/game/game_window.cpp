@@ -12,7 +12,6 @@ GameWindow::GameWindow(const geo::Location& mapCenter)
     , m_streetViewPage(this, mapCenter)
     , m_roundResultsPage(this)
 {
-    setFixedSize(1000, 800);
     setLayout(&m_layout);
 
     m_layout.addWidget(&m_streetViewPage);
