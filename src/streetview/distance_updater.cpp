@@ -15,4 +15,9 @@ void DistanceUpdater::setMarkerGuessed(const geo::Location& location)
     emit updateMarkerGuessed(location.latitude(), location.longitude());
 }
 
+void DistanceUpdater::setDistance(const double distance)
+{
+    emit updateDistance(distance);
+}
+
 }

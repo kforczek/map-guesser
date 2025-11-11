@@ -19,6 +19,7 @@ public:
 
     void setActualLocation(const geo::Location& location);
     void setGuessedLocation(const geo::Location& location);
+    void setDistance(double distance);
 
 private:
     QWebChannel m_channel;

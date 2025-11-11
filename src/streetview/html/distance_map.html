@@ -13,51 +13,17 @@
             width: 100vw;
             height: 100vh;
         }
-
-        #distance {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-            background-color: rgba(0, 255, 0, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
 <div id="map"></div>
-<div id="distance"></div>
 
 <script>
     let map;
     let markerActual, markerGuessed;
+    let distance;
     let line;
     let distanceUpdater = null;
-
-    const Markers = {
-        ACTUAL: markerActual,
-        GUESS: markerGuessed,
-    }
-
-    function calculateDistance(posA, posB) {
-        const earthRadiusMeters = 6371e3;
-
-        const lat1Rad = posA.lat * Math.PI / 180;
-        const lat2Rad = posB.lat * Math.PI / 180;
-        const latDiffRad = (posB.lat - posA.lat) * Math.PI / 180;
-        const lonDiffRad = (posB.lng - posA.lng) * Math.PI / 180;
-
-        const haversineA = Math.sin(latDiffRad/2) * Math.sin(latDiffRad/2) +
-            Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-            Math.sin(lonDiffRad/2) * Math.sin(lonDiffRad/2);
-
-        const centralAngle = 2 * Math.atan2(Math.sqrt(haversineA), Math.sqrt(1 - haversineA));
-
-        return earthRadiusMeters * centralAngle;
-    }
 
     function getZoom(distance) {
         const magic = 156543.03;
@@ -97,6 +63,9 @@
         updateMapCenter();
     }
 
+    function setDistance(dist) {
+        updateZoom(dist);
+    }
 
     function updateLine() {
         if (markerActual && markerGuessed) {
@@ -115,9 +84,6 @@
             const lng = (markerActual.position.lng + markerGuessed.position.lng) / 2;
             const center = {lat: lat, lng: lng};
             map.setCenter(center);
-            let distance = calculateDistance(markerActual.position, markerGuessed.position);
-            updateZoom(distance);
-            document.getElementById("distance").innerText = `Distance: ${distance.toFixed(2)} meters`;
         }
     }
 
@@ -145,6 +111,7 @@
             distanceUpdater = channel.objects.distanceUpdater;
             distanceUpdater.updateMarkerActual.connect(setMarkerActual);
             distanceUpdater.updateMarkerGuessed.connect(setMarkerGuessed);
+            distanceUpdater.updateDistance.connect(setDistance)
         });
     }
 </script>

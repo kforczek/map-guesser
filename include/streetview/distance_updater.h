@@ -17,10 +17,12 @@ public:
 public slots:
     void setMarkerActual(const geo::Location& location);
     void setMarkerGuessed(const geo::Location& location);
+    void setDistance(double distance);
 
 signals:
     void updateMarkerActual(double lat, double lng);
     void updateMarkerGuessed(double lat, double lng);
+    void updateDistance(double distance);
 };
 
 

@@ -27,6 +27,10 @@ void DistanceMap::setGuessedLocation(const geo::Location& location)
     m_distanceUpdater.setMarkerGuessed(location);
 }
 
+void DistanceMap::setDistance(const double distance) {
+    m_distanceUpdater.setDistance(distance);
+}
+
 void DistanceMap::initDistanceConnector()
 {
     m_channel.registerObject("distanceUpdater", &m_distanceUpdater);

@@ -30,6 +30,7 @@ void RoundResultsPage::setGuessedLocation(const geo::Location& location)
 
 void RoundResultsPage::setInfo(const SResults& result)
 {
+    m_distanceMap.setDistance(result.distanceMeters);
     std::ostringstream formatter;
     formatter << "Your guess was ";
     formatter << std::fixed << std::setprecision(2);
