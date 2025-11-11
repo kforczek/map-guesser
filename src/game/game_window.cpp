@@ -54,7 +54,7 @@ GameWindow::GameWindow(const geo::Location& mapStartLocation)
 void GameWindow::setLocation(geo::Location location)
 {
     m_streetView.setLocation(location);
-    m_currLocation = std::move(location);
+    m_currLocation = location;
 }
 
 void GameWindow::onGuessButtonClicked()
