@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     db::LocationPool pool;
 
     game::GameWindow window(pool);
-    window.show();
+    window.showFullScreen();
 
     return app.exec();
 }
