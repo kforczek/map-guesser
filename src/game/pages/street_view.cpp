@@ -31,6 +31,12 @@ void StreetViewPage::setStreetViewLocation(const geo::Location& location)
     m_streetView.setLocation(location);
 }
 
+void StreetViewPage::resetForNewRound()
+{
+    m_interactiveMap.removeLocationMarker();
+    m_guessButton.setEnabled(false);
+}
+
 void StreetViewPage::resizeEvent(QResizeEvent* event)
 {
     m_streetView.resize(width(), height());

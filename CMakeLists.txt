@@ -47,6 +47,8 @@ add_executable(map_guesser main.cpp
         src/game/pages/street_view.cpp
         include/game/pages/round_results.h
         src/game/pages/round_results.cpp
+        include/game/results.h
+        src/game/results.cpp
 )
 
 target_include_directories(map_guesser

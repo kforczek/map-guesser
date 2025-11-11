@@ -34,11 +34,8 @@ int main(int argc, char *argv[]) {
     // TODO load actual pool
     db::LocationPool pool;
 
-    game::GameWindow window(pool.center());
-    auto pt = game::GetRandomStreetViewPoint(pool);
-    window.setStreetViewLocation(pt);
-    window.show();
-
+    game::GameWindow window(pool);
+    window.showFullScreen();
 
     return app.exec();
 }

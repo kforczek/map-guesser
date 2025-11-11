@@ -11,10 +11,11 @@ const QString HTML_PATH = "html/distance_map.html";
 namespace sv
 {
 
-DistanceMap::DistanceMap(QWidget* parent /*= nullptr*/)
+DistanceMap::DistanceMap(QWidget* parent, const geo::Location& mapCenter)
+    : QWebEngineView(parent)
 {
     initDistanceConnector();
-    initHtmlContent();
+    initHtmlContent(mapCenter);
 }
 
 void DistanceMap::setActualLocation(const geo::Location& location)
@@ -27,7 +28,8 @@ void DistanceMap::setGuessedLocation(const geo::Location& location)
     m_distanceUpdater.setMarkerGuessed(location);
 }
 
-void DistanceMap::setDistance(const double distance) {
+void DistanceMap::setDistance(const double distance)
+{
     m_distanceUpdater.setDistance(distance);
 }
 
@@ -37,12 +39,10 @@ void DistanceMap::initDistanceConnector()
     page()->setWebChannel(&m_channel);
 }
 
-void DistanceMap::initHtmlContent()
+void DistanceMap::initHtmlContent(const geo::Location& mapCenter)
 {
     QString html = sv::ReadAndFillApiToken(HTML_PATH);
-
-    // TODOOOOO
-    html.replace("__CENTER__", db::LocationPool{}.center().toHtmlStr());
+    html.replace("__CENTER__", mapCenter.toHtmlStr());
     setHtml(html);
 }
 
