@@ -1,4 +1,4 @@
-#include "streetview/coords_receiver.h"
+#include "streetview/interactive_map_bridge.h"
 
 namespace sv
 {
