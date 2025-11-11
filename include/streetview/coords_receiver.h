@@ -15,9 +15,11 @@ public:
     using QObject::QObject;
 
     const std::optional<geo::Location>& location() const;
+    void removeLocationMarker();
 
 signals:
     void locationSet();
+    void markerRemoveRequest();
 
 public slots:
     void onCoordsChanged(double lat, double lng);

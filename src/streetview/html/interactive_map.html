@@ -25,9 +25,12 @@
     let marker;
     let coordsReceiver = null;
 
-    new QWebChannel(qt.webChannelTransport, (channel) => {
-        coordsReceiver = channel.objects.coordsReceiver;
-    });
+    function removeMarker() {
+        if (marker) {
+            marker.setMap(null);
+            marker = null;
+        }
+    }
 
     function initMap() {
         const center = { __CENTER__ };
@@ -38,6 +41,11 @@
             disableDefaultUI: true,
             clickableIcons: false,
             mapId: "InteractiveMap"
+        });
+
+        new QWebChannel(qt.webChannelTransport, (channel) => {
+            coordsReceiver = channel.objects.coordsReceiver;
+            coordsReceiver.markerRemoveRequest.connect(removeMarker);
         });
 
         map.addListener("click", (event) => {

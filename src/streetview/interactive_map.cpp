@@ -25,6 +25,11 @@ const std::optional<geo::Location>& InteractiveMap::currLocation() const
     return m_coordsBridge.location();
 }
 
+void InteractiveMap::removeLocationMarker()
+{
+    m_coordsBridge.removeLocationMarker();
+}
+
 void InteractiveMap::initCoordsListener()
 {
     m_channel.registerObject("coordsReceiver", &m_coordsBridge);

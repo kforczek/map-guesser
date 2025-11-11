@@ -15,8 +15,6 @@ class GameWindow : public QFrame
 public:
     explicit GameWindow(db::LocationPool locPool);
 
-    void setStreetViewLocation(const geo::Location& location);
-
 private /*members*/:
     db::LocationPool m_locPool;
     QStackedLayout m_layout;
@@ -24,8 +22,12 @@ private /*members*/:
     pages::StreetViewPage m_streetViewPage;
     pages::RoundResultsPage m_roundResultsPage;
 
+private /*methods*/:
+    void startNextRound();
+
 private slots:
     void onGuessMade(const geo::Location& guessedLocation);
+    void onContinueButtonClicked();
 };
 
 }

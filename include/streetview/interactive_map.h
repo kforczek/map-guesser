@@ -19,6 +19,7 @@ public:
     InteractiveMap(QWidget* parent, const geo::Location& startLocation);
 
     const std::optional<geo::Location>& currLocation() const;
+    void removeLocationMarker();
 
 signals:
     void guessMarkerPlaced();

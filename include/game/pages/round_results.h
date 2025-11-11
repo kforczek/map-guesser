@@ -2,6 +2,7 @@
 #include <qboxlayout.h>
 #include <QFrame>
 #include <QLabel>
+#include <QPushButton>
 
 #include "streetview/distance_map.h"
 
@@ -23,10 +24,25 @@ public:
     void setGuessedLocation(const geo::Location& location);
     void setInfo(const RoundResults& roundResults);
 
-private:
+signals:
+    void continueButtonClicked();
+
+private /*members*/:
     QVBoxLayout m_layout;
+
     QLabel m_resultLabel;
     sv::DistanceMap m_distanceMap;
+    QPushButton m_continueButton;
+
+private /*methods*/:
+    void setupLayout();
+    void setupResultLabel();
+    void setupDistanceMap();
+    void setupContinueButton();
+    void setupBottomSpacing();
+    void addToLayout(QWidget& widget, Qt::Alignment alignment = Qt::Alignment());
+
+    void onContinueButtonClicked();
 };
 
 }

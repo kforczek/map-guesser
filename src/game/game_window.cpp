@@ -5,6 +5,7 @@
 #include <QStackedLayout>
 
 #include "db/location_pool.h"
+#include "game/randomizer.h"
 #include "game/results.h"
 
 namespace
@@ -31,15 +32,20 @@ GameWindow::GameWindow(db::LocationPool locPool)
     m_layout.addWidget(&m_streetViewPage);
     m_layout.addWidget(&m_roundResultsPage);
 
-    m_layout.setCurrentIndex(PAGE_STREET_VIEW);
-
     connect(&m_streetViewPage, &pages::StreetViewPage::guessMade, this, &GameWindow::onGuessMade);
+    connect(&m_roundResultsPage, &pages::RoundResultsPage::continueButtonClicked, this, &GameWindow::onContinueButtonClicked);
+
+    startNextRound();
 }
 
-
-void GameWindow::setStreetViewLocation(const geo::Location& location)
+void GameWindow::startNextRound()
 {
+    const geo::Location location = game::GetRandomStreetViewPoint(m_locPool);
+
+    m_streetViewPage.resetForNewRound();
     m_streetViewPage.setStreetViewLocation(location);
+
+    m_layout.setCurrentIndex(PAGE_STREET_VIEW);
 }
 
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)
@@ -52,6 +58,11 @@ void GameWindow::onGuessMade(const geo::Location& guessedLocation)
     m_roundResultsPage.setInfo(roundResults);
 
     m_layout.setCurrentIndex(PAGE_ROUND_RESULTS);
+}
+
+void GameWindow::onContinueButtonClicked()
+{
+    startNextRound();
 }
 
 }

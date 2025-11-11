@@ -23,6 +23,8 @@ public:
     const geo::Location& getStreetViewLocation() const;
     void setStreetViewLocation(const geo::Location& location);
 
+    void resetForNewRound();
+
     void resizeEvent(QResizeEvent* event) override;
 
 signals:
