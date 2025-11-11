@@ -41,9 +41,11 @@ void GameWindow::setStreetViewLocation(const geo::Location& location)
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)
 {
     const geo::Location& actualLocation = m_streetViewPage.getStreetViewLocation();
+    const double distance = actualLocation.distanceTo(guessedLocation);
 
     m_roundResultsPage.setActualLocation(actualLocation);
     m_roundResultsPage.setGuessedLocation(guessedLocation);
+    m_roundResultsPage.setInfo(pages::SResults{distance});
 
     m_layout.setCurrentIndex(PAGE_ROUND_RESULTS);
 }

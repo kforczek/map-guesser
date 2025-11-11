@@ -11,6 +11,23 @@ std::ostream& formatCoord(std::ostream& os)
     return os << std::fixed << std::setprecision(6);
 }
 
+double calcHaversineDistance(const geo::Location& loc1, const geo::Location& loc2) {
+    constexpr double R = 6371008.8; // mean Earth radius (meters)
+    constexpr double toRad = M_PI / 180.0;
+
+    double lat1 = loc1.latitude() * toRad;
+    double lat2 = loc2.latitude() * toRad;
+    double dLat = (loc2.latitude() - loc1.latitude()) * toRad;
+    double dLon = (loc2.longitude() - loc1.longitude()) * toRad;
+
+    double s = std::sin(dLat / 2.0);
+    double t = std::sin(dLon / 2.0);
+    double a = s * s + std::cos(lat1) * std::cos(lat2) * t * t;
+    double c = 2.0 * std::atan2(std::sqrt(a), std::sqrt(1.0 - a));
+
+    return R * c;
+}
+
 }
 
 namespace geo
@@ -28,6 +45,11 @@ double Location::latitude() const
 double Location::longitude() const
 {
     return m_longitude;
+}
+
+double Location::distanceTo(const Location& other) const
+{
+    return calcHaversineDistance(*this, other);
 }
 
 QString Location::toHtmlStr() const

@@ -9,7 +9,6 @@ StreetViewPage::StreetViewPage(QWidget* parent, const geo::Location& mapCenter)
     , m_interactiveMap(this, mapCenter)
     , m_guessButton("Guess", this)
 {
-    // TODO remove fixed sizes
     setContentsMargins(0, 0, 0, 0);
 
     m_streetView.setGeometry(rect());
