@@ -14,6 +14,7 @@ public:
 
     const geo::Location& getLocation() const;
     void setLocation(const geo::Location& location);
+    void returnToStart();
 
 private:
     QString m_htmlTemplate;

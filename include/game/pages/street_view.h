@@ -21,24 +21,26 @@ public:
     explicit StreetViewPage(QWidget* parent, const geo::Location& mapCenter);
 
     const geo::Location& getStreetViewLocation() const;
-    void setStreetViewLocation(const geo::Location& location);
 
-    void resetForNewRound();
-
-    void resizeEvent(QResizeEvent* event) override;
+    void startNewRound(const geo::Location& location);
 
 signals:
     void guessMade(const geo::Location& location);
+
+protected:
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     sv::StreetView m_streetView;
     sv::InteractiveMap m_interactiveMap;
 
+    QPushButton m_returnToStartButton;
     QPushButton m_guessButton;
 
 private slots:
     void onGuessMarkerPlaced();
     void onGuessButtonClicked();
+    void onReturnToStartButtonClicked();
 };
 
 }

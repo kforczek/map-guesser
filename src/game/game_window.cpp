@@ -1,5 +1,4 @@
 #include "game/game_window.h"
-#include "streetview/streetview.h"
 
 #include <QFrame>
 #include <QStackedLayout>
@@ -49,9 +48,7 @@ void GameWindow::startNextRound()
 {
     const geo::Location location = game::GetRandomStreetViewPoint(m_locPool);
 
-    m_streetViewPage.resetForNewRound();
-    m_streetViewPage.setStreetViewLocation(location);
-
+    m_streetViewPage.startNewRound(location);
     m_layout.setCurrentIndex(PAGE_STREET_VIEW);
 }
 

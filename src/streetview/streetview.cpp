@@ -35,6 +35,11 @@ void StreetView::setLocation(const geo::Location& location)
     setHtml(fullHtml);
 }
 
+void StreetView::returnToStart()
+{
+    setLocation(m_location);
+}
+
 void StreetView::initViewSettings() const
 {
     settings()->setAttribute(QWebEngineSettings::WebGLEnabled, true);

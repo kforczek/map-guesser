@@ -6,7 +6,7 @@ namespace db
 geo::Location LocationPool::center() const
 {
     // TODO
-    return {50.0874, 14.4207};
+    return {51.939094, 19.107702};
 }
 
 }
