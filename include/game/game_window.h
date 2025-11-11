@@ -25,8 +25,6 @@ private:
     pages::StreetViewPage m_streetViewPage;
     pages::RoundResultsPage m_roundResultsPage;
 
-    geo::Location m_currLocation{0, 0};
-
 private slots:
     void onGuessMade(const geo::Location& guessedLocation);
 };

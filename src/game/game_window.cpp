@@ -26,12 +26,13 @@ GameWindow::GameWindow(const geo::Location& mapCenter)
 void GameWindow::setStreetViewLocation(const geo::Location& location)
 {
     m_streetViewPage.setStreetViewLocation(location);
-    m_currLocation = location;
 }
 
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)
 {
-    m_roundResultsPage.setActualLocation(m_currLocation);
+    const geo::Location& actualLocation = m_streetViewPage.getStreetViewLocation();
+
+    m_roundResultsPage.setActualLocation(actualLocation);
     m_roundResultsPage.setGuessedLocation(guessedLocation);
 
     m_layout.setCurrentIndex(1);
