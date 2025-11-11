@@ -15,7 +15,7 @@ namespace sv
 class DistanceMap : public QWebEngineView
 {
 public:
-    explicit DistanceMap(QWidget* parent = nullptr);
+    explicit DistanceMap(QWidget* parent, const geo::Location& mapCenter);
 
     void setActualLocation(const geo::Location& location);
     void setGuessedLocation(const geo::Location& location);
@@ -26,7 +26,7 @@ private:
     DistanceUpdater m_distanceUpdater;
 
     void initDistanceConnector();
-    void initHtmlContent();
+    void initHtmlContent(const geo::Location& mapCenter);
 };
 
 }

@@ -4,6 +4,9 @@
 #include <QFrame>
 #include <QStackedLayout>
 
+#include "db/location_pool.h"
+#include "game/results.h"
+
 namespace
 {
 
@@ -15,10 +18,11 @@ constexpr short int PAGE_ROUND_RESULTS = 1;
 namespace game
 {
 
-GameWindow::GameWindow(const geo::Location& mapCenter)
-    : m_layout(this)
-    , m_streetViewPage(this, mapCenter)
-    , m_roundResultsPage(this)
+GameWindow::GameWindow(db::LocationPool locPool)
+    : m_locPool(std::move(locPool))
+    , m_layout(this)
+    , m_streetViewPage(this, m_locPool.center())
+    , m_roundResultsPage(this, m_locPool.center())
 {
     setLayout(&m_layout);
     setMinimumSize(1000, 800);
@@ -41,11 +45,11 @@ void GameWindow::setStreetViewLocation(const geo::Location& location)
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)
 {
     const geo::Location& actualLocation = m_streetViewPage.getStreetViewLocation();
-    const double distance = actualLocation.distanceTo(guessedLocation);
+    const RoundResults roundResults{m_locPool, actualLocation, guessedLocation};
 
     m_roundResultsPage.setActualLocation(actualLocation);
     m_roundResultsPage.setGuessedLocation(guessedLocation);
-    m_roundResultsPage.setInfo(pages::SResults{distance});
+    m_roundResultsPage.setInfo(roundResults);
 
     m_layout.setCurrentIndex(PAGE_ROUND_RESULTS);
 }

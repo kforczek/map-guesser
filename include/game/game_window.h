@@ -2,9 +2,9 @@
 #include <QStackedLayout>
 
 #include "streetview/distance_map.h"
-#include "geo/location.h"
 #include "pages/round_results.h"
 #include "pages/street_view.h"
+#include "db/location_pool.h"
 
 namespace game
 {
@@ -13,11 +13,12 @@ class GameWindow : public QFrame
 {
     Q_OBJECT
 public:
-    explicit GameWindow(const geo::Location& mapCenter);
+    explicit GameWindow(db::LocationPool locPool);
 
     void setStreetViewLocation(const geo::Location& location);
 
 private /*members*/:
+    db::LocationPool m_locPool;
     QStackedLayout m_layout;
 
     pages::StreetViewPage m_streetViewPage;

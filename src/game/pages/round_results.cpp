@@ -1,12 +1,13 @@
 #include "game/pages/round_results.h"
+#include "game/results.h"
 
 namespace game::pages
 {
 
-RoundResultsPage::RoundResultsPage(QWidget* parent)
+RoundResultsPage::RoundResultsPage(QWidget* parent, const geo::Location& mapCenter)
     : QFrame(parent)
     , m_layout(this)
-    , m_distanceMap(this)
+    , m_distanceMap(this, mapCenter)
 {
     setLayout(&m_layout);
     m_layout.setContentsMargins(0, 0, 0, 0);
@@ -28,17 +29,18 @@ void RoundResultsPage::setGuessedLocation(const geo::Location& location)
     m_distanceMap.setGuessedLocation(location);
 }
 
-void RoundResultsPage::setInfo(const SResults& result)
+void RoundResultsPage::setInfo(const RoundResults& roundResults)
 {
-    m_distanceMap.setDistance(result.distanceMeters);
+    m_distanceMap.setDistance(roundResults.distanceMeters());
+
     std::ostringstream formatter;
     formatter << "Your guess was ";
     formatter << std::fixed << std::setprecision(2);
 
-    if (result.distanceMeters > 1000)
-        formatter << result.distanceMeters / 1000 << " km";
+    if (roundResults.distanceMeters() > 1000)
+        formatter << roundResults.distanceMeters() / 1000 << " km";
     else
-        formatter << result.distanceMeters << " m";
+        formatter << roundResults.distanceMeters() << " m";
 
     formatter << " from the actual location.";
 
