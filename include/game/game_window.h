@@ -1,6 +1,4 @@
 #pragma once
-#include <QFrame>
-#include <QPushButton>
 #include <QStackedLayout>
 
 #include "streetview/distance_map.h"
@@ -19,7 +17,7 @@ public:
 
     void setStreetViewLocation(const geo::Location& location);
 
-private:
+private /*members*/:
     QStackedLayout m_layout;
 
     pages::StreetViewPage m_streetViewPage;
