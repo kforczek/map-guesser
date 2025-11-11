@@ -15,12 +15,12 @@ RoundResultsPage::RoundResultsPage(QWidget* parent)
 
 void RoundResultsPage::setActualLocation(const geo::Location& location)
 {
-    m_distanceMap.setPointA(location);
+    m_distanceMap.setActualLocation(location);
 }
 
 void RoundResultsPage::setGuessedLocation(const geo::Location& location)
 {
-    m_distanceMap.setPointB(location);
+    m_distanceMap.setGuessedLocation(location);
 }
 
 }

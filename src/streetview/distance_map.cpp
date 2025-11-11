@@ -17,14 +17,14 @@ DistanceMap::DistanceMap(QWidget* parent /*= nullptr*/)
     initHtmlContent();
 }
 
-void DistanceMap::setPointA(const geo::Location& location)
+void DistanceMap::setActualLocation(const geo::Location& location)
 {
-    m_distanceUpdater.setMarkerA(location);
+    m_distanceUpdater.setMarkerActual(location);
 }
 
-void DistanceMap::setPointB(const geo::Location& location)
+void DistanceMap::setGuessedLocation(const geo::Location& location)
 {
-    m_distanceUpdater.setMarkerB(location);
+    m_distanceUpdater.setMarkerGuessed(location);
 }
 
 void DistanceMap::initDistanceConnector()

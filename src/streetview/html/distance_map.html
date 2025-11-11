@@ -33,9 +33,14 @@
 
 <script>
     let map;
-    let markerA, markerB;
+    let markerActual, markerGuessed;
     let line;
     let distanceUpdater = null;
+
+    const Markers = {
+        ACTUAL: markerActual,
+        GUESS: markerGuessed,
+    }
 
     function calculateDistance(posA, posB) {
         const earthRadiusMeters = 6371e3;
@@ -60,31 +65,42 @@
         return Math.log2(magic * expectedLineLengthInPixels / distance);
     }
 
-    function setMarkerA(lat, lng) {
+    function setMarkerActual(lat, lng) {
         const pos = {lat, lng};
-        if (!markerA) {
-            markerA = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "A" });
+        if (!markerActual) {
+            const pin = new google.maps.marker.PinElement({
+                background: "#1f910d",
+                borderColor: "#594040",
+                glyphColor: "#000000",
+            });
+            markerActual = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "A", content: pin.element});
         } else {
-            markerA.position = pos;
+            markerActual.position = pos;
         }
         updateLine();
         updateMapCenter();
     }
 
-    function setMarkerB(lat, lng) {
+    function setMarkerGuessed(lat, lng) {
         const pos = {lat, lng};
-        if (!markerB) {
-            markerB = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "B" });
+        const pin = new google.maps.marker.PinElement({
+            background: "#0f9fea",
+            borderColor: "#594040",
+            glyphColor: "#000000",
+        });
+        if (!markerGuessed) {
+            markerGuessed = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "B", content: pin.element });
         } else {
-            markerB.position = pos;
+            markerGuessed.position = pos;
         }
         updateLine();
         updateMapCenter();
     }
+
 
     function updateLine() {
-        if (markerA && markerB) {
-            line.setPath([markerA.position, markerB.position]);
+        if (markerActual && markerGuessed) {
+            line.setPath([markerActual.position, markerGuessed.position]);
         }
     }
 
@@ -94,12 +110,12 @@
     }
 
     function updateMapCenter() {
-        if (markerA && markerB) {
-            const lat = (markerA.position.lat + markerB.position.lat) / 2;
-            const lng = (markerA.position.lng + markerB.position.lng) / 2;
+        if (markerActual && markerGuessed) {
+            const lat = (markerActual.position.lat + markerGuessed.position.lat) / 2;
+            const lng = (markerActual.position.lng + markerGuessed.position.lng) / 2;
             const center = {lat: lat, lng: lng};
             map.setCenter(center);
-            let distance = calculateDistance(markerA.position, markerB.position);
+            let distance = calculateDistance(markerActual.position, markerGuessed.position);
             updateZoom(distance);
             document.getElementById("distance").innerText = `Distance: ${distance.toFixed(2)} meters`;
         }
@@ -127,8 +143,8 @@
 
         new QWebChannel(qt.webChannelTransport, (channel) => {
             distanceUpdater = channel.objects.distanceUpdater;
-            distanceUpdater.updateMarkerA.connect(setMarkerA);
-            distanceUpdater.updateMarkerB.connect(setMarkerB);
+            distanceUpdater.updateMarkerActual.connect(setMarkerActual);
+            distanceUpdater.updateMarkerGuessed.connect(setMarkerGuessed);
         });
     }
 </script>

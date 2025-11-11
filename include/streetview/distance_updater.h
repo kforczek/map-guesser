@@ -15,12 +15,12 @@ public:
     using QObject::QObject;
 
 public slots:
-    void setMarkerA(const geo::Location& location);
-    void setMarkerB(const geo::Location& location);
+    void setMarkerActual(const geo::Location& location);
+    void setMarkerGuessed(const geo::Location& location);
 
 signals:
-    void updateMarkerA(double lat, double lng);
-    void updateMarkerB(double lat, double lng);
+    void updateMarkerActual(double lat, double lng);
+    void updateMarkerGuessed(double lat, double lng);
 };
 
 

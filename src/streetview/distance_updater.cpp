@@ -5,14 +5,14 @@
 namespace sv
 {
 
-void DistanceUpdater::setMarkerA(const geo::Location& location)
+void DistanceUpdater::setMarkerActual(const geo::Location& location)
 {
-    emit updateMarkerA(location.latitude(), location.longitude());
+    emit updateMarkerActual(location.latitude(), location.longitude());
 }
 
-void DistanceUpdater::setMarkerB(const geo::Location& location)
+void DistanceUpdater::setMarkerGuessed(const geo::Location& location)
 {
-    emit updateMarkerB(location.latitude(), location.longitude());
+    emit updateMarkerGuessed(location.latitude(), location.longitude());
 }
 
 }
