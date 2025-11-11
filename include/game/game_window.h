@@ -1,5 +1,6 @@
 #pragma once
 #include <QStackedLayout>
+#include <QShortcut>
 
 #include "streetview/distance_map.h"
 #include "pages/round_results.h"
@@ -9,7 +10,7 @@
 namespace game
 {
 
-class GameWindow : public QFrame
+class GameWindow final : public QFrame
 {
     Q_OBJECT
 public:
@@ -22,8 +23,12 @@ private /*members*/:
     pages::StreetViewPage m_streetViewPage;
     pages::RoundResultsPage m_roundResultsPage;
 
+    QShortcut m_escShortcut;
+    QShortcut m_f11Shortcut;
+
 private /*methods*/:
     void startNextRound();
+    void toggleFullScreen(std::optional<bool> fullScreen = std::nullopt);
 
 private slots:
     void onGuessMade(const geo::Location& guessedLocation);

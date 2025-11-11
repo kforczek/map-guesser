@@ -24,16 +24,23 @@ GameWindow::GameWindow(db::LocationPool locPool)
     , m_layout(this)
     , m_streetViewPage(this, m_locPool.center())
     , m_roundResultsPage(this, m_locPool.center())
+    , m_escShortcut(QKeySequence(Qt::Key_Escape), this)
+    , m_f11Shortcut(QKeySequence(Qt::Key_F11), this)
 {
     setLayout(&m_layout);
+
     setMinimumSize(1000, 800);
     setWindowTitle("Map Guesser");
+    setWindowFlag(Qt::Window, true);
 
     m_layout.addWidget(&m_streetViewPage);
     m_layout.addWidget(&m_roundResultsPage);
 
     connect(&m_streetViewPage, &pages::StreetViewPage::guessMade, this, &GameWindow::onGuessMade);
     connect(&m_roundResultsPage, &pages::RoundResultsPage::continueButtonClicked, this, &GameWindow::onContinueButtonClicked);
+
+    connect(&m_escShortcut, &QShortcut::activated, [this]() { toggleFullScreen(false); });
+    connect(&m_f11Shortcut, &QShortcut::activated, [this]() { toggleFullScreen(); });
 
     startNextRound();
 }
@@ -46,6 +53,17 @@ void GameWindow::startNextRound()
     m_streetViewPage.setStreetViewLocation(location);
 
     m_layout.setCurrentIndex(PAGE_STREET_VIEW);
+}
+
+void GameWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullopt*/)
+{
+    if (!fullScreen)
+        fullScreen = !isFullScreen();
+
+    if (*fullScreen)
+        showFullScreen();
+    else
+        showNormal();
 }
 
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)
