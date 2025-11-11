@@ -20,6 +20,7 @@ class StreetViewPage : public QFrame
 public:
     explicit StreetViewPage(QWidget* parent, const geo::Location& mapCenter);
 
+    const geo::Location& getStreetViewLocation() const;
     void setStreetViewLocation(const geo::Location& location);
 
     void resizeEvent(QResizeEvent* event) override;

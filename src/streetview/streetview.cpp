@@ -21,11 +21,17 @@ StreetView::StreetView(QWidget* parent /*= nullptr*/)
     initViewSettings();
 }
 
+const geo::Location& StreetView::getLocation() const
+{
+    return m_location;
+}
+
 void StreetView::setLocation(const geo::Location& location)
 {
+    m_location = location;
+
     QString fullHtml = m_htmlTemplate;
     fullHtml.replace("__LOCATION__", location.toHtmlStr());
-
     setHtml(fullHtml);
 }
 

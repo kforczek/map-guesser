@@ -22,6 +22,11 @@ StreetViewPage::StreetViewPage(QWidget* parent, const geo::Location& mapCenter)
     connect(&m_guessButton, &QPushButton::clicked, this, &StreetViewPage::onGuessButtonClicked);
 }
 
+const geo::Location& StreetViewPage::getStreetViewLocation() const
+{
+    return m_streetView.getLocation();
+}
+
 void StreetViewPage::setStreetViewLocation(const geo::Location& location)
 {
     m_streetView.setLocation(location);
