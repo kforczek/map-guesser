@@ -21,7 +21,7 @@ public:
     const std::optional<geo::Location>& currLocation() const;
 
 signals:
-    void locationSet();
+    void guessMarkerPlaced();
 
 private:
     QWebChannel m_channel;

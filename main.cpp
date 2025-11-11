@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
     game::GameWindow window(pool.center());
     auto pt = game::GetRandomStreetViewPoint(pool);
-    window.setLocation(pt);
+    window.setStreetViewLocation(pt);
     window.show();
 
 

@@ -30,7 +30,7 @@ void InteractiveMap::initCoordsListener()
     m_channel.registerObject("coordsReceiver", &m_coordsBridge);
     page()->setWebChannel(&m_channel);
 
-    connect(&m_coordsBridge, &CoordsReceiver::locationSet, this, [this](){ emit locationSet(); });
+    connect(&m_coordsBridge, &CoordsReceiver::locationSet, this, [this](){ emit guessMarkerPlaced(); });
 }
 
 void InteractiveMap::initHtmlContent(const geo::Location& startLocation)

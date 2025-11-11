@@ -43,6 +43,10 @@ add_executable(map_guesser main.cpp
         src/streetview/distance_map.cpp
         include/streetview/distance_updater.h
         src/streetview/distance_updater.cpp
+        include/game/pages/street_view.h
+        src/game/pages/street_view.cpp
+        include/game/pages/round_results.h
+        src/game/pages/round_results.cpp
 )
 
 target_include_directories(map_guesser

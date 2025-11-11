@@ -1,33 +1,34 @@
 #pragma once
-#include <QMainWindow>
+#include <QFrame>
 #include <QPushButton>
+#include <QStackedLayout>
 
 #include "streetview/distance_map.h"
-#include "streetview/interactive_map.h"
-#include "streetview/streetview.h"
+#include "geo/location.h"
+#include "pages/round_results.h"
+#include "pages/street_view.h"
 
 namespace game
 {
 
-class GameWindow : public QMainWindow
+class GameWindow : public QFrame
 {
     Q_OBJECT
 public:
-    GameWindow(const geo::Location& mapStartLocation);
+    explicit GameWindow(const geo::Location& mapCenter);
 
-    void setLocation(geo::Location location);
+    void setStreetViewLocation(const geo::Location& location);
 
 private:
-    sv::StreetView m_streetView;
-    sv::InteractiveMap m_interactiveMap;
-    sv::DistanceMap m_distanceMap;
+    QStackedLayout m_layout;
 
-    QPushButton m_guessButton;
+    pages::StreetViewPage m_streetViewPage;
+    pages::RoundResultsPage m_roundResultsPage;
 
     geo::Location m_currLocation{0, 0};
 
 private slots:
-    void onGuessButtonClicked();
+    void onGuessMade(const geo::Location& guessedLocation);
 };
 
 }
