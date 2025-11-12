@@ -40,8 +40,7 @@ private /*fields*/:
     QPushButton m_shrinkMapButton;
     QPushButton m_enlargeMapButton;
 
-    double m_mapWidthPercent = 0;
-    double m_mapHeightPercent = 0;
+    double m_mapToWindowWidthRatio = 0;
 
 private /*methods*/:
     void resizeStreetView();
@@ -50,6 +49,7 @@ private /*methods*/:
     void moveFunctionalButtons();
 
     void updateMapRatios();
+    void setMapSizeButtonsEnabledState();
 
 private slots:
     void onGuessMarkerPlaced();
