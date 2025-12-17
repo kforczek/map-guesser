@@ -42,7 +42,7 @@ StreetViewPage::StreetViewPage(QWidget* parent, const geo::Location& mapCenter)
 
     m_guessButton.setEnabled(false);
 
-    connect(&m_interactiveMap, &sv::InteractiveMap::guessMarkerPlaced, this, &StreetViewPage::onGuessMarkerPlaced);
+    connect(&m_interactiveMap, &google::InteractiveMap::guessMarkerPlaced, this, &StreetViewPage::onGuessMarkerPlaced);
     connect(&m_guessButton, &QPushButton::clicked, this, &StreetViewPage::onGuessButtonClicked);
     connect(&m_returnToStartButton, &QPushButton::clicked, this, &StreetViewPage::onReturnToStartButtonClicked);
     connect(&m_shrinkMapButton, &QPushButton::clicked, this, &StreetViewPage::onShrinkMapButtonClicked);

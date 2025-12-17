@@ -4,7 +4,7 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include "streetview/distance_map.h"
+#include "google/distance_map.h"
 
 namespace game
 {
@@ -31,7 +31,7 @@ private /*members*/:
     QVBoxLayout m_layout;
 
     QLabel m_resultLabel;
-    sv::DistanceMap m_distanceMap;
+    google::DistanceMap m_distanceMap;
     QPushButton m_continueButton;
 
 private /*methods*/:

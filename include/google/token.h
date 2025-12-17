@@ -1,17 +1,17 @@
 #pragma once
-#include <optional>
-#include "geo/location.h"
+#include <filesystem>
 
-namespace sv
+namespace google
 {
 
 // ##########################################################
 
-std::optional<geo::Location> GetClosestCoverage(const geo::Location& location);
+/* Attempts to load API token from the default location */
+const char* LoadApiToken();
 
 // ##########################################################
 
-class CoverageLookupError final : public std::runtime_error
+class TokenLoadingError final : public std::runtime_error
 {
 public:
     using std::runtime_error::runtime_error;

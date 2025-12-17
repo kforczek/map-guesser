@@ -6,7 +6,7 @@ namespace geo
 class Location;
 }
 
-namespace sv
+namespace google
 {
 
 class DistanceMapBridge : public QObject {

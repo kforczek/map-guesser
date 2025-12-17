@@ -1,6 +1,6 @@
-#include "streetview/streetview.h"
-#include "streetview/token.h"
-#include "streetview/html_reader.h"
+#include "google/streetview.h"
+#include "google/token.h"
+#include "google/html_reader.h"
 #include "geo/location.h"
 
 #include <QFile>
@@ -11,12 +11,12 @@ namespace
 const QString HTML_PATH = "html/streetview.html";
 }
 
-namespace sv
+namespace google
 {
 
 StreetView::StreetView(QWidget* parent /*= nullptr*/)
     : QWebEngineView(parent)
-    , m_htmlTemplate(sv::ReadAndFillApiToken(HTML_PATH))
+    , m_htmlTemplate(google::ReadAndFillApiToken(HTML_PATH))
 {
     initViewSettings();
 }

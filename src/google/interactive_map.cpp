@@ -1,5 +1,5 @@
-#include "streetview/interactive_map.h"
-#include "streetview/html_reader.h"
+#include "google/interactive_map.h"
+#include "google/html_reader.h"
 #include "geo/location.h"
 
 #include <QWebChannel>
@@ -9,7 +9,7 @@ namespace
 const QString HTML_PATH = "html/interactive_map.html";
 }
 
-namespace sv
+namespace google
 {
 
 InteractiveMap::InteractiveMap(QWidget* parent, const geo::Location& startLocation)
@@ -40,7 +40,7 @@ void InteractiveMap::initBridge()
 
 void InteractiveMap::initHtmlContent(const geo::Location& startLocation)
 {
-    QString html = sv::ReadAndFillApiToken(HTML_PATH);
+    QString html = google::ReadAndFillApiToken(HTML_PATH);
     html.replace("__CENTER__", startLocation.toHtmlStr());
     setHtml(html);
 }

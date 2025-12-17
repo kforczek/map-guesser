@@ -1,8 +1,8 @@
-#include "streetview/coverage.h"
+#include "google/coverage.h"
 
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
-#include "streetview/token.h"
+#include "google/token.h"
 
 namespace
 {
@@ -36,7 +36,7 @@ std::string callUrl(const std::string& url)
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK)
-        throw sv::CoverageLookupError(curl_easy_strerror(res));
+        throw google::CoverageLookupError(curl_easy_strerror(res));
 
     curl_easy_cleanup(curl);
     return response;
@@ -46,7 +46,7 @@ nlohmann::json parseJson(const std::string& rawJson)
 {
     auto json = nlohmann::json::parse(rawJson);
     if (json.is_discarded())
-        throw sv::CoverageLookupError("Failed to parse json response");
+        throw google::CoverageLookupError("Failed to parse json response");
 
     return json;
 }
@@ -58,30 +58,30 @@ std::optional<geo::Location> readLocation(const nlohmann::json& json)
         return {}; // no coverage exists
 
     if (status != STAT_LOC_FOUND)
-        throw sv::CoverageLookupError("Coverage endpoint returned non-OK status: " + status);
+        throw google::CoverageLookupError("Coverage endpoint returned non-OK status: " + status);
 
     const auto& location = json[PROP_LOCATION];
     if (!location.is_object())
-        throw sv::CoverageLookupError("Coverage endpoint returned no location");
+        throw google::CoverageLookupError("Coverage endpoint returned no location");
 
     double lat = location.value(PROP_LAT, 0.0);
     double lng = location.value(PROP_LNG, 0.0);
 
     if (lat == 0.0 || lng == 0.0)
-        throw sv::CoverageLookupError("Coverage endpoint returned invalid location");
+        throw google::CoverageLookupError("Coverage endpoint returned invalid location");
 
     return geo::Location{lat, lng};
 }
 
 }
 
-namespace sv
+namespace google
 {
 
 std::optional<geo::Location> GetClosestCoverage(const geo::Location& location)
 {
     const std::string url = "https://maps.googleapis.com/maps/api/streetview/metadata?location="
-        + location.toUrlStr() + "&key=" + sv::LoadApiToken();
+        + location.toUrlStr() + "&key=" + google::LoadApiToken();
 
     const std::string response = callUrl(url);
 

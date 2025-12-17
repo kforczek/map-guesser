@@ -9,7 +9,7 @@ namespace geo
 class Location;
 }
 
-namespace sv
+namespace google
 {
 
 class InteractiveMap : public QWebEngineView

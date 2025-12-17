@@ -1,7 +1,7 @@
-#include "streetview/distance_updater.h"
+#include "google/distance_updater.h"
 #include "geo/location.h"
 
-namespace sv
+namespace google
 {
 
 void DistanceMapBridge::setMarkerActual(const geo::Location& location)

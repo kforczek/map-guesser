@@ -1,7 +1,7 @@
 #pragma once
 #include <QString>
 
-namespace sv
+namespace google
 {
 
 QString ReadAndFillApiToken(const QString& path);

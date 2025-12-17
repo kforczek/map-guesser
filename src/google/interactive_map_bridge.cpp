@@ -1,6 +1,6 @@
-#include "streetview/interactive_map_bridge.h"
+#include "google/interactive_map_bridge.h"
 
-namespace sv
+namespace google
 {
 
 const std::optional<geo::Location>& InteractiveMapBridge::location() const

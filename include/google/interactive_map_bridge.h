@@ -4,7 +4,7 @@
 #include <optional>
 #include "geo/location.h"
 
-namespace sv
+namespace google
 {
 
 class InteractiveMapBridge : public QObject

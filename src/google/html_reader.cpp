@@ -1,8 +1,8 @@
-#include "streetview/html_reader.h"
-#include "streetview/token.h"
+#include "google/html_reader.h"
+#include "google/token.h"
 #include <QFile>
 
-namespace sv
+namespace google
 {
 
 QString ReadAndFillApiToken(const QString& path)
@@ -11,7 +11,7 @@ QString ReadAndFillApiToken(const QString& path)
     file.open(QIODevice::ReadOnly);
 
     QString htmlTemplate = file.readAll();
-    htmlTemplate.replace("__API_KEY__", sv::LoadApiToken());
+    htmlTemplate.replace("__API_KEY__", google::LoadApiToken());
 
     return htmlTemplate;
 }

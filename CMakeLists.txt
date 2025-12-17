@@ -19,30 +19,30 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 
 add_executable(map_guesser main.cpp
-        include/streetview/token.h
-        src/streetview/token.cpp
+        include/google/token.h
+        src/google/token.cpp
         include/geo/location.h
-        include/streetview/streetview.h
-        src/streetview/streetview.cpp
+        include/google/streetview.h
+        src/google/streetview.cpp
         src/geo/location.cpp
-        include/streetview/coverage.h
-        src/streetview/coverage.cpp
+        include/google/coverage.h
+        src/google/coverage.cpp
         include/game/randomizer.h
         include/db/location_pool.h
         src/game/randomizer.cpp
-        include/streetview/interactive_map.h
-        src/streetview/interactive_map.cpp
-        include/streetview/html_reader.h
-        src/streetview/html_reader.cpp
-        include/streetview/interactive_map_bridge.h
-        src/streetview/interactive_map_bridge.cpp
+        include/google/interactive_map.h
+        src/google/interactive_map.cpp
+        include/google/html_reader.h
+        src/google/html_reader.cpp
+        include/google/interactive_map_bridge.h
+        src/google/interactive_map_bridge.cpp
         include/game/game_window.h
         src/game/game_window.cpp
         src/db/location_pool.cpp
-        include/streetview/distance_map.h
-        src/streetview/distance_map.cpp
-        include/streetview/distance_updater.h
-        src/streetview/distance_map_bridge.cpp
+        include/google/distance_map.h
+        src/google/distance_map.cpp
+        include/google/distance_updater.h
+        src/google/distance_map_bridge.cpp
         include/game/pages/street_view.h
         src/game/pages/street_view.cpp
         include/game/pages/round_results.h
@@ -57,7 +57,7 @@ target_include_directories(map_guesser
 )
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets curl)
 
-file(COPY ${CMAKE_SOURCE_DIR}/src/streetview/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
+file(COPY ${CMAKE_SOURCE_DIR}/src/google/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
 
 # Optional: Print current build type
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")

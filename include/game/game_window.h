@@ -2,7 +2,7 @@
 #include <QStackedLayout>
 #include <QShortcut>
 
-#include "streetview/distance_map.h"
+#include "google/distance_map.h"
 #include "pages/round_results.h"
 #include "pages/street_view.h"
 #include "db/location_pool.h"

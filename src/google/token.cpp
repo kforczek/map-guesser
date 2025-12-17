@@ -1,4 +1,4 @@
-#include "streetview/token.h"
+#include "google/token.h"
 
 namespace
 {
@@ -7,7 +7,7 @@ const char* ENV_VAR_NAME = "MAP_GUESSER_API_TOKEN";
 
 }
 
-namespace sv
+namespace google
 {
 
 const char* LoadApiToken()

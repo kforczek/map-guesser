@@ -2,7 +2,7 @@
 
 #include <random>
 #include "geo/location.h"
-#include "streetview/coverage.h"
+#include "google/coverage.h"
 
 namespace
 {
@@ -39,7 +39,7 @@ geo::Location GetRandomStreetViewPoint(const db::LocationPool& /*TODO USE*/)
         double latitude = latDist(MT_GEN);
         double longitude = lonDist(MT_GEN);
 
-        if (auto maybeCoverage = sv::GetClosestCoverage({latitude, longitude}))
+        if (auto maybeCoverage = google::GetClosestCoverage({latitude, longitude}))
             return *maybeCoverage;
     }
 

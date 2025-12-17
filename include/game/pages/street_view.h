@@ -3,8 +3,8 @@
 #include <QFrame>
 #include <QPushButton>
 
-#include "streetview/interactive_map.h"
-#include "streetview/streetview.h"
+#include "google/interactive_map.h"
+#include "google/streetview.h"
 
 namespace geo
 {
@@ -31,8 +31,8 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private /*fields*/:
-    sv::StreetView m_streetView;
-    sv::InteractiveMap m_interactiveMap;
+    google::StreetView m_streetView;
+    google::InteractiveMap m_interactiveMap;
 
     QPushButton m_returnToStartButton;
     QPushButton m_guessButton;
