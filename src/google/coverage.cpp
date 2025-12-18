@@ -55,7 +55,7 @@ std::optional<geo::Location> readLocation(const nlohmann::json& json)
 {
     std::string status = json.value(PROP_STATUS, "ERR_NO_RESPONSE");
     if (status == STAT_LOC_NONE)
-        return {}; // no coverage exists
+        return std::nullopt; // no coverage exists
 
     if (status != STAT_LOC_FOUND)
         throw google::CoverageLookupError("Coverage endpoint returned non-OK status: " + status);
@@ -67,7 +67,7 @@ std::optional<geo::Location> readLocation(const nlohmann::json& json)
     double lat = location.value(PROP_LAT, 0.0);
     double lng = location.value(PROP_LNG, 0.0);
 
-    if (lat == 0.0 || lng == 0.0)
+    if (lat == 0.0 && lng == 0.0)
         throw google::CoverageLookupError("Coverage endpoint returned invalid location");
 
     return geo::Location{lat, lng};

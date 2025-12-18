@@ -34,6 +34,7 @@ int main(int argc, char *argv[]) {
     // TODO load actual pool
     db::LocationPool pool;
 
+    // TODO: check for active token during setup (before game), maybe validate the token somehow
     game::GameWindow window(pool);
     window.showFullScreen();
 

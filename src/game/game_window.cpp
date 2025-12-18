@@ -2,10 +2,13 @@
 
 #include <QFrame>
 #include <QStackedLayout>
+#include <QMessageBox>
 
 #include "db/location_pool.h"
+#include "game/error_message.h"
 #include "game/randomizer.h"
 #include "game/results.h"
+#include "google/coverage.h"
 
 namespace
 {
@@ -46,9 +49,22 @@ GameWindow::GameWindow(db::LocationPool locPool)
 
 void GameWindow::startNextRound()
 {
-    const geo::Location location = game::GetRandomStreetViewPoint(m_locPool);
+    std::optional<geo::Location> location;
+    while (!location)
+    {
+        try
+        {
+            location = game::GetRandomStreetViewPoint(m_locPool);
+        }
+        catch (std::runtime_error& err)
+        {
+            const auto decision = err::ShowErrorMessage(this, err.what());
+            if (decision == err::UserDecision::Abort)
+                exit(1);
+        }
+    }
 
-    m_streetViewPage.startNewRound(location);
+    m_streetViewPage.startNewRound(*location);
     m_layout.setCurrentIndex(PAGE_STREET_VIEW);
 }
 

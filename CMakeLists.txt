@@ -49,6 +49,8 @@ add_executable(map_guesser main.cpp
         src/game/pages/round_results.cpp
         include/game/results.h
         src/game/results.cpp
+        include/game/error_message.h
+        src/game/error_message.cpp
 )
 
 target_include_directories(map_guesser
