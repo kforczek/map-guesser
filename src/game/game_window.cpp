@@ -13,8 +13,9 @@
 namespace
 {
 
-constexpr short int PAGE_STREET_VIEW = 0;
-constexpr short int PAGE_ROUND_RESULTS = 1;
+constexpr short int PAGE_START = 0;
+constexpr short int PAGE_STREET_VIEW = 1;
+constexpr short int PAGE_ROUND_RESULTS = 2;
 
 }
 
@@ -24,6 +25,7 @@ namespace game
 GameWindow::GameWindow(db::LocationPool locPool)
     : m_locPool(std::move(locPool))
     , m_layout(this)
+    , m_startPage(this)
     , m_streetViewPage(this, m_locPool.center())
     , m_roundResultsPage(this, m_locPool.center())
     , m_escShortcut(QKeySequence(Qt::Key_Escape), this)
@@ -35,16 +37,16 @@ GameWindow::GameWindow(db::LocationPool locPool)
     setWindowTitle("Map Guesser");
     setWindowFlag(Qt::Window, true);
 
+    m_layout.addWidget(&m_startPage);
     m_layout.addWidget(&m_streetViewPage);
     m_layout.addWidget(&m_roundResultsPage);
 
+    connect(&m_startPage, &pages::StartPage::singlePlayerButtonClicked, this, &GameWindow::onSinglePlayerSelected);
     connect(&m_streetViewPage, &pages::StreetViewPage::guessMade, this, &GameWindow::onGuessMade);
     connect(&m_roundResultsPage, &pages::RoundResultsPage::continueButtonClicked, this, &GameWindow::onContinueButtonClicked);
 
     connect(&m_escShortcut, &QShortcut::activated, [this]() { toggleFullScreen(false); });
     connect(&m_f11Shortcut, &QShortcut::activated, [this]() { toggleFullScreen(); });
-
-    startNextRound();
 }
 
 void GameWindow::startNextRound()
@@ -77,6 +79,11 @@ void GameWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullop
         showFullScreen();
     else
         showNormal();
+}
+
+void GameWindow::onSinglePlayerSelected()
+{
+    startNextRound();
 }
 
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)
