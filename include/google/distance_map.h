@@ -2,7 +2,7 @@
 #include <QWebChannel>
 #include <QWebEngineView>
 
-#include "distance_updater.h"
+#include "distance_map_bridge.h"
 
 namespace geo
 {

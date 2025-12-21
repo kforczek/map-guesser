@@ -6,7 +6,7 @@
 namespace game::pages
 {
 
-class StartPage : public QFrame
+class StartPage final : public QFrame
 {
     Q_OBJECT
 public:
@@ -14,6 +14,7 @@ public:
 
 signals:
     void singlePlayerButtonClicked();
+    void mapEditorButtonClicked();
 
 private:
     QVBoxLayout m_layout;
@@ -21,11 +22,6 @@ private:
     QPushButton m_singlePlayerButton;
     QPushButton m_multiPlayerButton;
     QPushButton m_mapEditorButton;
-
-private slots:
-    void onSinglePlayerButtonClicked();
-    //void onMultiPlayerButtonClicked();
-    //void onMapEditorButtonClicked();
 };
 
 }

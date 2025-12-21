@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multi-region editor</title>
+
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=__API_KEY__&callback=initMap"
+            async defer>
+    </script>
+
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* ---------- confirm modal ---------- */
+
+        #confirmOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-family: sans-serif;
+        }
+
+        #confirmBox {
+            background: #ffffff;
+            padding: 16px 20px;
+            border-radius: 6px;
+            min-width: 220px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        #confirmText {
+            margin: 0 0 14px;
+        }
+
+        #confirmButtons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        #confirmButtons button {
+            padding: 4px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<!-- ---------- custom confirm modal ---------- -->
+<div id="confirmOverlay">
+    <div id="confirmBox">
+        <p id="confirmText">Delete region?</p>
+        <div id="confirmButtons">
+            <button id="confirmYes">Delete</button>
+            <button id="confirmNo">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let map;
+    let bridge = null;
+
+    let regions = [];
+    let activeRegion = null;
+
+    // ---------- custom confirm ----------
+
+    let confirmCallback = null;
+
+    function showConfirm(message, onYes) {
+        confirmCallback = onYes;
+        document.getElementById("confirmText").textContent = message;
+        document.getElementById("confirmOverlay").style.display = "flex";
+    }
+
+    function hideConfirm() {
+        document.getElementById("confirmOverlay").style.display = "none";
+        confirmCallback = null;
+    }
+
+    document.getElementById("confirmYes").onclick = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (confirmCallback) confirmCallback();
+
+        hideConfirm();
+    };
+
+    document.getElementById("confirmNo").onclick = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        hideConfirm();
+    };
+
+    // ---------- C++ notification ----------
+
+    function notifyCpp() {
+        if (!bridge) return;
+
+        const serialized = regions
+            .filter(r => r.closed)
+            .map(r => r.points);
+
+        bridge.onRegionsChanged(JSON.stringify(serialized));
+    }
+
+    // ---------- region management ----------
+
+    function createRegion() {
+        const region = {
+            points: [],
+            markers: [],
+            polyline: null,
+            polygon: null,
+            closed: false
+        };
+
+        regions.push(region);
+        activeRegion = region;
+    }
+
+    function redrawRegion(region) {
+        if (region.polyline) region.polyline.setMap(null);
+        if (region.polygon) region.polygon.setMap(null);
+
+        if (region.points.length < 2)
+            return;
+
+        if (!region.closed) {
+            region.polyline = new google.maps.Polyline({
+                map,
+                path: region.points,
+                strokeColor: "#0f9fea",
+                strokeWeight: 2,
+                clickable: false
+            });
+        } else {
+            region.polygon = new google.maps.Polygon({
+                map,
+                paths: region.points,
+                strokeColor: "#0f9fea",
+                strokeWeight: 2,
+                fillColor: "#0f9fea",
+                fillOpacity: 0.25
+            });
+
+            region.polygon.addListener("rightclick", () => {
+                showConfirm("Delete region?", () => {
+                    removeRegion(region);
+                });
+            });
+        }
+    }
+
+    function removeRegion(region) {
+        region.markers.forEach(m => m.setMap(null));
+        if (region.polyline) region.polyline.setMap(null);
+        if (region.polygon) region.polygon.setMap(null);
+
+        regions = regions.filter(r => r !== region);
+
+        if (activeRegion === region)
+            activeRegion = null;
+
+        notifyCpp();
+    }
+
+    // ---------- markers ----------
+
+    function createMarker(region, pos, index) {
+        const marker = new google.maps.Marker({
+            map,
+            position: pos,
+            draggable: true
+        });
+
+        marker.addListener("dragstart", () => {
+            map.setOptions({ draggable: false });
+        });
+
+        marker.addListener("drag", () => {
+            region.points[index].lat = marker.getPosition().lat();
+            region.points[index].lng = marker.getPosition().lng();
+            redrawRegion(region);
+        });
+
+        marker.addListener("dragend", () => {
+            map.setOptions({ draggable: true });
+            if (region.closed)
+                notifyCpp();
+        });
+
+        marker.addListener("click", () => {
+            if (index === 0 && region.points.length >= 3 && !region.closed) {
+                region.closed = true;
+                redrawRegion(region);
+                activeRegion = null;
+                notifyCpp();
+            }
+        });
+
+        return marker;
+    }
+
+    function addPointToActiveRegion(lat, lng) {
+        if (!activeRegion || activeRegion.closed)
+            return;
+
+        const pos = { lat, lng };
+        const index = activeRegion.points.length;
+
+        activeRegion.points.push(pos);
+        activeRegion.markers.push(
+            createMarker(activeRegion, pos, index)
+        );
+
+        redrawRegion(activeRegion);
+    }
+
+    // ---------- map ----------
+
+    function initMap() {
+        const center = { __CENTER__ };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 6,
+            center,
+            disableDefaultUI: true,
+            clickableIcons: false
+        });
+
+        new QWebChannel(qt.webChannelTransport, (channel) => {
+            bridge = channel.objects.bridge;
+        });
+
+        map.addListener("click", (event) => {
+            if (!activeRegion)
+                createRegion();
+
+            addPointToActiveRegion(
+                event.latLng.lat(),
+                event.latLng.lng()
+            );
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -14,7 +14,7 @@ class Location;
 namespace game::pages
 {
 
-class StreetViewPage : public QFrame
+class StreetViewPage final : public QFrame
 {
     Q_OBJECT
 public:

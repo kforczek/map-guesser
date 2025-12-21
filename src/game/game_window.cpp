@@ -16,6 +16,7 @@ namespace
 constexpr short int PAGE_START = 0;
 constexpr short int PAGE_STREET_VIEW = 1;
 constexpr short int PAGE_ROUND_RESULTS = 2;
+constexpr short int PAGE_MAP_EDITOR = 3;
 
 }
 
@@ -28,20 +29,37 @@ GameWindow::GameWindow(db::LocationPool locPool)
     , m_startPage(this)
     , m_streetViewPage(this, m_locPool.center())
     , m_roundResultsPage(this, m_locPool.center())
+    , m_mapEditorPage(this)
     , m_escShortcut(QKeySequence(Qt::Key_Escape), this)
     , m_f11Shortcut(QKeySequence(Qt::Key_F11), this)
+{
+    initWindowProperties();
+    initLayoutPages();
+    initConnections();
+}
+
+void GameWindow::initWindowProperties()
 {
     setLayout(&m_layout);
 
     setMinimumSize(1000, 800);
     setWindowTitle("Map Guesser");
     setWindowFlag(Qt::Window, true);
+}
 
+void GameWindow::initLayoutPages()
+{
     m_layout.addWidget(&m_startPage);
     m_layout.addWidget(&m_streetViewPage);
     m_layout.addWidget(&m_roundResultsPage);
+    m_layout.addWidget(&m_mapEditorPage);
+}
 
+void GameWindow::initConnections()
+{
     connect(&m_startPage, &pages::StartPage::singlePlayerButtonClicked, this, &GameWindow::onSinglePlayerSelected);
+    connect(&m_startPage, &pages::StartPage::mapEditorButtonClicked, this, &GameWindow::onMapEditorLaunched);
+
     connect(&m_streetViewPage, &pages::StreetViewPage::guessMade, this, &GameWindow::onGuessMade);
     connect(&m_roundResultsPage, &pages::RoundResultsPage::continueButtonClicked, this, &GameWindow::onContinueButtonClicked);
 
@@ -84,6 +102,11 @@ void GameWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullop
 void GameWindow::onSinglePlayerSelected()
 {
     startNextRound();
+}
+
+void GameWindow::onMapEditorLaunched()
+{
+    m_layout.setCurrentIndex(PAGE_MAP_EDITOR);
 }
 
 void GameWindow::onGuessMade(const geo::Location& guessedLocation)

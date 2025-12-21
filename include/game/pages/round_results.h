@@ -14,7 +14,7 @@ class RoundResults;
 namespace game::pages
 {
 
-class RoundResultsPage : public QFrame
+class RoundResultsPage final : public QFrame
 {
     Q_OBJECT
 public:

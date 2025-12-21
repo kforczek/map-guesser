@@ -1,4 +1,4 @@
-#include "google/distance_updater.h"
+#include "google/distance_map_bridge.h"
 #include "geo/location.h"
 
 namespace google

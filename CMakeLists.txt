@@ -41,8 +41,12 @@ add_executable(map_guesser main.cpp
         src/db/location_pool.cpp
         include/google/distance_map.h
         src/google/distance_map.cpp
-        include/google/distance_updater.h
+        include/google/distance_map_bridge.h
         src/google/distance_map_bridge.cpp
+        include/google/polygon_map.h
+        src/google/polygon_map.cpp
+        include/google/polygon_map_bridge.h
+        src/google/polygon_map_bridge.cpp
         include/game/pages/street_view.h
         src/game/pages/street_view.cpp
         include/game/pages/round_results.h
@@ -53,6 +57,10 @@ add_executable(map_guesser main.cpp
         src/game/error_message.cpp
         include/game/pages/start.h
         src/game/pages/start.cpp
+        include/game/pages/map_editor.h
+        src/game/pages/map_editor.cpp
+        include/mapeditor/top_bar.h
+        src/mapeditor/top_bar.cpp
 )
 
 target_include_directories(map_guesser

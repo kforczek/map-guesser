@@ -8,23 +8,18 @@ StartPage::StartPage(QWidget* parent)
     , m_layout(this)
     , m_singlePlayerButton("SINGLEPLAYER", this)
     , m_multiPlayerButton("[coming soon] MULTIPLAYER", this)
-    , m_mapEditorButton("[coming soon] Map Editor", this)
+    , m_mapEditorButton("Map Editor", this)
 {
     setLayout(&m_layout);
 
     m_multiPlayerButton.setEnabled(false);
-    m_mapEditorButton.setEnabled(false);
 
     m_layout.addWidget(&m_singlePlayerButton);
     m_layout.addWidget(&m_multiPlayerButton);
     m_layout.addWidget(&m_mapEditorButton);
 
-    connect(&m_singlePlayerButton, &QPushButton::clicked, this, &StartPage::onSinglePlayerButtonClicked);
-}
-
-void StartPage::onSinglePlayerButtonClicked()
-{
-    emit singlePlayerButtonClicked();
+    connect(&m_singlePlayerButton, &QPushButton::clicked, [this](){ emit singlePlayerButtonClicked(); });
+    connect(&m_mapEditorButton, &QPushButton::clicked, [this](){ emit mapEditorButtonClicked(); });
 }
 
 }

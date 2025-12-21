@@ -9,7 +9,8 @@ class Location;
 namespace google
 {
 
-class DistanceMapBridge : public QObject {
+class DistanceMapBridge final : public QObject
+{
     Q_OBJECT
 public:
     using QObject::QObject;

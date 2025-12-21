@@ -12,7 +12,7 @@ class Location;
 namespace google
 {
 
-class InteractiveMap : public QWebEngineView
+class InteractiveMap final : public QWebEngineView
 {
     Q_OBJECT
 public:
