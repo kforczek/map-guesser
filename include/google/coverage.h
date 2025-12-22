@@ -1,13 +1,13 @@
 #pragma once
 #include <optional>
-#include "geo/location.h"
+#include "geo/point.h"
 
 namespace google
 {
 
 // ##########################################################
 
-std::optional<geo::Location> GetClosestCoverage(const geo::Location& location);
+std::optional<geo::Point> GetClosestCoverage(const geo::Point& location);
 
 // ##########################################################
 

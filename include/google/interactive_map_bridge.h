@@ -2,7 +2,7 @@
 #include <iostream>
 #include <QObject>
 #include <optional>
-#include "geo/location.h"
+#include "geo/point.h"
 
 namespace google
 {
@@ -14,7 +14,7 @@ class InteractiveMapBridge : public QObject
 public:
     using QObject::QObject;
 
-    const std::optional<geo::Location>& location() const;
+    const std::optional<geo::Point>& location() const;
     void removeLocationMarker();
 
 signals:
@@ -25,7 +25,7 @@ public slots:
     void onCoordsChanged(double lat, double lng);
 
 private:
-    std::optional<geo::Location> m_currLocation;
+    std::optional<geo::Point> m_currLocation;
 };
 
 }

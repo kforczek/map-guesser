@@ -1,5 +1,5 @@
 #pragma once
-#include "geo/location.h"
+#include "geo/point.h"
 
 namespace db
 {
@@ -11,7 +11,7 @@ public:
 
     // TODO: serialization
 
-    geo::Location center() const;
+    geo::Point center() const;
 };
 
 }

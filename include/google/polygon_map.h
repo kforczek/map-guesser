@@ -6,7 +6,7 @@
 
 namespace geo
 {
-class Location;
+class Point;
 }
 
 namespace google
@@ -23,7 +23,7 @@ private:
     PolygonMapBridge m_bridge;
 
     void initBridge();
-    void resetHtmlContent(const geo::Location& startLocation);
+    void resetHtmlContent(const geo::Point& startLocation);
 };
 
 }

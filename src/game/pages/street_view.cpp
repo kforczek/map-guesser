@@ -22,7 +22,7 @@ constexpr double MAX_MAP_WIDTH_RATIO = 6.0 / 10.0;
 namespace game::pages
 {
 
-StreetViewPage::StreetViewPage(QWidget* parent, const geo::Location& mapCenter)
+StreetViewPage::StreetViewPage(QWidget* parent, const geo::Point& mapCenter)
     : QFrame(parent)
     , m_streetView(this)
     , m_interactiveMap(this, mapCenter)
@@ -49,12 +49,12 @@ StreetViewPage::StreetViewPage(QWidget* parent, const geo::Location& mapCenter)
     connect(&m_enlargeMapButton, &QPushButton::clicked, this, &StreetViewPage::onEnlargeMapButtonClicked);
 }
 
-const geo::Location& StreetViewPage::getStreetViewLocation() const
+const geo::Point& StreetViewPage::getStreetViewLocation() const
 {
     return m_streetView.getLocation();
 }
 
-void StreetViewPage::startNewRound(const geo::Location& location)
+void StreetViewPage::startNewRound(const geo::Point& location)
 {
     m_streetView.setLocation(location);
     m_interactiveMap.removeLocationMarker();

@@ -3,7 +3,7 @@
 namespace google
 {
 
-const std::optional<geo::Location>& InteractiveMapBridge::location() const
+const std::optional<geo::Point>& InteractiveMapBridge::location() const
 {
     return m_currLocation;
 }
@@ -15,7 +15,7 @@ void InteractiveMapBridge::removeLocationMarker()
 
 void InteractiveMapBridge::onCoordsChanged(double lat, double lng)
 {
-    m_currLocation = geo::Location{lat, lng};
+    m_currLocation = geo::Point{lat, lng};
     emit locationSet();
 }
 

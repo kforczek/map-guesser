@@ -1,4 +1,4 @@
-#include "geo/location.h"
+#include "geo/point.h"
 
 #include <iomanip>
 #include <sstream>
@@ -11,7 +11,7 @@ std::ostream& formatCoord(std::ostream& os)
     return os << std::fixed << std::setprecision(6);
 }
 
-double calcHaversineDistance(const geo::Location& loc1, const geo::Location& loc2) {
+double calcHaversineDistance(const geo::Point& loc1, const geo::Point& loc2) {
     constexpr double R = 6371008.8; // mean Earth radius (meters)
     constexpr double toRad = M_PI / 180.0;
 
@@ -33,26 +33,26 @@ double calcHaversineDistance(const geo::Location& loc1, const geo::Location& loc
 namespace geo
 {
 
-Location::Location(double latitude, double longitude)
+Point::Point(double latitude, double longitude)
     : m_latitude(latitude)
     , m_longitude(longitude) { }
 
-double Location::latitude() const
+double Point::latitude() const
 {
     return m_latitude;
 }
 
-double Location::longitude() const
+double Point::longitude() const
 {
     return m_longitude;
 }
 
-double Location::distanceTo(const Location& other) const
+double Point::distanceTo(const Point& other) const
 {
     return calcHaversineDistance(*this, other);
 }
 
-QString Location::toHtmlStr() const
+QString Point::toHtmlStr() const
 {
     std::ostringstream formatter;
     formatter << "lat: ";
@@ -63,7 +63,7 @@ QString Location::toHtmlStr() const
     return formatter.str().c_str();
 }
 
-std::string Location::toUrlStr() const
+std::string Point::toUrlStr() const
 {
     std::ostringstream formatter;
     formatter << formatCoord << m_latitude;

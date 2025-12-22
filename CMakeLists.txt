@@ -21,10 +21,10 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 add_executable(map_guesser main.cpp
         include/google/token.h
         src/google/token.cpp
-        include/geo/location.h
+        include/geo/point.h
         include/google/streetview.h
         src/google/streetview.cpp
-        src/geo/location.cpp
+        src/geo/point.cpp
         include/google/coverage.h
         src/google/coverage.cpp
         include/game/randomizer.h
@@ -61,6 +61,8 @@ add_executable(map_guesser main.cpp
         src/game/pages/map_editor.cpp
         include/mapeditor/top_bar.h
         src/mapeditor/top_bar.cpp
+        include/geo/region.h
+        src/geo/region.cpp
 )
 
 target_include_directories(map_guesser

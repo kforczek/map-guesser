@@ -14,7 +14,7 @@ public:
     using QObject::QObject;
 
 signals:
-    void regionChanged(/* TODO vector of points */);
+    void regionsChanged(/* TODO vector of points */);
 
 public slots:
     void onRegionsChanged(const QString& regionsJson);

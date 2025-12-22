@@ -8,7 +8,7 @@
 
 namespace geo
 {
-class Location;
+class Point;
 }
 
 namespace game::pages
@@ -18,13 +18,13 @@ class StreetViewPage final : public QFrame
 {
     Q_OBJECT
 public:
-    explicit StreetViewPage(QWidget* parent, const geo::Location& mapCenter);
+    explicit StreetViewPage(QWidget* parent, const geo::Point& mapCenter);
 
-    const geo::Location& getStreetViewLocation() const;
-    void startNewRound(const geo::Location& location);
+    const geo::Point& getStreetViewLocation() const;
+    void startNewRound(const geo::Point& location);
 
 signals:
-    void guessMade(const geo::Location& location);
+    void guessMade(const geo::Point& location);
 
 protected:
     void showEvent(QShowEvent *event) override;

@@ -7,7 +7,7 @@ class LocationPool;
 
 namespace geo
 {
-class Location;
+class Point;
 }
 
 namespace game
@@ -16,7 +16,7 @@ namespace game
 class RoundResults
 {
 public:
-    RoundResults(const db::LocationPool& locPool, const geo::Location& actualLoc, const geo::Location& guessedLoc);
+    RoundResults(const db::LocationPool& locPool, const geo::Point& actualLoc, const geo::Point& guessedLoc);
 
     double distanceMeters() const;
     unsigned int points() const;

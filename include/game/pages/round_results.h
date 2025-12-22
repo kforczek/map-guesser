@@ -18,10 +18,10 @@ class RoundResultsPage final : public QFrame
 {
     Q_OBJECT
 public:
-    explicit RoundResultsPage(QWidget* parent, const geo::Location& mapCenter);
+    explicit RoundResultsPage(QWidget* parent, const geo::Point& mapCenter);
 
-    void setActualLocation(const geo::Location& location);
-    void setGuessedLocation(const geo::Location& location);
+    void setActualLocation(const geo::Point& location);
+    void setGuessedLocation(const geo::Point& location);
     void setInfo(const RoundResults& roundResults);
 
 signals:

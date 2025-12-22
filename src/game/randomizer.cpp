@@ -1,7 +1,7 @@
 #include "game/randomizer.h"
 
 #include <random>
-#include "geo/location.h"
+#include "geo/point.h"
 #include "google/coverage.h"
 
 namespace
@@ -29,7 +29,7 @@ GeoPoint generate_equal_area() {
 namespace game
 {
 
-geo::Location GetRandomStreetViewPoint(const db::LocationPool& /*TODO USE*/)
+geo::Point GetRandomStreetViewPoint(const db::LocationPool& /*TODO USE*/)
 {
     std::uniform_real_distribution latDist{49.0273953314, 54.8515359564};
     std::uniform_real_distribution lonDist{14.0745211117, 24.0299857927};

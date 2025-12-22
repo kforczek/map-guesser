@@ -3,7 +3,7 @@
 
 namespace geo
 {
-class Location;
+class Point;
 }
 
 namespace google
@@ -16,8 +16,8 @@ public:
     using QObject::QObject;
 
 public slots:
-    void setMarkerActual(const geo::Location& location);
-    void setMarkerGuessed(const geo::Location& location);
+    void setMarkerActual(const geo::Point& location);
+    void setMarkerGuessed(const geo::Point& location);
     void setDistance(double distance);
 
 signals:

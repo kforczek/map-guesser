@@ -69,7 +69,7 @@ void GameWindow::initConnections()
 
 void GameWindow::startNextRound()
 {
-    std::optional<geo::Location> location;
+    std::optional<geo::Point> location;
     while (!location)
     {
         try
@@ -109,9 +109,9 @@ void GameWindow::onMapEditorLaunched()
     m_layout.setCurrentIndex(PAGE_MAP_EDITOR);
 }
 
-void GameWindow::onGuessMade(const geo::Location& guessedLocation)
+void GameWindow::onGuessMade(const geo::Point& guessedLocation)
 {
-    const geo::Location& actualLocation = m_streetViewPage.getStreetViewLocation();
+    const geo::Point& actualLocation = m_streetViewPage.getStreetViewLocation();
     const RoundResults roundResults{m_locPool, actualLocation, guessedLocation};
 
     m_roundResultsPage.setActualLocation(actualLocation);

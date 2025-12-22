@@ -11,19 +11,19 @@ const QString HTML_PATH = "html/distance_map.html";
 namespace google
 {
 
-DistanceMap::DistanceMap(QWidget* parent, const geo::Location& mapCenter)
+DistanceMap::DistanceMap(QWidget* parent, const geo::Point& mapCenter)
     : QWebEngineView(parent)
 {
     initBridge();
     initHtmlContent(mapCenter);
 }
 
-void DistanceMap::setActualLocation(const geo::Location& location)
+void DistanceMap::setActualLocation(const geo::Point& location)
 {
     m_bridge.setMarkerActual(location);
 }
 
-void DistanceMap::setGuessedLocation(const geo::Location& location)
+void DistanceMap::setGuessedLocation(const geo::Point& location)
 {
     m_bridge.setMarkerGuessed(location);
 }
@@ -39,7 +39,7 @@ void DistanceMap::initBridge()
     page()->setWebChannel(&m_channel);
 }
 
-void DistanceMap::initHtmlContent(const geo::Location& mapCenter)
+void DistanceMap::initHtmlContent(const geo::Point& mapCenter)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
     html.replace("__CENTER__", mapCenter.toHtmlStr());

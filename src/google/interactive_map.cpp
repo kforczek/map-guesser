@@ -1,6 +1,6 @@
 #include "google/interactive_map.h"
 #include "google/html_reader.h"
-#include "geo/location.h"
+#include "geo/point.h"
 
 #include <QWebChannel>
 
@@ -12,7 +12,7 @@ const QString HTML_PATH = "html/interactive_map.html";
 namespace google
 {
 
-InteractiveMap::InteractiveMap(QWidget* parent, const geo::Location& startLocation)
+InteractiveMap::InteractiveMap(QWidget* parent, const geo::Point& startLocation)
     : QWebEngineView(parent)
     , m_bridge(this)
 {
@@ -20,7 +20,7 @@ InteractiveMap::InteractiveMap(QWidget* parent, const geo::Location& startLocati
     initHtmlContent(startLocation);
 }
 
-const std::optional<geo::Location>& InteractiveMap::currLocation() const
+const std::optional<geo::Point>& InteractiveMap::currLocation() const
 {
     return m_bridge.location();
 }
@@ -38,7 +38,7 @@ void InteractiveMap::initBridge()
     connect(&m_bridge, &InteractiveMapBridge::locationSet, this, [this](){ emit guessMarkerPlaced(); });
 }
 
-void InteractiveMap::initHtmlContent(const geo::Location& startLocation)
+void InteractiveMap::initHtmlContent(const geo::Point& startLocation)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
     html.replace("__CENTER__", startLocation.toHtmlStr());

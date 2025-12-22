@@ -1,7 +1,7 @@
 #include "google/streetview.h"
 #include "google/token.h"
 #include "google/html_reader.h"
-#include "geo/location.h"
+#include "geo/point.h"
 
 #include <QFile>
 #include <QWebEngineSettings>
@@ -21,12 +21,12 @@ StreetView::StreetView(QWidget* parent /*= nullptr*/)
     initViewSettings();
 }
 
-const geo::Location& StreetView::getLocation() const
+const geo::Point& StreetView::getLocation() const
 {
     return m_location;
 }
 
-void StreetView::setLocation(const geo::Location& location)
+void StreetView::setLocation(const geo::Point& location)
 {
     m_location = location;
 

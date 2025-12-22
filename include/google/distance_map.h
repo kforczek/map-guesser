@@ -6,7 +6,7 @@
 
 namespace geo
 {
-class Location;
+class Point;
 }
 
 namespace google
@@ -15,10 +15,10 @@ namespace google
 class DistanceMap : public QWebEngineView
 {
 public:
-    explicit DistanceMap(QWidget* parent, const geo::Location& mapCenter);
+    explicit DistanceMap(QWidget* parent, const geo::Point& mapCenter);
 
-    void setActualLocation(const geo::Location& location);
-    void setGuessedLocation(const geo::Location& location);
+    void setActualLocation(const geo::Point& location);
+    void setGuessedLocation(const geo::Point& location);
     void setDistance(double distance);
 
 private:
@@ -26,7 +26,7 @@ private:
     DistanceMapBridge m_bridge;
 
     void initBridge();
-    void initHtmlContent(const geo::Location& mapCenter);
+    void initHtmlContent(const geo::Point& mapCenter);
 };
 
 }

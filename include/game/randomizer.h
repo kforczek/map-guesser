@@ -1,5 +1,5 @@
 #pragma once
-#include "geo/location.h"
+#include "geo/point.h"
 
 namespace db
 {
@@ -9,6 +9,6 @@ class LocationPool;
 namespace game
 {
 
-geo::Location GetRandomStreetViewPoint(const db::LocationPool& locPool);
+geo::Point GetRandomStreetViewPoint(const db::LocationPool& locPool);
 
 }

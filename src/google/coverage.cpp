@@ -51,7 +51,7 @@ nlohmann::json parseJson(const std::string& rawJson)
     return json;
 }
 
-std::optional<geo::Location> readLocation(const nlohmann::json& json)
+std::optional<geo::Point> readLocation(const nlohmann::json& json)
 {
     std::string status = json.value(PROP_STATUS, "ERR_NO_RESPONSE");
     if (status == STAT_LOC_NONE)
@@ -70,7 +70,7 @@ std::optional<geo::Location> readLocation(const nlohmann::json& json)
     if (lat == 0.0 && lng == 0.0)
         throw google::CoverageLookupError("Coverage endpoint returned invalid location");
 
-    return geo::Location{lat, lng};
+    return geo::Point{lat, lng};
 }
 
 }
@@ -78,7 +78,7 @@ std::optional<geo::Location> readLocation(const nlohmann::json& json)
 namespace google
 {
 
-std::optional<geo::Location> GetClosestCoverage(const geo::Location& location)
+std::optional<geo::Point> GetClosestCoverage(const geo::Point& location)
 {
     const std::string url = "https://maps.googleapis.com/maps/api/streetview/metadata?location="
         + location.toUrlStr() + "&key=" + google::LoadApiToken();

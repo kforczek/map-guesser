@@ -1,6 +1,6 @@
 #pragma once
 #include <QWebEngineView>
-#include "geo/location.h"
+#include "geo/point.h"
 
 class QWidget;
 
@@ -12,13 +12,13 @@ class StreetView : public QWebEngineView
 public:
     StreetView(QWidget* parent = nullptr);
 
-    const geo::Location& getLocation() const;
-    void setLocation(const geo::Location& location);
+    const geo::Point& getLocation() const;
+    void setLocation(const geo::Point& location);
     void returnToStart();
 
 private:
     QString m_htmlTemplate;
-    geo::Location m_location;
+    geo::Point m_location;
 
     void initViewSettings() const;
 };

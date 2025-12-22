@@ -6,7 +6,7 @@
 
 namespace geo
 {
-class Location;
+class Point;
 }
 
 namespace google
@@ -16,9 +16,9 @@ class InteractiveMap final : public QWebEngineView
 {
     Q_OBJECT
 public:
-    InteractiveMap(QWidget* parent, const geo::Location& startLocation);
+    InteractiveMap(QWidget* parent, const geo::Point& startLocation);
 
-    const std::optional<geo::Location>& currLocation() const;
+    const std::optional<geo::Point>& currLocation() const;
     void removeLocationMarker();
 
 signals:
@@ -29,7 +29,7 @@ private:
     InteractiveMapBridge m_bridge;
 
     void initBridge();
-    void initHtmlContent(const geo::Location& startLocation);
+    void initHtmlContent(const geo::Point& startLocation);
 };
 
 }

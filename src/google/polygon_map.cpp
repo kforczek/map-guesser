@@ -1,6 +1,6 @@
 #include "google/polygon_map.h"
 #include "google/html_reader.h"
-#include "geo/location.h"
+#include "geo/point.h"
 
 #include <QWebChannel>
 
@@ -9,7 +9,7 @@ namespace
 
 const QString HTML_PATH = "html/polygon_map.html";
 
-const geo::Location START_LOCATION{ 51.7592, 19.4550 };
+const geo::Point START_LOCATION{ 51.7592, 19.4550 };
 
 }
 
@@ -34,7 +34,7 @@ void PolygonMap::initBridge()
     //connect(&m_bridge, &PolygonMapBridge::regionChanged, this, [this](){ emit guessMarkerPlaced(); });
 }
 
-void PolygonMap::resetHtmlContent(const geo::Location& startLocation)
+void PolygonMap::resetHtmlContent(const geo::Point& startLocation)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
     html.replace("__CENTER__", startLocation.toHtmlStr());

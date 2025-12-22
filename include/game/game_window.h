@@ -42,7 +42,7 @@ private slots:
     void onSinglePlayerSelected();
     void onMapEditorLaunched();
 
-    void onGuessMade(const geo::Location& guessedLocation);
+    void onGuessMade(const geo::Point& guessedLocation);
     void onContinueButtonClicked();
 };
 

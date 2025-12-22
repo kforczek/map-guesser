@@ -5,17 +5,17 @@
 namespace geo
 {
 
-class Location
+class Point
 {
 public:
-    Location() = default;
-    Location(double latitude, double longitude);
+    Point() = default;
+    Point(double latitude, double longitude);
 
     double latitude() const;
     double longitude() const;
 
     // Distance in meters
-    double distanceTo(const Location& other) const;
+    double distanceTo(const Point& other) const;
 
     // "lat: 123.123456, lng: 123.123456"
     QString toHtmlStr() const;

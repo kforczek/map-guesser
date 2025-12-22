@@ -5,7 +5,7 @@
 #include "db/location_pool.h"
 #include "game/game_window.h"
 #include "include/game/randomizer.h"
-#include "include/geo/location.h"
+#include "include/geo/point.h"
 
 namespace
 {

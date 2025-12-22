@@ -6,7 +6,7 @@ namespace google
 void PolygonMapBridge::onRegionsChanged(const QString& regionsJson)
 {
     //TODO
-    emit regionChanged();
+    emit regionsChanged();
 }
 
 }

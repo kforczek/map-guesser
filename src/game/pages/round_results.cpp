@@ -4,7 +4,7 @@
 namespace game::pages
 {
 
-RoundResultsPage::RoundResultsPage(QWidget* parent, const geo::Location& mapCenter)
+RoundResultsPage::RoundResultsPage(QWidget* parent, const geo::Point& mapCenter)
     : QFrame(parent)
     , m_layout(this)
     , m_resultLabel(this)
@@ -18,12 +18,12 @@ RoundResultsPage::RoundResultsPage(QWidget* parent, const geo::Location& mapCent
     setupBottomSpacing();
 }
 
-void RoundResultsPage::setActualLocation(const geo::Location& location)
+void RoundResultsPage::setActualLocation(const geo::Point& location)
 {
     m_distanceMap.setActualLocation(location);
 }
 
-void RoundResultsPage::setGuessedLocation(const geo::Location& location)
+void RoundResultsPage::setGuessedLocation(const geo::Point& location)
 {
     m_distanceMap.setGuessedLocation(location);
 }
