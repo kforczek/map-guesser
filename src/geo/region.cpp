@@ -8,4 +8,9 @@ Region::Region(std::vector<Point> points)
 {
 }
 
+const std::vector<Point>& Region::points() const
+{
+    return m_points;
+}
+
 }
