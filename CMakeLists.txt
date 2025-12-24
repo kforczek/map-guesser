@@ -67,6 +67,7 @@ add_executable(map_guesser main.cpp
         src/geo/map.cpp
         src/geo/map_import.cpp
         src/geo/map_export.cpp
+        include/util/consumable.h
 )
 
 target_include_directories(map_guesser

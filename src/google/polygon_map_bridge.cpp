@@ -3,10 +3,11 @@
 namespace google
 {
 
-void PolygonMapBridge::onRegionsChanged(const QString& regionsJson)
+void PolygonMapBridge::onMapChanged(const QString& jsonMap)
 {
-    //TODO
-    emit regionsChanged();
+    const auto jsonDoc = QJsonDocument::fromJson(jsonMap.toUtf8());
+    auto geoMap = geo::Map::fromJson(jsonDoc);
+    emit mapChanged(std::move(geoMap));
 }
 
 }

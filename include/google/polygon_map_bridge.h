@@ -2,6 +2,8 @@
 #include <iostream>
 #include <QObject>
 #include <optional>
+#include "geo/map.h"
+#include "util/consumable.h"
 
 namespace google
 {
@@ -14,10 +16,10 @@ public:
     using QObject::QObject;
 
 signals:
-    void regionsChanged(/* TODO vector of points */);
+    void mapChanged(util::Consumable<geo::Map> updatedMap);
 
 public slots:
-    void onRegionsChanged(const QString& regionsJson);
+    void onMapChanged(const QString& regionsJson);
 };
 
 }

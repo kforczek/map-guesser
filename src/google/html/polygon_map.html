@@ -115,7 +115,7 @@
             .filter(r => r.closed)
             .map(r => r.points);
 
-        bridge.onRegionsChanged(JSON.stringify(serialized));
+        bridge.onMapChanged(JSON.stringify(serialized));
     }
 
     // ---------- region management ----------

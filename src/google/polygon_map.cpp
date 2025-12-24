@@ -31,7 +31,7 @@ void PolygonMap::initBridge()
     m_channel.registerObject("bridge", &m_bridge);
     page()->setWebChannel(&m_channel);
 
-    //connect(&m_bridge, &PolygonMapBridge::regionChanged, this, [this](){ emit guessMarkerPlaced(); });
+    connect(&m_bridge, &PolygonMapBridge::mapChanged, this, &PolygonMap::mapChanged);
 }
 
 void PolygonMap::resetHtmlContent(const geo::Point& startLocation)

@@ -16,7 +16,10 @@ class PolygonMap final : public QWebEngineView
 {
     Q_OBJECT
 public:
-    PolygonMap(QWidget* parent);
+    explicit PolygonMap(QWidget* parent);
+
+signals:
+    void mapChanged(util::Consumable<geo::Map> updatedMap);
 
 private:
     QWebChannel m_channel;
