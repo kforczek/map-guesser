@@ -59,8 +59,8 @@ add_executable(map_guesser main.cpp
         src/game/pages/start.cpp
         include/game/pages/map_editor.h
         src/game/pages/map_editor.cpp
-        include/mapeditor/top_bar.h
-        src/mapeditor/top_bar.cpp
+        include/map/editor/top_bar.h
+        src/map/editor/top_bar.cpp
         include/geo/region.h
         src/geo/region.cpp
         include/geo/map.h
@@ -68,6 +68,8 @@ add_executable(map_guesser main.cpp
         src/geo/map_import.cpp
         src/geo/map_export.cpp
         include/util/consumable.h
+        include/map/file_selector.h
+        src/map/file_selector.cpp
 )
 
 target_include_directories(map_guesser

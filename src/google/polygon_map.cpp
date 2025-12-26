@@ -18,12 +18,17 @@ namespace google
 
 PolygonMap::PolygonMap(QWidget* parent)
     : QWebEngineView(parent)
-    , m_bridge(this)
+    , m_bridge(this, page())
 {
     initBridge();
     resetHtmlContent(START_LOCATION);
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+}
+
+void PolygonMap::loadMap(const geo::Map& map)
+{
+    m_bridge.loadMap(map.toJson().toJson());
 }
 
 void PolygonMap::initBridge()

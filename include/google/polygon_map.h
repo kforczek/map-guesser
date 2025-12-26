@@ -18,6 +18,8 @@ class PolygonMap final : public QWebEngineView
 public:
     explicit PolygonMap(QWidget* parent);
 
+    void loadMap(const geo::Map& map);
+
 signals:
     void mapChanged(util::Consumable<geo::Map> updatedMap);
 

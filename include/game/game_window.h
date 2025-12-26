@@ -16,9 +16,11 @@ class GameWindow final : public QFrame
 {
     Q_OBJECT
 public:
+    // TODO remove arg here
     explicit GameWindow(db::LocationPool locPool);
 
 private /*members*/:
+    // TODO page-specific - move me somewhere else
     db::LocationPool m_locPool;
     QStackedLayout m_layout;
 

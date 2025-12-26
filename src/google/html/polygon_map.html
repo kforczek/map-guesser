@@ -15,8 +15,6 @@
             height: 100vh;
         }
 
-        /* ---------- confirm modal ---------- */
-
         #confirmOverlay {
             position: fixed;
             inset: 0;
@@ -36,19 +34,10 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
 
-        #confirmText {
-            margin: 0 0 14px;
-        }
-
         #confirmButtons {
             display: flex;
             justify-content: flex-end;
             gap: 8px;
-        }
-
-        #confirmButtons button {
-            padding: 4px 12px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -57,7 +46,6 @@
 
 <div id="map"></div>
 
-<!-- ---------- custom confirm modal ---------- -->
 <div id="confirmOverlay">
     <div id="confirmBox">
         <p id="confirmText">Delete region?</p>
@@ -75,186 +63,195 @@
     let regions = [];
     let activeRegion = null;
 
-    // ---------- custom confirm ----------
+    /* ---------- confirm ---------- */
 
     let confirmCallback = null;
 
-    function showConfirm(message, onYes) {
+    function showConfirm(text, onYes) {
         confirmCallback = onYes;
-        document.getElementById("confirmText").textContent = message;
+        document.getElementById("confirmText").textContent = text;
         document.getElementById("confirmOverlay").style.display = "flex";
     }
 
     function hideConfirm() {
-        document.getElementById("confirmOverlay").style.display = "none";
         confirmCallback = null;
+        document.getElementById("confirmOverlay").style.display = "none";
     }
 
-    document.getElementById("confirmYes").onclick = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-
+    document.getElementById("confirmYes").onclick = () => {
         if (confirmCallback) confirmCallback();
-
         hideConfirm();
     };
 
-    document.getElementById("confirmNo").onclick = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+    document.getElementById("confirmNo").onclick = hideConfirm;
 
-        hideConfirm();
-    };
-
-    // ---------- C++ notification ----------
+    /* ---------- C++ notification ---------- */
 
     function notifyCpp() {
         if (!bridge) return;
 
-        const serialized = regions
+        const data = regions
             .filter(r => r.closed)
             .map(r => r.points);
 
-        bridge.onMapChanged(JSON.stringify(serialized));
+        bridge.onMapChanged(JSON.stringify(data));
     }
 
-    // ---------- region management ----------
+    /* ---------- regions ---------- */
 
-    function createRegion() {
-        const region = {
+    function createRegion(closed = false) {
+        const r = {
             points: [],
             markers: [],
             polyline: null,
             polygon: null,
-            closed: false
+            closed
         };
-
-        regions.push(region);
-        activeRegion = region;
+        regions.push(r);
+        if (!closed) activeRegion = r;
+        return r;
     }
 
-    function redrawRegion(region) {
-        if (region.polyline) region.polyline.setMap(null);
-        if (region.polygon) region.polygon.setMap(null);
+    function redrawRegion(r) {
+        if (r.polyline) r.polyline.setMap(null);
+        if (r.polygon) r.polygon.setMap(null);
 
-        if (region.points.length < 2)
-            return;
+        if (r.points.length < 2) return;
 
-        if (!region.closed) {
-            region.polyline = new google.maps.Polyline({
+        if (!r.closed) {
+            r.polyline = new google.maps.Polyline({
                 map,
-                path: region.points,
+                path: r.points,
                 strokeColor: "#0f9fea",
-                strokeWeight: 2,
-                clickable: false
+                strokeWeight: 2
             });
         } else {
-            region.polygon = new google.maps.Polygon({
+            r.polygon = new google.maps.Polygon({
                 map,
-                paths: region.points,
+                paths: r.points,
                 strokeColor: "#0f9fea",
                 strokeWeight: 2,
                 fillColor: "#0f9fea",
                 fillOpacity: 0.25
             });
 
-            region.polygon.addListener("rightclick", () => {
-                showConfirm("Delete region?", () => {
-                    removeRegion(region);
-                });
+            r.polygon.addListener("rightclick", () => {
+                showConfirm("Delete region?", () => removeRegion(r));
             });
         }
     }
 
-    function removeRegion(region) {
-        region.markers.forEach(m => m.setMap(null));
-        if (region.polyline) region.polyline.setMap(null);
-        if (region.polygon) region.polygon.setMap(null);
-
-        regions = regions.filter(r => r !== region);
-
-        if (activeRegion === region)
-            activeRegion = null;
-
+    function removeRegion(r) {
+        r.markers.forEach(m => m.setMap(null));
+        if (r.polyline) r.polyline.setMap(null);
+        if (r.polygon) r.polygon.setMap(null);
+        regions = regions.filter(x => x !== r);
+        if (activeRegion === r) activeRegion = null;
         notifyCpp();
     }
 
-    // ---------- markers ----------
+    function clearAllRegions() {
+        regions.forEach(r => {
+            r.markers.forEach(m => m.setMap(null));
+            if (r.polyline) r.polyline.setMap(null);
+            if (r.polygon) r.polygon.setMap(null);
+        });
+        regions = [];
+        activeRegion = null;
+    }
 
-    function createMarker(region, pos, index) {
-        const marker = new google.maps.Marker({
+    /* ---------- markers ---------- */
+
+    function createMarker(r, pos, index) {
+        const m = new google.maps.Marker({
             map,
             position: pos,
             draggable: true
         });
 
-        marker.addListener("dragstart", () => {
-            map.setOptions({ draggable: false });
+        m.addListener("drag", () => {
+            r.points[index] = {
+                lat: m.getPosition().lat(),
+                lng: m.getPosition().lng()
+            };
+            redrawRegion(r);
         });
 
-        marker.addListener("drag", () => {
-            region.points[index].lat = marker.getPosition().lat();
-            region.points[index].lng = marker.getPosition().lng();
-            redrawRegion(region);
+        m.addListener("dragend", () => {
+            if (r.closed) notifyCpp();
         });
 
-        marker.addListener("dragend", () => {
-            map.setOptions({ draggable: true });
-            if (region.closed)
-                notifyCpp();
-        });
-
-        marker.addListener("click", () => {
-            if (index === 0 && region.points.length >= 3 && !region.closed) {
-                region.closed = true;
-                redrawRegion(region);
+        m.addListener("click", () => {
+            if (index === 0 && r.points.length >= 3 && !r.closed) {
+                r.closed = true;
                 activeRegion = null;
+                redrawRegion(r);
                 notifyCpp();
             }
         });
 
-        return marker;
+        return m;
     }
 
-    function addPointToActiveRegion(lat, lng) {
-        if (!activeRegion || activeRegion.closed)
-            return;
-
+    function addPoint(r, lat, lng) {
         const pos = { lat, lng };
-        const index = activeRegion.points.length;
-
-        activeRegion.points.push(pos);
-        activeRegion.markers.push(
-            createMarker(activeRegion, pos, index)
-        );
-
-        redrawRegion(activeRegion);
+        const idx = r.points.length;
+        r.points.push(pos);
+        r.markers.push(createMarker(r, pos, idx));
+        redrawRegion(r);
     }
 
-    // ---------- map ----------
+    /* ---------- C++ → JS ENTRY POINT ---------- */
+    /* NOTE: receives a JS ARRAY, not a string */
 
-    function initMap() {
-        const center = { __CENTER__ };
+    function loadMapFromJson(data) {
+        if (!Array.isArray(data)) {
+            console.error("loadMapFromJson: expected array, got", data);
+            return;
+        }
 
-        map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 6,
-            center,
-            disableDefaultUI: true,
-            clickableIcons: false
+        clearAllRegions();
+
+        const bounds = new google.maps.LatLngBounds();
+
+        data.forEach(poly => {
+            if (!Array.isArray(poly) || poly.length < 3) return;
+
+            const r = createRegion(true);
+
+            poly.forEach(p => {
+                if (typeof p.lat !== "number" || typeof p.lng !== "number") return;
+                r.points.push({ lat: p.lat, lng: p.lng });
+                bounds.extend(p);
+            });
+
+            r.points.forEach((p, i) => {
+                r.markers.push(createMarker(r, p, i));
+            });
+
+            redrawRegion(r);
         });
 
-        new QWebChannel(qt.webChannelTransport, (channel) => {
+        if (!bounds.isEmpty())
+            map.fitBounds(bounds);
+    }
+
+    /* ---------- map ---------- */
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { __CENTER__ },
+            zoom: 6,
+            disableDefaultUI: true
+        });
+
+        new QWebChannel(qt.webChannelTransport, channel => {
             bridge = channel.objects.bridge;
         });
 
-        map.addListener("click", (event) => {
-            if (!activeRegion)
-                createRegion();
-
-            addPointToActiveRegion(
-                event.latLng.lat(),
-                event.latLng.lng()
-            );
+        map.addListener("click", e => {
+            if (!activeRegion) createRegion();
+            addPoint(activeRegion, e.latLng.lat(), e.latLng.lng());
         });
     }
 </script>

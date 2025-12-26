@@ -5,6 +5,9 @@
 #include "geo/map.h"
 #include "util/consumable.h"
 
+class QWidget;
+class QWebEnginePage;
+
 namespace google
 {
 
@@ -13,13 +16,19 @@ class PolygonMapBridge final : public QObject
     Q_OBJECT
 
 public:
-    using QObject::QObject;
+    PolygonMapBridge(QWidget* parent, QWebEnginePage* page);
+
+    Q_INVOKABLE void loadMap(const QString& jsonMap);
 
 signals:
     void mapChanged(util::Consumable<geo::Map> updatedMap);
 
 public slots:
-    void onMapChanged(const QString& regionsJson);
+    void onMapChanged(const QString& jsonMap);
+
+private:
+    QWebEnginePage* m_page = nullptr;
+    bool m_suppressSignals = false;
 };
 
 }

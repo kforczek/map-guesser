@@ -1,6 +1,5 @@
 #pragma once
 #include <qboxlayout.h>
-#include <QFrame>
 #include <QLabel>
 #include <QPushButton>
 
@@ -25,6 +24,7 @@ public:
     void setInfo(const RoundResults& roundResults);
 
 signals:
+    // TODO [naming] -> nextRoundRequested() etc
     void continueButtonClicked();
 
 private /*members*/:
