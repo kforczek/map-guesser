@@ -6,7 +6,7 @@ namespace map::editor
 TopBar::TopBar(QWidget* parent)
     : QWidget(parent)
     , m_layout(this)
-    , m_infoLabel("Map: Untitled", this)
+    , m_infoLabel(this)
     , m_loadButton("Load", this)
     , m_saveButton("Save", this)
     , m_saveAsButton("Save As...", this)
@@ -25,10 +25,16 @@ void TopBar::setSaveEnabled(bool enabled)
     m_saveAsButton.setEnabled(enabled);
 }
 
+void TopBar::setMapDisplayPath(const QString& path)
+{
+    m_infoLabel.setText("Map: " + path);
+}
+
 void TopBar::setupInfoLabel()
 {
     m_layout.addWidget(&m_infoLabel);
     m_infoLabel.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    setMapDisplayPath("Untitled");
 }
 
 void TopBar::setupLoadButton()
@@ -48,7 +54,6 @@ void TopBar::setupSaveButton()
 void TopBar::setupSaveAsButton()
 {
     m_layout.addWidget(&m_saveAsButton);
-
     m_saveAsButton.setEnabled(false);
     connect(&m_saveAsButton, &QPushButton::clicked, this, &TopBar::saveAsButtonClicked);
 }

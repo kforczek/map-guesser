@@ -35,8 +35,8 @@ private /*methods*/:
     void loadMap(QString filePath);
     void tryLoadMap(QString filePath);
 
-    void saveMap(const QString& filePath);
-    void trySaveMap(const QString& filePath) const;
+    void saveMap();
+    void trySaveMap() const;
 };
 
 }

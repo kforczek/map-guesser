@@ -14,6 +14,7 @@ public:
     explicit TopBar(QWidget* parent);
 
     void setSaveEnabled(bool enabled);
+    void setMapDisplayPath(const QString& path);
 
 signals:
     void loadButtonClicked();

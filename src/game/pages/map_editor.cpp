@@ -77,7 +77,7 @@ void MapEditorPage::onSaveRequested()
 {
     if (m_mapFilePath)
     {
-        saveMap(*m_mapFilePath);
+        saveMap();
     }
     else
     {
@@ -89,8 +89,13 @@ void MapEditorPage::onSaveAsRequested()
 {
     const QString& startPath = m_mapFilePath ? *m_mapFilePath : "";
 
-    if (const QString filePath = map::getSaveFilePath(this, startPath); !filePath.isEmpty())
-        saveMap(filePath);
+    QString filePath = map::getSaveFilePath(this, startPath);
+    if (filePath.isEmpty())
+        return;
+
+    m_mapFilePath = std::move(filePath);
+    m_topBar.setMapDisplayPath(*m_mapFilePath);
+    saveMap();
 }
 
 void MapEditorPage::loadMap(QString filePath)
@@ -113,14 +118,16 @@ void MapEditorPage::tryLoadMap(QString filePath)
     m_mapFilePath = std::move(filePath);
 
     m_mapView.loadMap(*m_mapData);
+
+    m_topBar.setMapDisplayPath(*m_mapFilePath);
     m_topBar.setSaveEnabled(true);
 }
 
-void MapEditorPage::saveMap(const QString& filePath)
+void MapEditorPage::saveMap()
 {
     try
     {
-        trySaveMap(filePath);
+        trySaveMap();
     }
     catch (MapFileError& err)
     {
@@ -128,12 +135,13 @@ void MapEditorPage::saveMap(const QString& filePath)
     }
 }
 
-void MapEditorPage::trySaveMap(const QString& filePath) const
+void MapEditorPage::trySaveMap() const
 {
     assert(m_mapData);
     const QJsonDocument jsonDoc = m_mapData->toJson();
 
-    QFile file{filePath};
+    assert(m_mapFilePath);
+    QFile file{*m_mapFilePath};
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         throw MapFileError{file.errorString().toStdString()};
 
