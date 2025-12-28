@@ -27,18 +27,15 @@ add_executable(map_guesser main.cpp
         src/geo/point.cpp
         include/google/coverage.h
         src/google/coverage.cpp
-        include/game/randomizer.h
-        include/db/location_pool.h
-        src/game/randomizer.cpp
+        src/app/randomizer.cpp
         include/google/interactive_map.h
         src/google/interactive_map.cpp
         include/google/html_reader.h
         src/google/html_reader.cpp
         include/google/interactive_map_bridge.h
         src/google/interactive_map_bridge.cpp
-        include/game/game_window.h
-        src/game/game_window.cpp
-        src/db/location_pool.cpp
+        include/app/main_window.h
+        src/app/main_window.cpp
         include/google/distance_map.h
         src/google/distance_map.cpp
         include/google/distance_map_bridge.h
@@ -47,20 +44,20 @@ add_executable(map_guesser main.cpp
         src/google/polygon_map.cpp
         include/google/polygon_map_bridge.h
         src/google/polygon_map_bridge.cpp
-        include/game/pages/street_view.h
-        src/game/pages/street_view.cpp
-        include/game/pages/round_results.h
-        src/game/pages/round_results.cpp
-        include/game/results.h
-        src/game/results.cpp
-        include/game/error_message.h
-        src/game/error_message.cpp
-        include/game/pages/start.h
-        src/game/pages/start.cpp
-        include/game/pages/map_editor.h
-        src/game/pages/map_editor.cpp
-        include/map/editor/top_bar.h
-        src/map/editor/top_bar.cpp
+        include/app/ui/pages/street_view.h
+        src/app/ui/pages/street_view.cpp
+        include/app/ui/pages/round_results.h
+        src/app/ui/pages/round_results.cpp
+        include/app/results.h
+        src/app/results.cpp
+        include/app/error_message.h
+        src/app/error_message.cpp
+        include/app/ui/pages/start.h
+        src/app/ui/pages/start.cpp
+        include/app/ui/pages/map_editor.h
+        src/app/ui/pages/map_editor.cpp
+        include/app/ui/widgets/map_editor_top_bar.h
+        src/app/ui/widgets/map_editor_top_bar.cpp
         include/geo/region.h
         src/geo/region.cpp
         include/geo/map.h
@@ -68,8 +65,23 @@ add_executable(map_guesser main.cpp
         src/geo/map_import.cpp
         src/geo/map_export.cpp
         include/util/consumable.h
-        include/map/file_selector.h
-        src/map/file_selector.cpp
+        include/app/ui/map_file_selector.h
+        src/app/ui/map_file_selector.cpp
+        include/planar/point.h
+        include/planar/map.h
+        src/planar/map.cpp
+        include/app/ui/pages/game_setup.h
+        include/game/params.h
+        include/game/session.h
+        include/app/ui/widgets/propedit/map_path.h
+        include/app/ui/widgets/propedit/base.h
+        src/app/ui/widgets/propedit/base.cpp
+        src/app/ui/widgets/propedit/map_path.cpp
+        src/app/ui/pages/game_setup.cpp
+        include/app/ui/map_file_access.h
+        src/app/ui/map_file_access.cpp
+        include/app/randomizer.h
+        src/game/session.cpp
 )
 
 target_include_directories(map_guesser

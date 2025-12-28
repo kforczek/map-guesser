@@ -2,10 +2,9 @@
 #include <QWebEngineSettings>
 #include <QLoggingCategory>
 
-#include "db/location_pool.h"
-#include "game/game_window.h"
-#include "include/game/randomizer.h"
-#include "include/geo/point.h"
+#include "app/main_window.h"
+#include "app/randomizer.h"
+#include "geo/point.h"
 
 namespace
 {
@@ -27,16 +26,14 @@ void initQtFlags()
 
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     initQtFlags();
-    QApplication app(argc, argv);
-
-    // TODO load actual pool
-    db::LocationPool pool;
+    QApplication qAppInst{argc, argv};
 
     // TODO: check for active token during setup (before game), maybe validate the token somehow
-    game::GameWindow window(pool);
+    app::MainWindow window{};
     window.showFullScreen();
 
-    return app.exec();
+    return qAppInst.exec();
 }

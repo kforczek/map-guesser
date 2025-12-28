@@ -12,12 +12,12 @@ const QString HTML_PATH = "html/interactive_map.html";
 namespace google
 {
 
-InteractiveMap::InteractiveMap(QWidget* parent, const geo::Point& startLocation)
+InteractiveMap::InteractiveMap(QWidget* parent)
     : QWebEngineView(parent)
     , m_bridge(this)
 {
     initBridge();
-    initHtmlContent(startLocation);
+    resetHtmlContent({0, 0});
 }
 
 const std::optional<geo::Point>& InteractiveMap::currLocation() const
@@ -30,6 +30,11 @@ void InteractiveMap::removeLocationMarker()
     m_bridge.removeLocationMarker();
 }
 
+void InteractiveMap::setCenter(const geo::Point& center)
+{
+    resetHtmlContent(center);
+}
+
 void InteractiveMap::initBridge()
 {
     m_channel.registerObject("bridge", &m_bridge);
@@ -38,7 +43,7 @@ void InteractiveMap::initBridge()
     connect(&m_bridge, &InteractiveMapBridge::locationSet, this, [this](){ emit guessMarkerPlaced(); });
 }
 
-void InteractiveMap::initHtmlContent(const geo::Point& startLocation)
+void InteractiveMap::resetHtmlContent(const geo::Point& startLocation)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
     html.replace("__CENTER__", startLocation.toHtmlStr());

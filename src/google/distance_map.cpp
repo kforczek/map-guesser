@@ -1,7 +1,6 @@
 #include "google/distance_map.h"
-
-#include "db/location_pool.h"
 #include "google/html_reader.h"
+#include "geo/point.h"
 
 namespace
 {
@@ -11,11 +10,11 @@ const QString HTML_PATH = "html/distance_map.html";
 namespace google
 {
 
-DistanceMap::DistanceMap(QWidget* parent, const geo::Point& mapCenter)
+DistanceMap::DistanceMap(QWidget* parent)
     : QWebEngineView(parent)
 {
     initBridge();
-    initHtmlContent(mapCenter);
+    resetHtmlContent({0, 0});
 }
 
 void DistanceMap::setActualLocation(const geo::Point& location)
@@ -33,13 +32,18 @@ void DistanceMap::setDistance(const double distance)
     m_bridge.setDistance(distance);
 }
 
+void DistanceMap::setCenter(const geo::Point& center)
+{
+    resetHtmlContent(center);
+}
+
 void DistanceMap::initBridge()
 {
     m_channel.registerObject("bridge", &m_bridge);
     page()->setWebChannel(&m_channel);
 }
 
-void DistanceMap::initHtmlContent(const geo::Point& mapCenter)
+void DistanceMap::resetHtmlContent(const geo::Point& mapCenter)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
     html.replace("__CENTER__", mapCenter.toHtmlStr());

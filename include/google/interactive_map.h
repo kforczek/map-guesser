@@ -16,10 +16,12 @@ class InteractiveMap final : public QWebEngineView
 {
     Q_OBJECT
 public:
-    InteractiveMap(QWidget* parent, const geo::Point& startLocation);
+    explicit InteractiveMap(QWidget* parent);
 
     const std::optional<geo::Point>& currLocation() const;
     void removeLocationMarker();
+
+    void setCenter(const geo::Point& center);
 
 signals:
     void guessMarkerPlaced();
@@ -29,7 +31,7 @@ private:
     InteractiveMapBridge m_bridge;
 
     void initBridge();
-    void initHtmlContent(const geo::Point& startLocation);
+    void resetHtmlContent(const geo::Point& startLocation);
 };
 
 }
