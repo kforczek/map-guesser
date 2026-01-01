@@ -27,7 +27,7 @@ add_executable(map_guesser main.cpp
         src/geo/point.cpp
         include/google/coverage.h
         src/google/coverage.cpp
-        src/app/randomizer.cpp
+        src/app/random_point.cpp
         include/google/interactive_map.h
         src/google/interactive_map.cpp
         include/google/html_reader.h
@@ -80,7 +80,6 @@ add_executable(map_guesser main.cpp
         src/app/ui/pages/game_setup.cpp
         include/app/ui/map_file_access.h
         src/app/ui/map_file_access.cpp
-        include/app/randomizer.h
         src/game/session.cpp
         include/lambert/projection.h
         src/lambert/projection.cpp
@@ -92,6 +91,7 @@ add_executable(map_guesser main.cpp
         src/planar/triangle.cpp
         include/planar/triangulation.h
         src/planar/triangulation.cpp
+        include/app/random_point.h
 )
 
 target_include_directories(map_guesser

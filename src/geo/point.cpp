@@ -10,7 +10,7 @@ namespace
 {
 
 constexpr double MAX_DEG = 180;
-constexpr double MAX_RAD = M_PI / 2;
+constexpr double MAX_RAD = M_PI;
 
 void throwIfOutOfRange(double coord, double limit)
 {

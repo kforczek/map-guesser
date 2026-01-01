@@ -3,7 +3,6 @@
 #include <QLoggingCategory>
 
 #include "app/main_window.h"
-#include "app/randomizer.h"
 #include "geo/point.h"
 
 namespace

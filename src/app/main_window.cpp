@@ -5,13 +5,14 @@
 #include <QMessageBox>
 
 #include "app/error_message.h"
-#include "app/randomizer.h"
+#include "app/random_point.h"
 #include "app/results.h"
 #include "google/coverage.h"
 
 namespace
 {
 
+// TODO: use page ptrs instead
 constexpr short int PAGE_START = 0;
 constexpr short int PAGE_GAME_SETUP = 1;
 constexpr short int PAGE_STREET_VIEW = 2;
@@ -74,12 +75,14 @@ void MainWindow::initConnections()
 
 void MainWindow::startNextRound()
 {
+    assert(m_gameSession);
+
     std::optional<geo::Point> location;
     while (!location)
     {
         try
         {
-            location = app::GetRandomStreetViewPoint();
+            location = app::GetRandomStreetViewPoint(m_gameSession->params().projectedMap);
         }
         catch (std::runtime_error& err)
         {
@@ -123,7 +126,7 @@ void MainWindow::onStartGameRequested(util::Consumable<game::Params> gameParams)
 {
     m_gameSession = game::Session{gameParams.consume()};
 
-    const geo::Point centerPoint = m_gameSession->params().map.center();
+    const geo::Point& centerPoint = m_gameSession->params().geoCenter;
 
     m_streetViewPage.setCenter(centerPoint);
     m_roundResultsPage.setCenter(centerPoint);

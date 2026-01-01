@@ -1,14 +1,14 @@
 #pragma once
 #include "geo/map.h"
+#include "planar/map.h"
 
 namespace game
 {
 
 struct Params
 {
-    // TODO: perhaps save geo center() and planar::Map instead
-    geo::Map map;
-    // ...
+    geo::Point geoCenter;
+    planar::Map projectedMap;
 };
 
 }

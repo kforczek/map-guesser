@@ -3,6 +3,7 @@
 #include <QMessageBox>
 
 #include "app/ui/map_file_access.h"
+#include "lambert/projection.h"
 
 namespace app::ui::pages
 {
@@ -25,9 +26,10 @@ void GameSetupPage::onStartGameButtonClicked()
 {
     try
     {
-        geo::Map map = LoadMapFromFile(m_propMapPath.getValue());
-        game::Params gameParams{std::move(map)};
+        const geo::Map geoMap = LoadMapFromFile(m_propMapPath.getValue());
+        planar::Map projectedMap = lambert::project(geoMap);
 
+        game::Params gameParams{geoMap.center(), std::move(projectedMap)};
         emit startGame(std::move(gameParams));
     }
     catch (std::runtime_error& err)
