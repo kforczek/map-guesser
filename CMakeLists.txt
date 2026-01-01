@@ -88,6 +88,10 @@ add_executable(map_guesser main.cpp
         include/planar/region.h
         src/planar/region.cpp
         src/planar/point.cpp
+        include/planar/triangle.h
+        src/planar/triangle.cpp
+        include/planar/triangulation.h
+        src/planar/triangulation.cpp
 )
 
 target_include_directories(map_guesser

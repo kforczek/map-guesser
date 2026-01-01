@@ -2,6 +2,7 @@
 #include "geo/consts.h"
 #include "geo/map.h"
 #include "planar/map.h"
+#include "planar/triangulation.h"
 
 namespace
 {
@@ -19,7 +20,8 @@ planar::Map project(const geo::Map& map)
     for (const geo::Region& region : map.regions())
         regions.push_back(project(region));
 
-    return planar::Map{std::move(regions)};
+    std::vector<planar::Triangle> triangles = planar::Triangulate(regions);
+    return planar::Map{std::move(triangles)};
 }
 
 planar::Region project(const geo::Region& region)

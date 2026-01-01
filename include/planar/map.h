@@ -1,5 +1,6 @@
 #pragma once
 #include "region.h"
+#include "triangle.h"
 
 namespace planar
 {
@@ -7,13 +8,15 @@ namespace planar
 class Map
 {
 public:
-    explicit Map(std::vector<Region> regions);
+    explicit Map(std::vector<Triangle> triangles);
 
-public:
-    //Point getRandomPoint...();
+    Point getRandomPoint() const;
 
 private:
-    //Map(...)
+    std::vector<Triangle> m_triangles;
+    double m_totalArea = 0.0;
+
+    const Triangle& getRandomTriangle() const;
 };
 
 }
