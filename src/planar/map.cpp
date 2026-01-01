@@ -38,6 +38,11 @@ Point Map::getRandomPoint() const
     return triangle.getRandomPoint();
 }
 
+double Map::totalArea() const
+{
+    return m_totalArea;
+}
+
 const Triangle& Map::getRandomTriangle() const
 {
     std::uniform_real_distribution dist{0.0, m_totalArea};

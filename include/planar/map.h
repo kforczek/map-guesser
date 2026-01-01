@@ -11,6 +11,7 @@ public:
     explicit Map(std::vector<Triangle> triangles);
 
     Point getRandomPoint() const;
+    double totalArea() const;
 
 private:
     std::vector<Triangle> m_triangles;

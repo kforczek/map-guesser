@@ -1,5 +1,5 @@
 #include "app/ui/pages/round_results.h"
-#include "app/results.h"
+#include "game/round_results.h"
 
 namespace app::ui::pages
 {
@@ -7,12 +7,12 @@ namespace app::ui::pages
 RoundResultsPage::RoundResultsPage(QWidget* parent)
     : QFrame(parent)
     , m_layout(this)
-    , m_resultLabel(this)
+    , m_distanceLabel(this)
     , m_distanceMap(this)
     , m_continueButton("Next Round", this) // TODO: "Next Round" or "Summary" if game has ended
 {
     setupLayout();
-    setupResultLabel();
+    setupInfoLabels();
     setupDistanceMap();
     setupContinueButton();
     setupBottomSpacing();
@@ -28,23 +28,12 @@ void RoundResultsPage::setGuessedLocation(const geo::Point& location)
     m_distanceMap.setGuessedLocation(location);
 }
 
-void RoundResultsPage::setInfo(const RoundResults& roundResults)
+void RoundResultsPage::setInfo(const game::RoundResults& roundResults)
 {
     m_distanceMap.setDistance(roundResults.distanceMeters());
 
-    std::ostringstream formatter;
-    formatter << "Your guess was ";
-    formatter << std::fixed << std::setprecision(2);
-
-    if (roundResults.distanceMeters() > 1000)
-        formatter << roundResults.distanceMeters() / 1000 << " km";
-    else
-        formatter << roundResults.distanceMeters() << " m";
-
-    formatter << " from the actual location.";
-
-    // TODO: points
-    m_resultLabel.setText(formatter.str().c_str());
+    updateDistanceLabel(roundResults);
+    updatePointsLabel(roundResults);
 }
 
 void RoundResultsPage::setCenter(const geo::Point& center)
@@ -58,10 +47,13 @@ void RoundResultsPage::setupLayout()
     m_layout.setContentsMargins(0, 0, 0, 0);
 }
 
-void RoundResultsPage::setupResultLabel()
+void RoundResultsPage::setupInfoLabels()
 {
-    addToLayout(m_resultLabel, Qt::AlignCenter);
-    m_resultLabel.setFont(QFont{"Times New Roman", 20});
+    addToLayout(m_distanceLabel, Qt::AlignCenter);
+    addToLayout(m_pointsLabel, Qt::AlignCenter);
+
+    m_distanceLabel.setFont(QFont{"Times New Roman", 20});
+    m_pointsLabel.setFont(QFont{"Times New Roman", 20});
 }
 
 void RoundResultsPage::setupDistanceMap()
@@ -91,6 +83,30 @@ void RoundResultsPage::addToLayout(QWidget& widget, Qt::Alignment alignment /*= 
 void RoundResultsPage::onContinueButtonClicked()
 {
     emit continueButtonClicked();
+}
+
+void RoundResultsPage::updateDistanceLabel(const game::RoundResults& roundResults)
+{
+    std::ostringstream formatter;
+    formatter << "Your guess was ";
+    formatter << std::fixed << std::setprecision(2);
+
+    if (roundResults.distanceMeters() > 1000)
+        formatter << roundResults.distanceMeters() / 1000 << " km";
+    else
+        formatter << roundResults.distanceMeters() << " m";
+
+    formatter << " from the actual location.";
+
+    m_distanceLabel.setText(formatter.str().c_str());
+}
+
+void RoundResultsPage::updatePointsLabel(const game::RoundResults& roundResults)
+{
+    std::string pointsText = "Points: ";
+    pointsText += std::to_string(roundResults.points());
+
+    m_pointsLabel.setText(pointsText.c_str());
 }
 
 }

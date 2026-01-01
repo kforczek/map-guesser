@@ -1,0 +1,34 @@
+#include "app/ui/map_file_access.h"
+#include "app/ui/widgets/propedit/map_path.h"
+#include "app/ui/map_file_selector.h"
+
+namespace app::ui::widgets::propedit
+{
+
+MapPropertyEditor::MapPropertyEditor(QWidget* parent)
+    : PropertyEditor(parent, "Map")
+    , m_valueEdit(this)
+    , m_browseButton("Browse...", this)
+{
+    m_valueEdit.setMinimumWidth(500);
+    m_valueEdit.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+
+    addToLayout(m_valueEdit);
+    addToLayout(m_browseButton);
+
+    connect(&m_browseButton, &QPushButton::clicked, this, &MapPropertyEditor::onBrowseButtonClicked);
+}
+
+geo::Map MapPropertyEditor::getValue() const
+{
+    const QString mapPath = m_valueEdit.text();
+    return app::ui::LoadMapFromFile(mapPath);
+}
+
+void MapPropertyEditor::onBrowseButtonClicked()
+{
+    const QString browsedPath = GetOpenMapPath(this, m_valueEdit.text());
+    m_valueEdit.setText(browsedPath);
+}
+
+}

@@ -3,19 +3,20 @@
 #include <QPushButton>
 
 #include "base.h"
+#include "geo/map.h"
 
 class QWidget;
 
 namespace app::ui::widgets::propedit
 {
 
-class MapPathPropertyEditor final : public PropertyEditor
+class MapPropertyEditor final : public PropertyEditor
 {
     Q_OBJECT
 public:
-    explicit MapPathPropertyEditor(QWidget* parent);
+    explicit MapPropertyEditor(QWidget* parent);
 
-    QString getValue() const;
+    geo::Map getValue() const;
 
 private:
     QLineEdit m_valueEdit;

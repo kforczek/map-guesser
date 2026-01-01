@@ -1,22 +1,19 @@
 #pragma once
 
-namespace db
-{
-class LocationPool;
-}
-
 namespace geo
 {
 class Point;
 }
 
-namespace app
+namespace game
 {
+
+struct Params;
 
 class RoundResults
 {
 public:
-    RoundResults(const geo::Point& actualLoc, const geo::Point& guessedLoc);
+    RoundResults(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams);
 
     double distanceMeters() const;
     unsigned int points() const;

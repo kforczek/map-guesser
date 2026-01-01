@@ -4,6 +4,7 @@
 
 #include "game/params.h"
 #include "app/ui/widgets/propedit/map_path.h"
+#include "app/ui/widgets/propedit/positive_number.h"
 #include "util/consumable.h"
 
 namespace app::ui::pages
@@ -21,7 +22,8 @@ signals:
 private:
     QVBoxLayout m_layout;
 
-    widgets::propedit::MapPathPropertyEditor m_propMapPath;
+    widgets::propedit::MapPropertyEditor m_propMap;
+    widgets::propedit::PositiveNumberPropertyEditor m_propMaxRoundPoints;
 
     QPushButton m_startGameButton;
 

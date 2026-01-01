@@ -6,7 +6,7 @@
 
 #include "app/error_message.h"
 #include "app/random_point.h"
-#include "app/results.h"
+#include "game/round_results.h"
 #include "google/coverage.h"
 
 namespace
@@ -126,8 +126,7 @@ void MainWindow::onStartGameRequested(util::Consumable<game::Params> gameParams)
 {
     m_gameSession = game::Session{gameParams.consume()};
 
-    const geo::Point& centerPoint = m_gameSession->params().geoCenter;
-
+    const geo::Point& centerPoint = m_gameSession->params().geoMap.center();
     m_streetViewPage.setCenter(centerPoint);
     m_roundResultsPage.setCenter(centerPoint);
 
@@ -137,8 +136,10 @@ void MainWindow::onStartGameRequested(util::Consumable<game::Params> gameParams)
 // TODO: maybe receive a signal with RoundResults
 void MainWindow::onGuessMade(const geo::Point& guessedLocation)
 {
+    assert(m_gameSession);
+
     const geo::Point& actualLocation = m_streetViewPage.getStreetViewLocation();
-    const RoundResults roundResults{actualLocation, guessedLocation};
+    const game::RoundResults roundResults{actualLocation, guessedLocation, m_gameSession->params()};
 
     m_roundResultsPage.setActualLocation(actualLocation);
     m_roundResultsPage.setGuessedLocation(guessedLocation);

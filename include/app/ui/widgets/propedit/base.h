@@ -14,7 +14,7 @@ public:
     explicit PropertyEditor(QWidget* parent, const QString& propertyName);
 
 protected:
-    void addToLayout(QWidget& widget);
+    void addToLayout(QWidget& widget, Qt::Alignment alignment = Qt::AlignLeft);
 
 private:
     QHBoxLayout m_layout;

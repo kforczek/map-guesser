@@ -7,8 +7,10 @@ namespace game
 
 struct Params
 {
-    geo::Point geoCenter;
+    geo::Map geoMap;
     planar::Map projectedMap;
+
+    unsigned int maxRoundPoints = 0;
 };
 
 }

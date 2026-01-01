@@ -48,8 +48,8 @@ add_executable(map_guesser main.cpp
         src/app/ui/pages/street_view.cpp
         include/app/ui/pages/round_results.h
         src/app/ui/pages/round_results.cpp
-        include/app/results.h
-        src/app/results.cpp
+        include/game/round_results.h
+        src/game/results.cpp
         include/app/error_message.h
         src/app/error_message.cpp
         include/app/ui/pages/start.h
@@ -76,7 +76,7 @@ add_executable(map_guesser main.cpp
         include/app/ui/widgets/propedit/map_path.h
         include/app/ui/widgets/propedit/base.h
         src/app/ui/widgets/propedit/base.cpp
-        src/app/ui/widgets/propedit/map_path.cpp
+        src/app/ui/widgets/propedit/map.cpp
         src/app/ui/pages/game_setup.cpp
         include/app/ui/map_file_access.h
         src/app/ui/map_file_access.cpp
@@ -92,6 +92,8 @@ add_executable(map_guesser main.cpp
         include/planar/triangulation.h
         src/planar/triangulation.cpp
         include/app/random_point.h
+        include/app/ui/widgets/propedit/positive_number.h
+        src/app/ui/widgets/propedit/positive_number.cpp
 )
 
 target_include_directories(map_guesser

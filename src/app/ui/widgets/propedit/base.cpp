@@ -9,12 +9,12 @@ PropertyEditor::PropertyEditor(QWidget* parent, const QString& propertyName)
     , m_label(propertyName, this)
 {
     setLayout(&m_layout);
-    m_layout.addWidget(&m_label);
+    addToLayout(m_label, Qt::AlignRight);
 }
 
-void PropertyEditor::addToLayout(QWidget& widget)
+void PropertyEditor::addToLayout(QWidget& widget, Qt::Alignment alignment /*= Qt::AlignLeft*/)
 {
-    m_layout.addWidget(&widget);
+    m_layout.addWidget(&widget, 0, alignment);
 }
 
 }
