@@ -14,7 +14,7 @@ DistanceMap::DistanceMap(QWidget* parent)
     : QWebEngineView(parent)
 {
     initBridge();
-    resetHtmlContent({0, 0});
+    resetHtmlContent({0, 0, geo::UnitType::Degrees});
 }
 
 void DistanceMap::setActualLocation(const geo::Point& location)

@@ -9,7 +9,8 @@ namespace
 
 const QString HTML_PATH = "html/polygon_map.html";
 
-const geo::Point START_LOCATION{ 51.7592, 19.4550 };
+// TODO: setting actual center upon load
+const geo::Point START_LOCATION{ 51.7592, 19.4550, geo::UnitType::Degrees };
 
 }
 

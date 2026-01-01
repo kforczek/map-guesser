@@ -1,16 +1,13 @@
 #pragma once
-#include "geo/point.h"
 
 namespace planar
 {
 
-/* Point projected to plane (Equal-area projection) */
+/* Point projected to plane */
 class Point
 {
+public:
     Point(double x, double y);
-
-    static Point project(const geo::Point& point);
-    geo::Point unproject() const;
 
     double x() const;
     double y() const;

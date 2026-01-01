@@ -12,7 +12,7 @@ Point parsePoint(const QJsonObject& jsonPoint)
     const double latitude = jsonPoint.value("lat").toDouble();
     const double longitude = jsonPoint.value("lng").toDouble();
 
-    return Point{latitude, longitude};
+    return Point{latitude, longitude,  geo::UnitType::Degrees};
 }
 
 Region parseRegion(const QJsonArray& jsonPoints)

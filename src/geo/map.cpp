@@ -11,6 +11,11 @@ Map::Map(std::vector<Region> regions)
         throw std::invalid_argument{"Map must contain at least one region"};
 }
 
+const std::vector<Region>& Map::regions() const
+{
+    return m_regions;
+}
+
 Point Map::center() const
 {
     const auto allPoints =
@@ -24,7 +29,8 @@ Point Map::center() const
     const double latCenter = (minLatIt.latitude() + maxLatIt.latitude()) / 2;
     const double lngCenter = (minLngIt.longitude() + maxLngIt.longitude()) / 2;
 
-    return Point{latCenter, lngCenter};
+    const UnitType unit = !allPoints.empty() ? allPoints.front().unit() : UnitType::Degrees;
+    return Point{latCenter, lngCenter, unit};
 }
 
 }

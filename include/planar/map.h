@@ -1,10 +1,5 @@
 #pragma once
-#include "point.h"
-
-namespace geo
-{
-class Map;
-}
+#include "region.h"
 
 namespace planar
 {
@@ -12,8 +7,9 @@ namespace planar
 class Map
 {
 public:
-    static Map fromGeoMap(const geo::Map& geoMap);
+    explicit Map(std::vector<Region> regions);
 
+public:
     //Point getRandomPoint...();
 
 private:

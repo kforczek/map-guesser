@@ -70,7 +70,7 @@ std::optional<geo::Point> readLocation(const nlohmann::json& json)
     if (lat == 0.0 && lng == 0.0)
         throw google::CoverageLookupError("Coverage endpoint returned invalid location");
 
-    return geo::Point{lat, lng};
+    return geo::Point{lat, lng, geo::UnitType::Degrees};
 }
 
 }

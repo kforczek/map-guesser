@@ -82,6 +82,12 @@ add_executable(map_guesser main.cpp
         src/app/ui/map_file_access.cpp
         include/app/randomizer.h
         src/game/session.cpp
+        include/lambert/projection.h
+        src/lambert/projection.cpp
+        include/geo/consts.h
+        include/planar/region.h
+        src/planar/region.cpp
+        src/planar/point.cpp
 )
 
 target_include_directories(map_guesser

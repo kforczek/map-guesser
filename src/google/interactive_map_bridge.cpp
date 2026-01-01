@@ -15,7 +15,7 @@ void InteractiveMapBridge::removeLocationMarker()
 
 void InteractiveMapBridge::onCoordsChanged(double lat, double lng)
 {
-    m_currLocation = geo::Point{lat, lng};
+    m_currLocation = geo::Point{lat, lng, geo::UnitType::Degrees};
     emit locationSet();
 }
 

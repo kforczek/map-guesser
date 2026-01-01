@@ -39,7 +39,7 @@ geo::Point GetRandomStreetViewPoint()
         double latitude = latDist(MT_GEN);
         double longitude = lonDist(MT_GEN);
 
-        if (auto maybeCoverage = google::GetClosestCoverage({latitude, longitude}))
+        if (auto maybeCoverage = google::GetClosestCoverage({latitude, longitude, geo::UnitType::Degrees}))
             return *maybeCoverage;
     }
 

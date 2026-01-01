@@ -17,7 +17,7 @@ InteractiveMap::InteractiveMap(QWidget* parent)
     , m_bridge(this)
 {
     initBridge();
-    resetHtmlContent({0, 0});
+    resetHtmlContent({0, 0, geo::UnitType::Degrees});
 }
 
 const std::optional<geo::Point>& InteractiveMap::currLocation() const

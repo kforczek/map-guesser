@@ -11,6 +11,8 @@ public:
     static Map fromJson(const QJsonDocument& json);
     QJsonDocument toJson() const;
 
+    const std::vector<Region>& regions() const;
+
     Point center() const;
 
 private:
