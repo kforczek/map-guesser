@@ -5,33 +5,33 @@
 namespace
 {
 
-unsigned int calcRoundPoints(double distance, double totalArea, unsigned int maxPoints)
+unsigned int calcRoundPoints(
+    double distance,        // meters
+    double totalArea,       // m²
+    unsigned int maxPoints)
 {
     if (maxPoints == 0 || totalArea <= 0.0)
         return 0;
 
-    const double distanceForMaxPoints  = totalArea / 300000.0;
-    const double distanceForZeroPoints = std::sqrt(totalArea);
+    // Characteristic map size (meters)
+    const double mapScale = std::sqrt(totalArea / M_PI);
 
-    if (distance >= distanceForZeroPoints)
-        return 0;
+    // Relative distance (scale-invariant)
+    const double x = distance / mapScale;
 
-    if (distance <= distanceForMaxPoints)
+    // Tunable parameters
+    constexpr double precisionRadius = 0.00001; // ~10 m on Poland-sized map
+    constexpr double k = 4.0;                    // steepness
+
+    if (x <= precisionRadius)
         return maxPoints;
 
-    // Normalize distance to [0, 1]
-    const double t =
-        (distanceForZeroPoints - distance) /
-        (distanceForZeroPoints - distanceForMaxPoints);
-
-    // Exponential curve
-    constexpr double k = 4.0; // tuning parameter
+    // Exponential falloff in relative space
     const double factor =
-        (std::exp(k * t) - 1.0) /
-        (std::exp(k) - 1.0);
+        std::exp(-k * (x - precisionRadius));
 
     return static_cast<unsigned int>(
-        std::round(factor * maxPoints)
+        std::round(std::clamp(factor, 0.0, 1.0) * maxPoints)
     );
 }
 

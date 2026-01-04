@@ -4,12 +4,6 @@
 #include "planar/map.h"
 #include "planar/triangulation.h"
 
-namespace
-{
-
-
-}
-
 namespace lambert
 {
 
