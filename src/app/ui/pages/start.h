@@ -16,7 +16,7 @@ signals:
     void singlePlayerButtonClicked();
     void mapEditorButtonClicked();
 
-private:
+private /*fields*/:
     QVBoxLayout m_layout;
 
     QPushButton m_singlePlayerButton;

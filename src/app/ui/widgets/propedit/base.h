@@ -15,6 +15,7 @@ public:
 
 protected:
     void addToLayout(QWidget& widget, int stretch = 0, Qt::Alignment alignment = Qt::AlignLeft);
+    void finishInit();
 
 private:
     QHBoxLayout m_layout;

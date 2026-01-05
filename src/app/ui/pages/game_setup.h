@@ -3,7 +3,7 @@
 #include <QPushButton>
 
 #include "game/params.h"
-#include "app/ui/widgets/propedit/map_path.h"
+#include "app/ui/widgets/propedit/map.h"
 #include "app/ui/widgets/propedit/positive_number.h"
 #include "util/consumable.h"
 

@@ -73,7 +73,7 @@ add_executable(map_guesser main.cpp
         src/app/ui/pages/game_setup.h
         src/game/params.h
         src/game/session.h
-        src/app/ui/widgets/propedit/map_path.h
+        src/app/ui/widgets/propedit/map.h
         src/app/ui/widgets/propedit/base.h
         src/app/ui/widgets/propedit/base.cpp
         src/app/ui/widgets/propedit/map.cpp
