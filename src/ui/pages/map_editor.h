@@ -2,7 +2,7 @@
 #include <qboxlayout.h>
 #include <QFrame>
 
-#include "google/polygon_map.h"
+#include "ui/google/polygon_map.h"
 #include "ui/widgets/map_editor_top_bar.h"
 
 namespace ui::pages

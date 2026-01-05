@@ -8,7 +8,7 @@
 class QWidget;
 class QWebEnginePage;
 
-namespace google
+namespace ui::google
 {
 
 class PolygonMapBridge final : public QObject

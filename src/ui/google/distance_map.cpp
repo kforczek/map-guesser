@@ -1,5 +1,5 @@
-#include "google/distance_map.h"
-#include "google/html_reader.h"
+#include "distance_map.h"
+#include "html_reader.h"
 #include "geo/point.h"
 
 namespace
@@ -7,7 +7,7 @@ namespace
 const QString HTML_PATH = "html/distance_map.html";
 }
 
-namespace google
+namespace ui::google
 {
 
 DistanceMap::DistanceMap(QWidget* parent)

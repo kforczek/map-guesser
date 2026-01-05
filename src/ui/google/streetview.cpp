@@ -1,6 +1,6 @@
-#include "google/streetview.h"
+#include "streetview.h"
 #include "google/token.h"
-#include "google/html_reader.h"
+#include "html_reader.h"
 #include "geo/point.h"
 
 #include <QFile>
@@ -11,7 +11,7 @@ namespace
 const QString HTML_PATH = "html/streetview.html";
 }
 
-namespace google
+namespace ui::google
 {
 
 StreetView::StreetView(QWidget* parent /*= nullptr*/)

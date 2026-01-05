@@ -6,7 +6,7 @@ namespace geo
 class Point;
 }
 
-namespace google
+namespace ui::google
 {
 
 class DistanceMapBridge final : public QObject

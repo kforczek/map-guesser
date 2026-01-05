@@ -1,7 +1,7 @@
-#include "google/distance_map_bridge.h"
+#include "distance_map_bridge.h"
 #include "geo/point.h"
 
-namespace google
+namespace ui::google
 {
 
 void DistanceMapBridge::setMarkerActual(const geo::Point& location)

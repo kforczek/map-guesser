@@ -3,7 +3,7 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include "google/distance_map.h"
+#include "ui/google/distance_map.h"
 
 namespace game
 {

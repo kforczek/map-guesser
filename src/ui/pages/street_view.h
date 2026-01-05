@@ -3,8 +3,8 @@
 #include <QFrame>
 #include <QPushButton>
 
-#include "google/interactive_map.h"
-#include "google/streetview.h"
+#include "ui/google/interactive_map.h"
+#include "ui/google/streetview.h"
 
 namespace geo
 {

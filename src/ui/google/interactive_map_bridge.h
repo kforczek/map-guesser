@@ -4,7 +4,7 @@
 #include <optional>
 #include "geo/point.h"
 
-namespace google
+namespace ui::google
 {
 
 class InteractiveMapBridge : public QObject

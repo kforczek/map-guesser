@@ -4,11 +4,11 @@
 #include <QShortcut>
 
 #include "game/session.h"
-#include "../ui/pages/game_setup.h"
+#include "ui/pages/game_setup.h"
 #include "ui/pages/start.h"
 #include "ui/pages/round_results.h"
-#include "../ui/pages/street_view.h"
-#include "../ui/pages/map_editor.h"
+#include "ui/pages/street_view.h"
+#include "ui/pages/map_editor.h"
 
 namespace app
 {

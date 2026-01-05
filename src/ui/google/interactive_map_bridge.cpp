@@ -1,6 +1,6 @@
-#include "google/interactive_map_bridge.h"
+#include "interactive_map_bridge.h"
 
-namespace google
+namespace ui::google
 {
 
 const std::optional<geo::Point>& InteractiveMapBridge::location() const

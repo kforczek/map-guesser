@@ -22,28 +22,28 @@ add_executable(map_guesser main.cpp
         src/google/token.h
         src/google/token.cpp
         src/geo/point.h
-        src/google/streetview.h
-        src/google/streetview.cpp
+        src/ui/google/streetview.h
+        src/ui/google/streetview.cpp
         src/geo/point.cpp
         src/google/coverage.h
         src/google/coverage.cpp
         src/app/random_point.cpp
-        src/google/interactive_map.h
-        src/google/interactive_map.cpp
-        src/google/html_reader.h
-        src/google/html_reader.cpp
-        src/google/interactive_map_bridge.h
-        src/google/interactive_map_bridge.cpp
+        src/ui/google/interactive_map.h
+        src/ui/google/interactive_map.cpp
+        src/ui/google/html_reader.h
+        src/ui/google/html_reader.cpp
+        src/ui/google/interactive_map_bridge.h
+        src/ui/google/interactive_map_bridge.cpp
         src/app/main_window.h
         src/app/main_window.cpp
-        src/google/distance_map.h
-        src/google/distance_map.cpp
-        src/google/distance_map_bridge.h
-        src/google/distance_map_bridge.cpp
-        src/google/polygon_map.h
-        src/google/polygon_map.cpp
-        src/google/polygon_map_bridge.h
-        src/google/polygon_map_bridge.cpp
+        src/ui/google/distance_map.h
+        src/ui/google/distance_map.cpp
+        src/ui/google/distance_map_bridge.h
+        src/ui/google/distance_map_bridge.cpp
+        src/ui/google/polygon_map.h
+        src/ui/google/polygon_map.cpp
+        src/ui/google/polygon_map_bridge.h
+        src/ui/google/polygon_map_bridge.cpp
         src/ui/pages/street_view.h
         src/ui/pages/street_view.cpp
         src/ui/pages/round_results.h
@@ -102,7 +102,7 @@ target_include_directories(map_guesser
 )
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets curl)
 
-file(COPY ${CMAKE_SOURCE_DIR}/src/google/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
+file(COPY ${CMAKE_SOURCE_DIR}/src/ui/google/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
 file(COPY ${CMAKE_SOURCE_DIR}/src/styles/ DESTINATION ${CMAKE_BINARY_DIR}/styles)
 
 # Optional: Print current build type

@@ -4,7 +4,7 @@
 
 class QWidget;
 
-namespace google
+namespace ui::google
 {
 
 class StreetView : public QWebEngineView

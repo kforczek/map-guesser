@@ -9,7 +9,7 @@ namespace geo
 class Point;
 }
 
-namespace google
+namespace ui::google
 {
 
 class InteractiveMap final : public QWebEngineView

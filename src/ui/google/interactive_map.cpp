@@ -1,5 +1,5 @@
-#include "google/interactive_map.h"
-#include "google/html_reader.h"
+#include "interactive_map.h"
+#include "html_reader.h"
 #include "geo/point.h"
 
 #include <QWebChannel>
@@ -9,7 +9,7 @@ namespace
 const QString HTML_PATH = "html/interactive_map.html";
 }
 
-namespace google
+namespace ui::google
 {
 
 InteractiveMap::InteractiveMap(QWidget* parent)

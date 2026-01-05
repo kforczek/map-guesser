@@ -1,5 +1,5 @@
-#include "google/polygon_map.h"
-#include "google/html_reader.h"
+#include "polygon_map.h"
+#include "html_reader.h"
 #include "geo/point.h"
 
 #include <QWebChannel>
@@ -14,7 +14,7 @@ const geo::Point START_LOCATION{ 51.7592, 19.4550, geo::UnitType::Degrees };
 
 }
 
-namespace google
+namespace ui::google
 {
 
 PolygonMap::PolygonMap(QWidget* parent)

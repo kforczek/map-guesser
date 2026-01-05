@@ -1,8 +1,8 @@
-#include "google/polygon_map_bridge.h"
+#include "polygon_map_bridge.h"
 #include <QWidget>
 #include <QWebEnginePage>
 
-namespace google
+namespace ui::google
 {
 
 PolygonMapBridge::PolygonMapBridge(QWidget* parent, QWebEnginePage* page)
