@@ -19,6 +19,7 @@ StartPage::StartPage(QWidget* parent)
     : QFrame(parent)
     , m_layout(this)
     , m_singlePlayerButton("SINGLEPLAYER", this)
+    , m_spacer(0, 50)
     , m_multiPlayerButton("[coming soon] MULTIPLAYER", this)
     , m_bottomBar(this)
 {
@@ -29,8 +30,9 @@ StartPage::StartPage(QWidget* parent)
     m_singlePlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_multiPlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    m_layout.addStretch(2);
+    m_layout.addStretch(3);
     addButtonToLayout(m_layout, m_singlePlayerButton);
+    m_layout.addItem(&m_spacer);
     addButtonToLayout(m_layout, m_multiPlayerButton);
     m_layout.addStretch(2);
     m_layout.addWidget(&m_bottomBar);
