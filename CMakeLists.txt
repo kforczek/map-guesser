@@ -19,80 +19,80 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 find_package(Qt6 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 
 add_executable(map_guesser main.cpp
-        include/google/token.h
+        src/google/token.h
         src/google/token.cpp
-        include/geo/point.h
-        include/google/streetview.h
+        src/geo/point.h
+        src/google/streetview.h
         src/google/streetview.cpp
         src/geo/point.cpp
-        include/google/coverage.h
+        src/google/coverage.h
         src/google/coverage.cpp
         src/app/random_point.cpp
-        include/google/interactive_map.h
+        src/google/interactive_map.h
         src/google/interactive_map.cpp
-        include/google/html_reader.h
+        src/google/html_reader.h
         src/google/html_reader.cpp
-        include/google/interactive_map_bridge.h
+        src/google/interactive_map_bridge.h
         src/google/interactive_map_bridge.cpp
-        include/app/main_window.h
+        src/app/main_window.h
         src/app/main_window.cpp
-        include/google/distance_map.h
+        src/google/distance_map.h
         src/google/distance_map.cpp
-        include/google/distance_map_bridge.h
+        src/google/distance_map_bridge.h
         src/google/distance_map_bridge.cpp
-        include/google/polygon_map.h
+        src/google/polygon_map.h
         src/google/polygon_map.cpp
-        include/google/polygon_map_bridge.h
+        src/google/polygon_map_bridge.h
         src/google/polygon_map_bridge.cpp
-        include/app/ui/pages/street_view.h
+        src/app/ui/pages/street_view.h
         src/app/ui/pages/street_view.cpp
-        include/app/ui/pages/round_results.h
+        src/app/ui/pages/round_results.h
         src/app/ui/pages/round_results.cpp
-        include/game/round_results.h
+        src/game/round_results.h
         src/game/results.cpp
-        include/app/error_message.h
+        src/app/error_message.h
         src/app/error_message.cpp
-        include/app/ui/pages/start.h
+        src/app/ui/pages/start.h
         src/app/ui/pages/start.cpp
-        include/app/ui/pages/map_editor.h
+        src/app/ui/pages/map_editor.h
         src/app/ui/pages/map_editor.cpp
-        include/app/ui/widgets/map_editor_top_bar.h
+        src/app/ui/widgets/map_editor_top_bar.h
         src/app/ui/widgets/map_editor_top_bar.cpp
-        include/geo/region.h
+        src/geo/region.h
         src/geo/region.cpp
-        include/geo/map.h
+        src/geo/map.h
         src/geo/map.cpp
         src/geo/map_import.cpp
         src/geo/map_export.cpp
-        include/util/consumable.h
-        include/app/ui/map_file_selector.h
+        src/util/consumable.h
+        src/app/ui/map_file_selector.h
         src/app/ui/map_file_selector.cpp
-        include/planar/point.h
-        include/planar/map.h
+        src/planar/point.h
+        src/planar/map.h
         src/planar/map.cpp
-        include/app/ui/pages/game_setup.h
-        include/game/params.h
-        include/game/session.h
-        include/app/ui/widgets/propedit/map_path.h
-        include/app/ui/widgets/propedit/base.h
+        src/app/ui/pages/game_setup.h
+        src/game/params.h
+        src/game/session.h
+        src/app/ui/widgets/propedit/map_path.h
+        src/app/ui/widgets/propedit/base.h
         src/app/ui/widgets/propedit/base.cpp
         src/app/ui/widgets/propedit/map.cpp
         src/app/ui/pages/game_setup.cpp
-        include/app/ui/map_file_access.h
+        src/app/ui/map_file_access.h
         src/app/ui/map_file_access.cpp
         src/game/session.cpp
-        include/lambert/projection.h
+        src/lambert/projection.h
         src/lambert/projection.cpp
-        include/geo/consts.h
-        include/planar/region.h
+        src/geo/consts.h
+        src/planar/region.h
         src/planar/region.cpp
         src/planar/point.cpp
-        include/planar/triangle.h
+        src/planar/triangle.h
         src/planar/triangle.cpp
-        include/planar/triangulation.h
+        src/planar/triangulation.h
         src/planar/triangulation.cpp
-        include/app/random_point.h
-        include/app/ui/widgets/propedit/positive_number.h
+        src/app/random_point.h
+        src/app/ui/widgets/propedit/positive_number.h
         src/app/ui/widgets/propedit/positive_number.cpp
 )
 
