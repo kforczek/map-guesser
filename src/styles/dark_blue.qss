@@ -1,0 +1,121 @@
+/* Global */
+QWidget {
+    background-color: #18212c;        /* lifted + bluer */
+    color: #d6e1ee;
+    font-family: "Segoe UI", "Inter", "Arial";
+    font-size: 13px;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #212c3a;
+    border: 1px solid #2f3d50;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+QPushButton:hover:!disabled {
+    background-color: #2a3a4f;
+}
+
+QPushButton:pressed:!disabled {
+    background-color: #344862;
+}
+
+/* Disabled buttons */
+QPushButton:disabled {
+    background-color: #1b2430;        /* darker, muted blue */
+    border: 1px solid #263244;
+    color: #7f8fa3;
+}
+
+/* Primary / action buttons */
+QPushButton#primary {
+    background-color: #3478c4;
+    border: none;
+    color: #ffffff;
+}
+
+QPushButton#primary:hover:!disabled {
+    background-color: #428bd6;
+}
+
+QPushButton#primary:disabled {
+    background-color: #223247;        /* distinct from normal disabled */
+    color: #6f8299;
+}
+
+/* Labels */
+QLabel {
+    background: transparent;
+}
+
+/* Text inputs */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: #212c3a;
+    border: 1px solid #2f3d50;
+    border-radius: 4px;
+    padding: 4px;
+    selection-background-color: #3478c4;
+}
+
+/* ComboBox */
+QComboBox {
+    background-color: #212c3a;
+    border: 1px solid #2f3d50;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+QComboBox:disabled {
+    background-color: #1b2430;
+    color: #7f8fa3;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #212c3a;
+    selection-background-color: #3478c4;
+}
+
+/* Sliders */
+QSlider::groove:horizontal {
+    height: 6px;
+    background: #2f3d50;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    width: 14px;
+    background: #3478c4;
+    margin: -4px 0;
+    border-radius: 7px;
+}
+
+/* Progress bar */
+QProgressBar {
+    background-color: #212c3a;
+    border: 1px solid #2f3d50;
+    border-radius: 4px;
+    text-align: center;
+    color: #aebcd0;
+}
+
+QProgressBar::chunk {
+    background-color: #3478c4;
+    border-radius: 4px;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: #18212c;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical {
+    background: #2a3a4f;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #3a4e6a;
+}

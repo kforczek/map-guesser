@@ -103,6 +103,7 @@ target_include_directories(map_guesser
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets curl)
 
 file(COPY ${CMAKE_SOURCE_DIR}/src/google/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
+file(COPY ${CMAKE_SOURCE_DIR}/src/styles/ DESTINATION ${CMAKE_BINARY_DIR}/styles)
 
 # Optional: Print current build type
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
