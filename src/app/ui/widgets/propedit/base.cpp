@@ -9,6 +9,8 @@ PropertyEditor::PropertyEditor(QWidget* parent, const QString& propertyName)
     , m_label(propertyName, this)
 {
     setLayout(&m_layout);
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+
     addToLayout(m_label, Qt::AlignRight);
 }
 

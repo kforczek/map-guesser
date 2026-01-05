@@ -17,8 +17,10 @@ GameSetupPage::GameSetupPage(QWidget* parent)
 {
     setLayout(&m_layout);
 
+    m_layout.addStretch();
     m_layout.addWidget(&m_propMap);
     m_layout.addWidget(&m_propMaxRoundPoints);
+    m_layout.addStretch();
     m_layout.addWidget(&m_startGameButton);
 
     connect(&m_startGameButton, &QPushButton::clicked, this, &GameSetupPage::onStartGameButtonClicked);
