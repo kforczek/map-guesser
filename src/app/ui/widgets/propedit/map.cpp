@@ -12,11 +12,11 @@ MapPropertyEditor::MapPropertyEditor(QWidget* parent)
 {
     m_valueEdit.setMinimumWidth(500);
 
+    connect(&m_browseButton, &QPushButton::clicked, this, &MapPropertyEditor::onBrowseButtonClicked);
+
     addToLayout(m_valueEdit, 1, Qt::Alignment{});
     addToLayout(m_browseButton, 0, Qt::Alignment{});
     finishInit();
-
-    connect(&m_browseButton, &QPushButton::clicked, this, &MapPropertyEditor::onBrowseButtonClicked);
 }
 
 geo::Map MapPropertyEditor::getValue() const
