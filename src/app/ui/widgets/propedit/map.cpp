@@ -11,10 +11,10 @@ MapPropertyEditor::MapPropertyEditor(QWidget* parent)
     , m_browseButton("Browse...", this)
 {
     m_valueEdit.setMinimumWidth(500);
-    m_valueEdit.setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    //m_valueEdit.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    addToLayout(m_valueEdit);
-    addToLayout(m_browseButton);
+    addToLayout(m_valueEdit, 1, Qt::Alignment{});
+    addToLayout(m_browseButton, 0, Qt::Alignment{});
 
     connect(&m_browseButton, &QPushButton::clicked, this, &MapPropertyEditor::onBrowseButtonClicked);
 }
