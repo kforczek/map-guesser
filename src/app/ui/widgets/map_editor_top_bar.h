@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QWidget>
+#include <QSpacerItem>
 
 namespace app::ui::widgets
 {
@@ -20,6 +21,7 @@ signals:
     void loadButtonClicked();
     void saveButtonClicked();
     void saveAsButtonClicked();
+    void closeButtonClicked();
 
 private /*fields*/:
     QHBoxLayout m_layout;
@@ -29,11 +31,16 @@ private /*fields*/:
     QPushButton m_saveButton;
     QPushButton m_saveAsButton;
 
+    QSpacerItem m_spacer;
+    QPushButton m_closeButton;
+
 private /*methods*/:
     void setupInfoLabel();
     void setupLoadButton();
     void setupSaveButton();
     void setupSaveAsButton();
+    void setupSpacer();
+    void setupCloseButton();
 };
 
 }

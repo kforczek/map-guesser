@@ -13,21 +13,17 @@ MapEditorPage::MapEditorPage(QWidget* parent)
     : QFrame(parent)
     , m_topBar(this)
     , m_mapView(this)
-    , m_closeButton("Close", this)
 {
     setLayout(&m_layout);
 
     m_layout.addWidget(&m_topBar);
     m_layout.addWidget(&m_mapView);
-    m_layout.addWidget(&m_closeButton);
-
-    m_closeButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     connect(&m_mapView, &google::PolygonMap::mapChanged, this, &MapEditorPage::onMapChanged);
     connect(&m_topBar, &widgets::MapEditorTopBar::loadButtonClicked, this, &MapEditorPage::onLoadRequested);
     connect(&m_topBar, &widgets::MapEditorTopBar::saveButtonClicked, this, &MapEditorPage::onSaveRequested);
     connect(&m_topBar, &widgets::MapEditorTopBar::saveAsButtonClicked, this, &MapEditorPage::onSaveAsRequested);
-    connect(&m_closeButton, &QPushButton::clicked, this, &MapEditorPage::closePage);
+    connect(&m_topBar, &widgets::MapEditorTopBar::closeButtonClicked, this, &MapEditorPage::closePage);
 }
 
 void MapEditorPage::onMapChanged(util::Consumable<geo::Map> updatedMap)

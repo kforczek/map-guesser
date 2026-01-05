@@ -22,7 +22,6 @@ private /*fields*/:
 
     widgets::MapEditorTopBar m_topBar;
     google::PolygonMap m_mapView;
-    QPushButton m_closeButton; // TODO move me to top bar
 
     std::optional<geo::Map> m_mapData;
     std::optional<QString> m_mapFilePath;

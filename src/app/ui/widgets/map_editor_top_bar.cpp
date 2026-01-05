@@ -10,6 +10,8 @@ MapEditorTopBar::MapEditorTopBar(QWidget* parent)
     , m_loadButton("Load", this)
     , m_saveButton("Save", this)
     , m_saveAsButton("Save As...", this)
+    , m_spacer(50, 0)
+    , m_closeButton("Close", this)
 {
     setLayout(&m_layout);
 
@@ -17,6 +19,8 @@ MapEditorTopBar::MapEditorTopBar(QWidget* parent)
     setupLoadButton();
     setupSaveButton();
     setupSaveAsButton();
+    setupSpacer();
+    setupCloseButton();
 }
 
 void MapEditorTopBar::setSaveEnabled(bool enabled)
@@ -56,6 +60,17 @@ void MapEditorTopBar::setupSaveAsButton()
     m_layout.addWidget(&m_saveAsButton);
     m_saveAsButton.setEnabled(false);
     connect(&m_saveAsButton, &QPushButton::clicked, this, &MapEditorTopBar::saveAsButtonClicked);
+}
+
+void MapEditorTopBar::setupSpacer()
+{
+    m_layout.addItem(&m_spacer);
+}
+
+void MapEditorTopBar::setupCloseButton()
+{
+    m_layout.addWidget(&m_closeButton);
+    connect(&m_closeButton, &QPushButton::clicked, this, &MapEditorTopBar::closeButtonClicked);
 }
 
 }
