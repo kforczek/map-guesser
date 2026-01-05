@@ -6,7 +6,7 @@ namespace planar
 class Map;
 }
 
-namespace app
+namespace game
 {
 
 geo::Point GetRandomStreetViewPoint(const planar::Map& projectedMap);

@@ -1,11 +1,11 @@
-#include "app/main_window.h"
+#include "main_window.h"
 
 #include <QFrame>
 #include <QStackedLayout>
 #include <QMessageBox>
 
-#include "app/error_message.h"
-#include "app/random_point.h"
+#include "error_message.h"
+#include "random_point.h"
 #include "game/round_results.h"
 #include "google/coverage.h"
 
@@ -21,7 +21,7 @@ constexpr short int PAGE_MAP_EDITOR = 4;
 
 }
 
-namespace app
+namespace game
 {
 
 MainWindow::MainWindow()
@@ -82,7 +82,7 @@ void MainWindow::startNextRound()
     {
         try
         {
-            location = app::GetRandomStreetViewPoint(m_gameSession->params().projectedMap);
+            location = game::GetRandomStreetViewPoint(m_gameSession->params().projectedMap);
         }
         catch (std::runtime_error& err)
         {

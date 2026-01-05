@@ -3,7 +3,7 @@
 #include <QWebEngineSettings>
 #include <QLoggingCategory>
 
-#include "app/main_window.h"
+#include "src/game/main_window.h"
 #include "geo/point.h"
 
 namespace
@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
     qputenv(WEB_ENGINE_VAR_NAME, WEB_ENGINE_FLAGS);
     QLoggingCategory::setFilterRules(FILTER_RULES);
 
-    QApplication qAppInst{argc, argv};
+    QApplication app{argc, argv};
 
-    qAppInst.setStyleSheet(getStyleSheet());
+    app.setStyleSheet(getStyleSheet());
 
     // TODO: check for active token during setup (before game), maybe validate the token somehow
-    app::MainWindow window{};
+    game::MainWindow window{};
     window.showFullScreen();
 
     return QApplication::exec();

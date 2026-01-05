@@ -3,7 +3,7 @@
 
 class QWidget;
 
-namespace app::err
+namespace game::err
 {
 
 enum class UserDecision

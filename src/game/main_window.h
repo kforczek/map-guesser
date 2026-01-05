@@ -10,7 +10,7 @@
 #include "ui/pages/street_view.h"
 #include "ui/pages/map_editor.h"
 
-namespace app
+namespace game
 {
 
 class MainWindow final : public QFrame

@@ -1,8 +1,8 @@
-#include "app/error_message.h"
+#include "error_message.h"
 
 #include <QMessageBox>
 
-namespace app::err
+namespace game::err
 {
 
 UserDecision ShowErrorMessage(QWidget* parent, QString errDetails)

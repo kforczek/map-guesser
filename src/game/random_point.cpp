@@ -1,4 +1,4 @@
-#include "app/random_point.h"
+#include "random_point.h"
 
 #include <random>
 #include "planar/map.h"
@@ -10,7 +10,7 @@ namespace
 constexpr int MAX_COVERAGE_LOOKUPS = 1000;
 }
 
-namespace app
+namespace game
 {
 
 geo::Point GetRandomStreetViewPoint(const planar::Map& projectedMap)

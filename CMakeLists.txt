@@ -27,15 +27,15 @@ add_executable(map_guesser main.cpp
         src/geo/point.cpp
         src/google/coverage.h
         src/google/coverage.cpp
-        src/app/random_point.cpp
+        src/game/random_point.cpp
         src/ui/google/interactive_map.h
         src/ui/google/interactive_map.cpp
         src/ui/google/html_reader.h
         src/ui/google/html_reader.cpp
         src/ui/google/interactive_map_bridge.h
         src/ui/google/interactive_map_bridge.cpp
-        src/app/main_window.h
-        src/app/main_window.cpp
+        src/game/main_window.h
+        src/game/main_window.cpp
         src/ui/google/distance_map.h
         src/ui/google/distance_map.cpp
         src/ui/google/distance_map_bridge.h
@@ -50,8 +50,8 @@ add_executable(map_guesser main.cpp
         src/ui/pages/round_results.cpp
         src/game/round_results.h
         src/game/results.cpp
-        src/app/error_message.h
-        src/app/error_message.cpp
+        src/game/error_message.h
+        src/game/error_message.cpp
         src/ui/pages/start.h
         src/ui/pages/start.cpp
         src/ui/pages/map_editor.h
@@ -91,7 +91,7 @@ add_executable(map_guesser main.cpp
         src/planar/triangle.cpp
         src/planar/triangulation.h
         src/planar/triangulation.cpp
-        src/app/random_point.h
+        src/game/random_point.h
         src/ui/widgets/propedit/positive_number.h
         src/ui/widgets/propedit/positive_number.cpp
 )
