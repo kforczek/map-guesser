@@ -9,18 +9,6 @@
 #include "game/round_results.h"
 #include "google/coverage.h"
 
-namespace
-{
-
-// TODO: use page ptrs instead
-constexpr short int PAGE_START = 0;
-constexpr short int PAGE_GAME_SETUP = 1;
-constexpr short int PAGE_STREET_VIEW = 2;
-constexpr short int PAGE_ROUND_RESULTS = 3;
-constexpr short int PAGE_MAP_EDITOR = 4;
-
-}
-
 namespace game
 {
 
@@ -93,7 +81,7 @@ void MainWindow::startNextRound()
     }
 
     m_streetViewPage.startNewRound(*location);
-    m_layout.setCurrentIndex(PAGE_STREET_VIEW);
+    m_layout.setCurrentWidget(&m_streetViewPage);
 }
 
 void MainWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullopt*/)
@@ -109,17 +97,17 @@ void MainWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullop
 
 void MainWindow::onStartPageRequested()
 {
-    m_layout.setCurrentIndex(PAGE_START);
+    m_layout.setCurrentWidget(&m_startPage);
 }
 
 void MainWindow::onSinglePlayerRequested()
 {
-    m_layout.setCurrentIndex(PAGE_GAME_SETUP);
+    m_layout.setCurrentWidget(&m_gameSetupPage);
 }
 
 void MainWindow::onMapEditorRequested()
 {
-    m_layout.setCurrentIndex(PAGE_MAP_EDITOR);
+    m_layout.setCurrentWidget(&m_mapEditorPage);
 }
 
 void MainWindow::onStartGameRequested(util::Consumable<game::Params> gameParams)
@@ -139,13 +127,13 @@ void MainWindow::onGuessMade(const geo::Point& guessedLocation)
     assert(m_gameSession);
 
     const geo::Point& actualLocation = m_streetViewPage.getStreetViewLocation();
-    const game::RoundResults roundResults{actualLocation, guessedLocation, m_gameSession->params()};
+    const RoundResults roundResults{actualLocation, guessedLocation, m_gameSession->params()};
 
     m_roundResultsPage.setActualLocation(actualLocation);
     m_roundResultsPage.setGuessedLocation(guessedLocation);
     m_roundResultsPage.setInfo(roundResults);
 
-    m_layout.setCurrentIndex(PAGE_ROUND_RESULTS);
+    m_layout.setCurrentWidget(&m_roundResultsPage);
 }
 
 }

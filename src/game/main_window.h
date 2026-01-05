@@ -19,10 +19,10 @@ class MainWindow final : public QFrame
 public:
     explicit MainWindow();
 
-private /*members*/:
+private /*fields*/:
     QStackedLayout m_layout;
 
-    std::optional<game::Session> m_gameSession;
+    std::optional<Session> m_gameSession;
 
     ui::pages::StartPage m_startPage;
     ui::pages::GameSetupPage m_gameSetupPage;
