@@ -60,26 +60,19 @@ QPushButton[role="singleplayer"]:pressed:!disabled {
     background-color: #13135a;   /* pressed */
 }
 
-/* Multiplayer unchanged */
+/* Multiplayer role */
 QPushButton[role="multiplayer"] {
-    background-color: #36244c;
+    background-color: #4b0082;
     border: none;
     color: #ffffff;
 }
 
 QPushButton[role="multiplayer"]:hover:!disabled {
-    background-color: #4a316a;
+    background-color: #6610ad;   /* lifted */
 }
 
 QPushButton[role="multiplayer"]:pressed:!disabled {
-    background-color: #2a1b3b;
-}
-
-/* Disabled variants */
-QPushButton[role="singleplayer"]:disabled,
-QPushButton[role="multiplayer"]:disabled {
-    background-color: #223247;
-    color: #6f8299;
+    background-color: #36005f;   /* pressed */
 }
 
 
