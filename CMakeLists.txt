@@ -94,6 +94,8 @@ add_executable(map_guesser main.cpp
         src/game/random_point.h
         src/ui/widgets/propedit/positive_number.h
         src/ui/widgets/propedit/positive_number.cpp
+        src/ui/widgets/start_page_bottom_bar.h
+        src/ui/widgets/start_page_bottom_bar.cpp
 )
 
 target_include_directories(map_guesser

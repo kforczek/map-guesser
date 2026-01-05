@@ -20,7 +20,7 @@ StartPage::StartPage(QWidget* parent)
     , m_layout(this)
     , m_singlePlayerButton("SINGLEPLAYER", this)
     , m_multiPlayerButton("[coming soon] MULTIPLAYER", this)
-    , m_mapEditorButton("Map Editor", this)
+    , m_bottomBar(this)
 {
     setLayout(&m_layout);
 
@@ -29,14 +29,15 @@ StartPage::StartPage(QWidget* parent)
     m_singlePlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_multiPlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    m_layout.addStretch();
+    m_layout.addStretch(2);
     addButtonToLayout(m_layout, m_singlePlayerButton);
     addButtonToLayout(m_layout, m_multiPlayerButton);
-    m_layout.addStretch();
-    m_layout.addWidget(&m_mapEditorButton);
+    m_layout.addStretch(2);
+    m_layout.addWidget(&m_bottomBar);
+    m_layout.addStretch(1);
 
-    connect(&m_singlePlayerButton, &QPushButton::clicked, [this](){ emit singlePlayerButtonClicked(); });
-    connect(&m_mapEditorButton, &QPushButton::clicked, [this](){ emit mapEditorButtonClicked(); });
+    connect(&m_singlePlayerButton, &QPushButton::clicked, this, &StartPage::singlePlayerRequested);
+    connect(&m_bottomBar, &widgets::StartPageBottomBar::mapEditorButtonClicked, this, &StartPage::mapEditorRequested);
 }
 
 }

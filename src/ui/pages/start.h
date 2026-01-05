@@ -3,6 +3,8 @@
 #include <QFrame>
 #include <QPushButton>
 
+#include "ui/widgets/start_page_bottom_bar.h"
+
 namespace ui::pages
 {
 
@@ -13,15 +15,16 @@ public:
     explicit StartPage(QWidget* parent);
 
 signals:
-    void singlePlayerButtonClicked();
-    void mapEditorButtonClicked();
+    void singlePlayerRequested();
+    void mapEditorRequested();
 
 private /*fields*/:
     QVBoxLayout m_layout;
 
     QPushButton m_singlePlayerButton;
     QPushButton m_multiPlayerButton;
-    QPushButton m_mapEditorButton;
+
+    widgets::StartPageBottomBar m_bottomBar;
 };
 
 }

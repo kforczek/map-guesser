@@ -47,8 +47,8 @@ void MainWindow::initLayoutPages()
 
 void MainWindow::initConnections()
 {
-    connect(&m_startPage, &ui::pages::StartPage::singlePlayerButtonClicked, this, &MainWindow::onSinglePlayerRequested);
-    connect(&m_startPage, &ui::pages::StartPage::mapEditorButtonClicked, this, &MainWindow::onMapEditorRequested);
+    connect(&m_startPage, &ui::pages::StartPage::singlePlayerRequested, this, &MainWindow::onSinglePlayerRequested);
+    connect(&m_startPage, &ui::pages::StartPage::mapEditorRequested, this, &MainWindow::onMapEditorRequested);
 
     connect(&m_gameSetupPage, &ui::pages::GameSetupPage::startGame, this, &MainWindow::onStartGameRequested);
 
