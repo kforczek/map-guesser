@@ -3,9 +3,9 @@
 #include <QFrame>
 
 #include "google/polygon_map.h"
-#include "app/ui/widgets/map_editor_top_bar.h"
+#include "ui/widgets/map_editor_top_bar.h"
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 class MapEditorPage final : public QFrame

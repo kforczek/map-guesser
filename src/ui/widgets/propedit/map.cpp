@@ -1,8 +1,8 @@
-#include "app/ui/map_file_access.h"
-#include "app/ui/widgets/propedit/map.h"
-#include "app/ui/map_file_selector.h"
+#include "ui/map_file_access.h"
+#include "ui/widgets/propedit/map.h"
+#include "ui/map_file_selector.h"
 
-namespace app::ui::widgets::propedit
+namespace ui::widgets::propedit
 {
 
 MapPropertyEditor::MapPropertyEditor(QWidget* parent)
@@ -22,7 +22,7 @@ MapPropertyEditor::MapPropertyEditor(QWidget* parent)
 geo::Map MapPropertyEditor::getValue() const
 {
     const QString mapPath = m_valueEdit.text();
-    return app::ui::LoadMapFromFile(mapPath);
+    return ui::LoadMapFromFile(mapPath);
 }
 
 void MapPropertyEditor::onBrowseButtonClicked()

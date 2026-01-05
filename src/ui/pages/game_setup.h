@@ -3,11 +3,11 @@
 #include <QPushButton>
 
 #include "game/params.h"
-#include "app/ui/widgets/propedit/map.h"
-#include "app/ui/widgets/propedit/positive_number.h"
+#include "ui/widgets/propedit/map.h"
+#include "ui/widgets/propedit/positive_number.h"
 #include "util/consumable.h"
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 class GameSetupPage final : public QFrame

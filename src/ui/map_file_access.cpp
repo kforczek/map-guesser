@@ -1,4 +1,4 @@
-#include "app/ui/map_file_access.h"
+#include "ui/map_file_access.h"
 
 #include <QFile>
 
@@ -12,7 +12,7 @@ QJsonDocument openAsJson(const QString& filePath)
     QFile file{filePath};
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        throw app::ui::MapFileAccessError{file.errorString().toStdString()};
+        throw ui::MapFileAccessError{file.errorString().toStdString()};
 
     const QByteArray data = file.readAll();
     file.close();
@@ -21,7 +21,7 @@ QJsonDocument openAsJson(const QString& filePath)
     QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
 
     if (parseError.error != QJsonParseError::NoError)
-        throw app::ui::MapFileAccessError{parseError.errorString().toStdString()};
+        throw ui::MapFileAccessError{parseError.errorString().toStdString()};
 
     return doc;
 }
@@ -30,7 +30,7 @@ QJsonDocument openAsJson(const QString& filePath)
 
 }
 
-namespace app::ui
+namespace ui
 {
 
 geo::Map LoadMapFromFile(const QString& path)

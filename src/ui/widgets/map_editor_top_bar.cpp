@@ -1,6 +1,6 @@
-#include "app/ui/widgets/map_editor_top_bar.h"
+#include "ui/widgets/map_editor_top_bar.h"
 
-namespace app::ui::widgets
+namespace ui::widgets
 {
 
 MapEditorTopBar::MapEditorTopBar(QWidget* parent)

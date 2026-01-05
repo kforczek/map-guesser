@@ -11,7 +11,7 @@ namespace geo
 class Point;
 }
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 class StreetViewPage final : public QFrame

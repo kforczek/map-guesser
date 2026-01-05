@@ -1,7 +1,7 @@
-#include "app/ui/pages/round_results.h"
+#include "ui/pages/round_results.h"
 #include "game/round_results.h"
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 RoundResultsPage::RoundResultsPage(QWidget* parent)

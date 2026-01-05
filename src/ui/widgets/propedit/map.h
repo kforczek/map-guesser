@@ -7,7 +7,7 @@
 
 class QWidget;
 
-namespace app::ui::widgets::propedit
+namespace ui::widgets::propedit
 {
 
 class MapPropertyEditor final : public PropertyEditor

@@ -10,7 +10,7 @@ namespace game
 class RoundResults;
 }
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 class RoundResultsPage final : public QFrame

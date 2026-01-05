@@ -44,20 +44,20 @@ add_executable(map_guesser main.cpp
         src/google/polygon_map.cpp
         src/google/polygon_map_bridge.h
         src/google/polygon_map_bridge.cpp
-        src/app/ui/pages/street_view.h
-        src/app/ui/pages/street_view.cpp
-        src/app/ui/pages/round_results.h
-        src/app/ui/pages/round_results.cpp
+        src/ui/pages/street_view.h
+        src/ui/pages/street_view.cpp
+        src/ui/pages/round_results.h
+        src/ui/pages/round_results.cpp
         src/game/round_results.h
         src/game/results.cpp
         src/app/error_message.h
         src/app/error_message.cpp
-        src/app/ui/pages/start.h
-        src/app/ui/pages/start.cpp
-        src/app/ui/pages/map_editor.h
-        src/app/ui/pages/map_editor.cpp
-        src/app/ui/widgets/map_editor_top_bar.h
-        src/app/ui/widgets/map_editor_top_bar.cpp
+        src/ui/pages/start.h
+        src/ui/pages/start.cpp
+        src/ui/pages/map_editor.h
+        src/ui/pages/map_editor.cpp
+        src/ui/widgets/map_editor_top_bar.h
+        src/ui/widgets/map_editor_top_bar.cpp
         src/geo/region.h
         src/geo/region.cpp
         src/geo/map.h
@@ -65,21 +65,21 @@ add_executable(map_guesser main.cpp
         src/geo/map_import.cpp
         src/geo/map_export.cpp
         src/util/consumable.h
-        src/app/ui/map_file_selector.h
-        src/app/ui/map_file_selector.cpp
+        src/ui/map_file_selector.h
+        src/ui/map_file_selector.cpp
         src/planar/point.h
         src/planar/map.h
         src/planar/map.cpp
-        src/app/ui/pages/game_setup.h
+        src/ui/pages/game_setup.h
         src/game/params.h
         src/game/session.h
-        src/app/ui/widgets/propedit/map.h
-        src/app/ui/widgets/propedit/base.h
-        src/app/ui/widgets/propedit/base.cpp
-        src/app/ui/widgets/propedit/map.cpp
-        src/app/ui/pages/game_setup.cpp
-        src/app/ui/map_file_access.h
-        src/app/ui/map_file_access.cpp
+        src/ui/widgets/propedit/map.h
+        src/ui/widgets/propedit/base.h
+        src/ui/widgets/propedit/base.cpp
+        src/ui/widgets/propedit/map.cpp
+        src/ui/pages/game_setup.cpp
+        src/ui/map_file_access.h
+        src/ui/map_file_access.cpp
         src/game/session.cpp
         src/lambert/projection.h
         src/lambert/projection.cpp
@@ -92,8 +92,8 @@ add_executable(map_guesser main.cpp
         src/planar/triangulation.h
         src/planar/triangulation.cpp
         src/app/random_point.h
-        src/app/ui/widgets/propedit/positive_number.h
-        src/app/ui/widgets/propedit/positive_number.cpp
+        src/ui/widgets/propedit/positive_number.h
+        src/ui/widgets/propedit/positive_number.cpp
 )
 
 target_include_directories(map_guesser

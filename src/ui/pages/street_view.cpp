@@ -1,4 +1,4 @@
-#include "app/ui/pages/street_view.h"
+#include "ui/pages/street_view.h"
 
 namespace
 {
@@ -19,7 +19,7 @@ constexpr double MAX_MAP_WIDTH_RATIO = 6.0 / 10.0;
 
 }
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 StreetViewPage::StreetViewPage(QWidget* parent)

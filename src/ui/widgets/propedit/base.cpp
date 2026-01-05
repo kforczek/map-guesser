@@ -1,6 +1,6 @@
-#include "app/ui/widgets/propedit/base.h"
+#include "ui/widgets/propedit/base.h"
 
-namespace app::ui::widgets::propedit
+namespace ui::widgets::propedit
 {
 
 PropertyEditor::PropertyEditor(QWidget* parent, const QString& propertyName)

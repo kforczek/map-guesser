@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-namespace app::ui::widgets::propedit
+namespace ui::widgets::propedit
 {
 
 class PositiveNumberPropertyEditor final : public PropertyEditor

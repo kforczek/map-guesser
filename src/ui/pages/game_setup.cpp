@@ -1,11 +1,11 @@
-#include "app/ui/pages/game_setup.h"
+#include "ui/pages/game_setup.h"
 
 #include <QMessageBox>
 
-#include "app/ui/map_file_access.h"
+#include "ui/map_file_access.h"
 #include "lambert/projection.h"
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 GameSetupPage::GameSetupPage(QWidget* parent)

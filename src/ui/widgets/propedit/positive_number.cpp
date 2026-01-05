@@ -1,6 +1,6 @@
-#include "app/ui/widgets/propedit/positive_number.h"
+#include "ui/widgets/propedit/positive_number.h"
 
-namespace app::ui::widgets::propedit
+namespace ui::widgets::propedit
 {
 
 PositiveNumberPropertyEditor::PositiveNumberPropertyEditor(QWidget* parent, const QString& propertyName, unsigned int initialValue /* = 0 */)

@@ -5,7 +5,7 @@
 #include <QWidget>
 #include <QSpacerItem>
 
-namespace app::ui::widgets
+namespace ui::widgets
 {
 
 class MapEditorTopBar final : public QWidget

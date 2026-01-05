@@ -3,7 +3,7 @@
 #include <QFrame>
 #include <QPushButton>
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 class StartPage final : public QFrame

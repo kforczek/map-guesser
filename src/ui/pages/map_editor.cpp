@@ -1,12 +1,12 @@
-#include "app/ui/pages/map_editor.h"
+#include "ui/pages/map_editor.h"
 
 #include <QFile>
 #include <QMessageBox>
 
-#include "app/ui/map_file_access.h"
-#include "app/ui/map_file_selector.h"
+#include "ui/map_file_access.h"
+#include "ui/map_file_selector.h"
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 MapEditorPage::MapEditorPage(QWidget* parent)

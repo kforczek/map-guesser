@@ -1,4 +1,4 @@
-#include "app/ui/pages/start.h"
+#include "ui/pages/start.h"
 
 namespace
 {
@@ -12,7 +12,7 @@ void addButtonToLayout(QBoxLayout& layout, QPushButton& button)
 
 }
 
-namespace app::ui::pages
+namespace ui::pages
 {
 
 StartPage::StartPage(QWidget* parent)

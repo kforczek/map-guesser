@@ -5,7 +5,7 @@
 
 class QWidget;
 
-namespace app::ui::widgets::propedit
+namespace ui::widgets::propedit
 {
 
 class PropertyEditor : public QWidget
