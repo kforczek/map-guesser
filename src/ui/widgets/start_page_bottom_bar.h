@@ -20,6 +20,7 @@ private:
     QHBoxLayout m_layout;
 
     QPushButton m_settingsButton;
+    QSpacerItem m_spacer;
     QPushButton m_mapEditorButton;
 };
 

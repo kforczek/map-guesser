@@ -13,13 +13,14 @@ namespace ui::widgets
 StartPageBottomBar::StartPageBottomBar(QWidget *parent)
     : QWidget(parent)
     , m_settingsButton("Settings", this)
+    , m_spacer(300, 0)
     , m_mapEditorButton("Map Editor", this)
 {
     setLayout(&m_layout);
 
     m_layout.addStretch();
     m_layout.addWidget(&m_settingsButton);
-    m_layout.addStretch();
+    m_layout.addItem(&m_spacer);
     m_layout.addWidget(&m_mapEditorButton);
     m_layout.addStretch();
 

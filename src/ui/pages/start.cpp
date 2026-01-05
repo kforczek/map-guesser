@@ -5,7 +5,7 @@ namespace
 
 void addButtonToLayout(QBoxLayout& layout, QPushButton& button)
 {
-    button.setFixedSize(QSize(600, 75));
+    button.setFixedSize(QSize(750, 90));
     button.setStyleSheet("font-family: 'Segoe UI'; font-size: 30px; font-weight: bold");
     layout.addWidget(&button, 0, Qt::AlignHCenter);
 }
@@ -29,6 +29,9 @@ StartPage::StartPage(QWidget* parent)
 
     m_singlePlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_multiPlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    m_singlePlayerButton.setProperty("role", "singleplayer");
+    m_multiPlayerButton.setProperty("role", "multiplayer");
 
     m_layout.addStretch(3);
     addButtonToLayout(m_layout, m_singlePlayerButton);
