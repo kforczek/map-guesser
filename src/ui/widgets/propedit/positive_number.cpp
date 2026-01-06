@@ -17,7 +17,10 @@ PositiveNumberPropertyEditor::PositiveNumberPropertyEditor(QWidget* parent, cons
 
 unsigned int PositiveNumberPropertyEditor::getValue() const
 {
-    return m_valueEdit.value();
+    const int val = m_valueEdit.value();
+    assert(val >= 0);
+
+    return static_cast<unsigned int>(val);
 }
 
 }

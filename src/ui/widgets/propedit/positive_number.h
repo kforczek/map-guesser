@@ -31,6 +31,9 @@ struct PositiveNumberPropertyEditor::Values
         , initialValue(initialValue)
         , maxValue(maxValue)
     {
+        if (minValue < 0)
+            throw std::invalid_argument("minValue must be >= 0");
+
         if (minValue > initialValue)
             throw std::invalid_argument("minValue must be <= than initialValue");
 
