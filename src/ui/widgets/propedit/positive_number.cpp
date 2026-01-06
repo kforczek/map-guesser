@@ -3,13 +3,13 @@
 namespace ui::widgets::propedit
 {
 
-PositiveNumberPropertyEditor::PositiveNumberPropertyEditor(QWidget* parent, const QString& propertyName, unsigned int initialValue /* = 0 */)
+PositiveNumberPropertyEditor::PositiveNumberPropertyEditor(QWidget* parent, const QString& propertyName, const Values& values)
     : PropertyEditor(parent, propertyName)
     , m_valueEdit(this)
 {
-    m_valueEdit.setMinimum(0);
-    m_valueEdit.setMaximum(1000000);
-    m_valueEdit.setValue(static_cast<int>(initialValue));
+    m_valueEdit.setMinimum(values.minValue);
+    m_valueEdit.setMaximum(values.maxValue);
+    m_valueEdit.setValue(values.initialValue);
 
     addToLayout(m_valueEdit);
     finishInit();

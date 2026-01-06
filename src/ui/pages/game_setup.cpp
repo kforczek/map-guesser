@@ -5,6 +5,14 @@
 #include "ui/map_file_access.h"
 #include "lambert/projection.h"
 
+namespace
+{
+
+constinit ui::widgets::propedit::PositiveNumberPropertyEditor::Values ROUNDS_COUNT_VALS{1, 5, 100};
+constinit ui::widgets::propedit::PositiveNumberPropertyEditor::Values ROUND_POINTS_VALS{100, 1000, 1000000};
+
+}
+
 namespace ui::pages
 {
 
@@ -12,13 +20,15 @@ GameSetupPage::GameSetupPage(QWidget* parent)
     : QFrame(parent)
     , m_layout(this)
     , m_propMap(this)
-    , m_propMaxRoundPoints(this, "Max round points", 1000)
+    , m_propRoundsCnt(this, "Number of rounds", ROUNDS_COUNT_VALS)
+    , m_propMaxRoundPoints(this, "Max round points", ROUND_POINTS_VALS)
     , m_startGameButton("Start Game", this)
 {
     setLayout(&m_layout);
 
     m_layout.addStretch();
     m_layout.addWidget(&m_propMap);
+    m_layout.addWidget(&m_propRoundsCnt);
     m_layout.addWidget(&m_propMaxRoundPoints);
     m_layout.addStretch();
     m_layout.addWidget(&m_startGameButton);

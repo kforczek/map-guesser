@@ -23,6 +23,7 @@ private:
     QVBoxLayout m_layout;
 
     widgets::propedit::MapPropertyEditor m_propMap;
+    widgets::propedit::PositiveNumberPropertyEditor m_propRoundsCnt;
     widgets::propedit::PositiveNumberPropertyEditor m_propMaxRoundPoints;
 
     QPushButton m_startGameButton;
