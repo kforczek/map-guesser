@@ -73,10 +73,8 @@ add_executable(map_guesser main.cpp
         src/ui/pages/game_setup.h
         src/game/params.h
         src/game/session.h
-        src/ui/widgets/propedit/map.h
-        src/ui/widgets/propedit/base.h
-        src/ui/widgets/propedit/base.cpp
-        src/ui/widgets/propedit/map.cpp
+        src/ui/widgets/propedit.h
+        src/ui/widgets/propedit.cpp
         src/ui/pages/game_setup.cpp
         src/ui/map_file_access.h
         src/ui/map_file_access.cpp
@@ -92,10 +90,6 @@ add_executable(map_guesser main.cpp
         src/planar/triangulation.h
         src/planar/triangulation.cpp
         src/game/random_point.h
-        src/ui/widgets/propedit/positive_number.h
-        src/ui/widgets/propedit/positive_number.cpp
-        src/ui/widgets/start_page_bottom_bar.h
-        src/ui/widgets/start_page_bottom_bar.cpp
 )
 
 target_include_directories(map_guesser

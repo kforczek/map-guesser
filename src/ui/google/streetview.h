@@ -7,10 +7,10 @@ class QWidget;
 namespace ui::google
 {
 
-class StreetView : public QWebEngineView
+class StreetView final : public QWebEngineView
 {
 public:
-    StreetView(QWidget* parent = nullptr);
+    explicit StreetView(QWidget* parent = nullptr);
 
     const geo::Point& getLocation() const;
     void setLocation(const geo::Point& location);

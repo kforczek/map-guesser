@@ -4,12 +4,15 @@
 namespace ui::pages
 {
 
+// ReSharper disable CppMemberFunctionMayBeConst
+
 RoundResultsPage::RoundResultsPage(QWidget* parent)
     : QFrame(parent)
-    , m_layout(this)
-    , m_distanceLabel(this)
-    , m_distanceMap(this)
-    , m_continueButton("Next Round", this) // TODO: "Next Round" or "Summary" if game has ended
+    , m_layout(new QVBoxLayout(this))
+    , m_distanceLabel(new QLabel(this))
+    , m_pointsLabel(new QLabel(this))
+    , m_distanceMap(new google::DistanceMap(this))
+    , m_continueButton(new QPushButton("Next Round", this)) // TODO: "Next Round" or "Summary" if game has ended
 {
     setupLayout();
     setupInfoLabels();
@@ -20,17 +23,17 @@ RoundResultsPage::RoundResultsPage(QWidget* parent)
 
 void RoundResultsPage::setActualLocation(const geo::Point& location)
 {
-    m_distanceMap.setActualLocation(location);
+    m_distanceMap->setActualLocation(location);
 }
 
 void RoundResultsPage::setGuessedLocation(const geo::Point& location)
 {
-    m_distanceMap.setGuessedLocation(location);
+    m_distanceMap->setGuessedLocation(location);
 }
 
 void RoundResultsPage::setInfo(const game::RoundResults& roundResults)
 {
-    m_distanceMap.setDistance(roundResults.distanceMeters());
+    m_distanceMap->setDistance(roundResults.distanceMeters());
 
     updateDistanceLabel(roundResults);
     updatePointsLabel(roundResults);
@@ -38,46 +41,41 @@ void RoundResultsPage::setInfo(const game::RoundResults& roundResults)
 
 void RoundResultsPage::setCenter(const geo::Point& center)
 {
-    m_distanceMap.setCenter(center);
+    m_distanceMap->setCenter(center);
 }
 
 void RoundResultsPage::setupLayout()
 {
-    setLayout(&m_layout);
-    m_layout.setContentsMargins(0, 0, 0, 0);
+    setLayout(m_layout);
+    m_layout->setContentsMargins(0, 0, 0, 0);
 }
 
 void RoundResultsPage::setupInfoLabels()
 {
-    addToLayout(m_distanceLabel, Qt::AlignCenter);
-    addToLayout(m_pointsLabel, Qt::AlignCenter);
+    m_layout->addWidget(m_distanceLabel, 0, Qt::AlignCenter);
+    m_layout->addWidget(m_pointsLabel, 0, Qt::AlignCenter);
 
-    m_distanceLabel.setFont(QFont{"Times New Roman", 20});
-    m_pointsLabel.setFont(QFont{"Times New Roman", 20});
+    m_distanceLabel->setFont(QFont{"Times New Roman", 20});
+    m_pointsLabel->setFont(QFont{"Times New Roman", 20});
 }
 
 void RoundResultsPage::setupDistanceMap()
 {
-    addToLayout(m_distanceMap);
-    m_distanceMap.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_layout->addWidget(m_distanceMap);
+    m_distanceMap->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void RoundResultsPage::setupContinueButton()
 {
-    addToLayout(m_continueButton, Qt::AlignCenter);
-    m_continueButton.setMinimumSize(100, 40);
+    m_layout->addWidget(m_continueButton, 0, Qt::AlignCenter);
+    m_continueButton->setMinimumSize(100, 40);
 
-    connect(&m_continueButton, &QPushButton::clicked, this, &RoundResultsPage::onContinueButtonClicked);
+    connect(m_continueButton, &QPushButton::clicked, this, &RoundResultsPage::onContinueButtonClicked);
 }
 
 void RoundResultsPage::setupBottomSpacing()
 {
-    m_layout.addSpacing(10);
-}
-
-void RoundResultsPage::addToLayout(QWidget& widget, Qt::Alignment alignment /*= Qt::Alignment()*/)
-{
-    m_layout.addWidget(&widget, 0, alignment);
+    m_layout->addSpacing(10);
 }
 
 void RoundResultsPage::onContinueButtonClicked()
@@ -98,7 +96,7 @@ void RoundResultsPage::updateDistanceLabel(const game::RoundResults& roundResult
 
     formatter << " from the actual location.";
 
-    m_distanceLabel.setText(formatter.str().c_str());
+    m_distanceLabel->setText(formatter.str().c_str());
 }
 
 void RoundResultsPage::updatePointsLabel(const game::RoundResults& roundResults)
@@ -106,7 +104,9 @@ void RoundResultsPage::updatePointsLabel(const game::RoundResults& roundResults)
     std::string pointsText = "Points: ";
     pointsText += std::to_string(roundResults.points());
 
-    m_pointsLabel.setText(pointsText.c_str());
+    m_pointsLabel->setText(pointsText.c_str());
 }
+
+// ReSharper restore CppMemberFunctionMayBeConst
 
 }

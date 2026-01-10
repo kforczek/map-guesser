@@ -1,14 +1,16 @@
 #include "ui/pages/start.h"
 
+#include <qboxlayout.h>
+#include <QPushButton>
+
 namespace
 {
 
-void addButtonToLayout(QBoxLayout& layout, QPushButton& button)
-{
-    button.setFixedSize(QSize(750, 90));
-    button.setStyleSheet("font-family: 'Segoe UI'; font-size: 30px; font-weight: bold");
-    layout.addWidget(&button, 0, Qt::AlignHCenter);
-}
+constinit QSize GAMEPLAY_BUTTON_SIZE{750, 90};
+const QString GAMEPLAY_BUTTON_STYLE = "font-family: 'Segoe UI'; font-size: 30px; font-weight: bold";
+
+constinit QSize EXTRA_BUTTON_SIZE{200, 70};
+const QString EXTRA_BUTTON_STYLE = "font-family: 'Segoe UI'; font-size: 20px";
 
 }
 
@@ -17,32 +19,61 @@ namespace ui::pages
 
 StartPage::StartPage(QWidget* parent)
     : QFrame(parent)
-    , m_layout(this)
-    , m_singlePlayerButton("SINGLEPLAYER", this)
-    , m_spacer(0, 50)
-    , m_multiPlayerButton("[coming soon] MULTIPLAYER", this)
-    , m_bottomBar(this)
 {
-    setLayout(&m_layout);
+    auto* layout = new QVBoxLayout(this);
+    setLayout(layout);
 
-    m_multiPlayerButton.setEnabled(false);
+    layout->addStretch(3);
+    addGameplayButtons(*layout);
+    layout->addStretch(2);
+    addExtraButtons(*layout);
+    layout->addStretch(1);
+}
 
-    m_singlePlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    m_multiPlayerButton.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+void StartPage::addGameplayButtons(QVBoxLayout& layout)
+{
+    auto* singlePlayerButton = new QPushButton("SINGLEPLAYER", this);
+    auto* multiPlayerButton = new QPushButton("[coming soon] MULTIPLAYER", this);
 
-    m_singlePlayerButton.setProperty("role", "singleplayer");
-    m_multiPlayerButton.setProperty("role", "multiplayer");
+    multiPlayerButton->setEnabled(false);
 
-    m_layout.addStretch(3);
-    addButtonToLayout(m_layout, m_singlePlayerButton);
-    m_layout.addItem(&m_spacer);
-    addButtonToLayout(m_layout, m_multiPlayerButton);
-    m_layout.addStretch(2);
-    m_layout.addWidget(&m_bottomBar);
-    m_layout.addStretch(1);
+    singlePlayerButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    multiPlayerButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    connect(&m_singlePlayerButton, &QPushButton::clicked, this, &StartPage::singlePlayerRequested);
-    connect(&m_bottomBar, &widgets::StartPageBottomBar::mapEditorButtonClicked, this, &StartPage::mapEditorRequested);
+    singlePlayerButton->setProperty("role", "singleplayer");
+    multiPlayerButton->setProperty("role", "multiplayer");
+
+    singlePlayerButton->setFixedSize(GAMEPLAY_BUTTON_SIZE);
+    multiPlayerButton->setFixedSize(GAMEPLAY_BUTTON_SIZE);
+
+    singlePlayerButton->setStyleSheet(GAMEPLAY_BUTTON_STYLE);
+    multiPlayerButton->setStyleSheet(GAMEPLAY_BUTTON_STYLE);
+
+    layout.addWidget(singlePlayerButton, 0, Qt::AlignHCenter);
+    layout.addSpacing(50);
+    layout.addWidget(multiPlayerButton, 0, Qt::AlignHCenter);
+
+    connect(singlePlayerButton, &QPushButton::clicked, this, &StartPage::singlePlayerRequested);
+}
+
+void StartPage::addExtraButtons(QVBoxLayout& layout)
+{
+    auto* bottomBarLayout = new QHBoxLayout;
+    layout.addLayout(bottomBarLayout);
+
+    auto* settingsButton = new QPushButton("Settings", this);
+    settingsButton->setFixedSize(EXTRA_BUTTON_SIZE);
+    settingsButton->setStyleSheet(EXTRA_BUTTON_STYLE);
+
+    auto* mapEditorButton = new QPushButton("Map Editor", this);
+    mapEditorButton->setFixedSize(EXTRA_BUTTON_SIZE);
+    mapEditorButton->setStyleSheet(EXTRA_BUTTON_STYLE);
+
+    bottomBarLayout->addWidget(settingsButton);
+    bottomBarLayout->addSpacing(300);
+    bottomBarLayout->addWidget(mapEditorButton);
+
+    connect(mapEditorButton, &QPushButton::clicked, this, &StartPage::mapEditorRequested);
 }
 
 }

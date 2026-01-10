@@ -24,11 +24,10 @@ public:
     void setCenter(const geo::Point& center);
 
 private:
-    QWebChannel m_channel;
-    DistanceMapBridge m_bridge;
+    DistanceMapBridge* m_bridge = nullptr;
 
     void initBridge();
-    void resetHtmlContent(const geo::Point& mapCenter);
+    void initHtmlContent(const geo::Point& mapCenter);
 };
 
 }

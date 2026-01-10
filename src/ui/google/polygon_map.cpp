@@ -19,7 +19,7 @@ namespace ui::google
 
 PolygonMap::PolygonMap(QWidget* parent)
     : QWebEngineView(parent)
-    , m_bridge(this, page())
+    , m_bridge(new PolygonMapBridge(this, page()))
 {
     initBridge();
     resetHtmlContent(START_LOCATION);
@@ -27,17 +27,19 @@ PolygonMap::PolygonMap(QWidget* parent)
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void PolygonMap::loadMap(const geo::Map& map)
 {
-    m_bridge.loadMap(map.toJson().toJson());
+    m_bridge->loadMap(map.toJson().toJson());
 }
 
 void PolygonMap::initBridge()
 {
-    m_channel.registerObject("bridge", &m_bridge);
-    page()->setWebChannel(&m_channel);
+    auto* channel = new QWebChannel(this);
+    channel->registerObject("bridge", m_bridge);
+    page()->setWebChannel(channel);
 
-    connect(&m_bridge, &PolygonMapBridge::mapChanged, this, &PolygonMap::mapChanged);
+    connect(m_bridge, &PolygonMapBridge::mapChanged, this, &PolygonMap::mapChanged);
 }
 
 void PolygonMap::resetHtmlContent(const geo::Point& startLocation)

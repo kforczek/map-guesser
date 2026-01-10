@@ -11,25 +11,25 @@ namespace ui::pages
 
 MapEditorPage::MapEditorPage(QWidget* parent)
     : QFrame(parent)
-    , m_topBar(this)
-    , m_mapView(this)
+    , m_topBar(new widgets::MapEditorTopBar(this))
+    , m_mapView(new google::PolygonMap(this))
 {
-    setLayout(&m_layout);
+    setLayout(new QVBoxLayout(this));
 
-    m_layout.addWidget(&m_topBar);
-    m_layout.addWidget(&m_mapView);
+    layout()->addWidget(m_topBar);
+    layout()->addWidget(m_mapView);
 
-    connect(&m_mapView, &google::PolygonMap::mapChanged, this, &MapEditorPage::onMapChanged);
-    connect(&m_topBar, &widgets::MapEditorTopBar::loadButtonClicked, this, &MapEditorPage::onLoadRequested);
-    connect(&m_topBar, &widgets::MapEditorTopBar::saveButtonClicked, this, &MapEditorPage::onSaveRequested);
-    connect(&m_topBar, &widgets::MapEditorTopBar::saveAsButtonClicked, this, &MapEditorPage::onSaveAsRequested);
-    connect(&m_topBar, &widgets::MapEditorTopBar::closeButtonClicked, this, &MapEditorPage::closePage);
+    connect(m_mapView, &google::PolygonMap::mapChanged, this, &MapEditorPage::onMapChanged);
+    connect(m_topBar, &widgets::MapEditorTopBar::loadButtonClicked, this, &MapEditorPage::onLoadRequested);
+    connect(m_topBar, &widgets::MapEditorTopBar::saveButtonClicked, this, &MapEditorPage::onSaveRequested);
+    connect(m_topBar, &widgets::MapEditorTopBar::saveAsButtonClicked, this, &MapEditorPage::onSaveAsRequested);
+    connect(m_topBar, &widgets::MapEditorTopBar::closeButtonClicked, this, &MapEditorPage::closePage);
 }
 
 void MapEditorPage::onMapChanged(util::Consumable<geo::Map> updatedMap)
 {
     m_mapData = updatedMap.consume();
-    m_topBar.setSaveEnabled(true);
+    m_topBar->setSaveEnabled(true);
 }
 
 void MapEditorPage::onLoadRequested()
@@ -61,7 +61,7 @@ void MapEditorPage::onSaveAsRequested()
         return;
 
     m_mapFilePath = std::move(filePath);
-    m_topBar.setMapDisplayPath(*m_mapFilePath);
+    m_topBar->setMapDisplayPath(*m_mapFilePath);
     saveMap();
 }
 
@@ -82,10 +82,10 @@ void MapEditorPage::tryLoadMap(QString filePath)
     m_mapData = LoadMapFromFile(filePath);
     m_mapFilePath = std::move(filePath);
 
-    m_mapView.loadMap(*m_mapData);
+    m_mapView->loadMap(*m_mapData);
 
-    m_topBar.setMapDisplayPath(*m_mapFilePath);
-    m_topBar.setSaveEnabled(true);
+    m_topBar->setMapDisplayPath(*m_mapFilePath);
+    m_topBar->setSaveEnabled(true);
 }
 
 void MapEditorPage::saveMap()

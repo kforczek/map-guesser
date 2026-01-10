@@ -1,5 +1,4 @@
 #pragma once
-#include <QWebChannel>
 #include <QWebEngineView>
 
 #include "interactive_map_bridge.h"
@@ -27,8 +26,7 @@ signals:
     void guessMarkerPlaced();
 
 private:
-    QWebChannel m_channel;
-    InteractiveMapBridge m_bridge;
+    InteractiveMapBridge* m_bridge = nullptr;
 
     void initBridge();
     void resetHtmlContent(const geo::Point& startLocation);

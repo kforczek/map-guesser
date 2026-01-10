@@ -1,12 +1,32 @@
 #pragma once
-#include <QSpinBox>
+#include <QWidget>
 
-#include "base.h"
+#include "geo/map.h"
 
-namespace ui::widgets::propedit
+class QLineEdit;
+class QSpinBox;
+
+namespace ui::widgets
 {
 
-class PositiveNumberPropertyEditor final : public PropertyEditor
+class MapPropertyEditor final : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit MapPropertyEditor(QWidget* parent);
+
+    geo::Map getValue() const;
+
+private:
+    QLineEdit* m_valueEdit = nullptr;
+
+private slots:
+    void onBrowseButtonClicked();
+};
+
+// ########################################################################################
+
+class PositiveNumberPropertyEditor final : public QWidget
 {
 public:
     struct Values;
@@ -15,7 +35,7 @@ public:
     unsigned int getValue() const;
 
 private:
-    QSpinBox m_valueEdit;
+    QSpinBox* m_valueEdit = nullptr;
 };
 
 // ########################################################################################

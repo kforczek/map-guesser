@@ -14,7 +14,7 @@ namespace ui::google
 
 InteractiveMap::InteractiveMap(QWidget* parent)
     : QWebEngineView(parent)
-    , m_bridge(this)
+    , m_bridge(new InteractiveMapBridge(this))
 {
     initBridge();
     resetHtmlContent({0, 0, geo::UnitType::Degrees});
@@ -22,12 +22,13 @@ InteractiveMap::InteractiveMap(QWidget* parent)
 
 const std::optional<geo::Point>& InteractiveMap::currLocation() const
 {
-    return m_bridge.location();
+    return m_bridge->location();
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void InteractiveMap::removeLocationMarker()
 {
-    m_bridge.removeLocationMarker();
+    m_bridge->removeLocationMarker();
 }
 
 void InteractiveMap::setCenter(const geo::Point& center)
@@ -37,10 +38,11 @@ void InteractiveMap::setCenter(const geo::Point& center)
 
 void InteractiveMap::initBridge()
 {
-    m_channel.registerObject("bridge", &m_bridge);
-    page()->setWebChannel(&m_channel);
+    auto* channel = new QWebChannel(this);
+    channel->registerObject("bridge", m_bridge);
+    page()->setWebChannel(channel);
 
-    connect(&m_bridge, &InteractiveMapBridge::locationSet, this, [this](){ emit guessMarkerPlaced(); });
+    connect(m_bridge, &InteractiveMapBridge::locationSet, this, [this](){ emit guessMarkerPlaced(); });
 }
 
 void InteractiveMap::resetHtmlContent(const geo::Point& startLocation)

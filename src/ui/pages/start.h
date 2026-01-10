@@ -1,10 +1,7 @@
 #pragma once
-#include <qboxlayout.h>
 #include <QFrame>
-#include <QPushButton>
-#include <QSpacerItem>
 
-#include "ui/widgets/start_page_bottom_bar.h"
+class QVBoxLayout;
 
 namespace ui::pages
 {
@@ -19,14 +16,9 @@ signals:
     void singlePlayerRequested();
     void mapEditorRequested();
 
-private /*fields*/:
-    QVBoxLayout m_layout;
-
-    QPushButton m_singlePlayerButton;
-    QSpacerItem m_spacer;
-    QPushButton m_multiPlayerButton;
-
-    widgets::StartPageBottomBar m_bottomBar;
+private /*methods*/:
+    void addGameplayButtons(QVBoxLayout& layout);
+    void addExtraButtons(QVBoxLayout& layout);
 };
 
 }

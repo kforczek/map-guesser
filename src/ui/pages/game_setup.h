@@ -3,8 +3,7 @@
 #include <QPushButton>
 
 #include "game/params.h"
-#include "ui/widgets/propedit/map.h"
-#include "ui/widgets/propedit/positive_number.h"
+#include "ui/widgets/propedit.h"
 #include "util/consumable.h"
 
 namespace ui::pages
@@ -20,13 +19,11 @@ signals:
     void startGame(util::Consumable<game::Params> gameParams);
 
 private:
-    QVBoxLayout m_layout;
+    widgets::MapPropertyEditor* m_propMap = nullptr;
+    widgets::PositiveNumberPropertyEditor* m_propRoundsCnt = nullptr;
+    widgets::PositiveNumberPropertyEditor* m_propMaxRoundPoints = nullptr;
 
-    widgets::propedit::MapPropertyEditor m_propMap;
-    widgets::propedit::PositiveNumberPropertyEditor m_propRoundsCnt;
-    widgets::propedit::PositiveNumberPropertyEditor m_propMaxRoundPoints;
-
-    QPushButton m_startGameButton;
+    QPushButton* m_startGameButton = nullptr;
 
 private slots:
     void onStartGameButtonClicked();

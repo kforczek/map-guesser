@@ -18,10 +18,8 @@ signals:
     void closePage();
 
 private /*fields*/:
-    QVBoxLayout m_layout;
-
-    widgets::MapEditorTopBar m_topBar;
-    google::PolygonMap m_mapView;
+    widgets::MapEditorTopBar* m_topBar = nullptr;
+    google::PolygonMap* m_mapView = nullptr;
 
     std::optional<geo::Map> m_mapData;
     std::optional<QString> m_mapFilePath;

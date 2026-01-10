@@ -24,15 +24,10 @@ signals:
     void closeButtonClicked();
 
 private /*fields*/:
-    QHBoxLayout m_layout;
-
-    QLabel m_infoLabel;
-    QPushButton m_loadButton;
-    QPushButton m_saveButton;
-    QPushButton m_saveAsButton;
-
-    QSpacerItem m_spacer;
-    QPushButton m_closeButton;
+    QLabel* m_infoLabel = nullptr;
+    QPushButton* m_loadButton = nullptr;
+    QPushButton* m_saveButton = nullptr;
+    QPushButton* m_saveAsButton = nullptr;
 
 private /*methods*/:
     void setupInfoLabel();

@@ -33,14 +33,14 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private /*fields*/:
-    google::StreetView m_streetView;
-    google::InteractiveMap m_interactiveMap;
+    google::StreetView* m_streetView = nullptr;
+    google::InteractiveMap* m_interactiveMap = nullptr;
 
-    QPushButton m_returnToStartButton;
-    QPushButton m_guessButton;
+    QPushButton* m_returnToStartButton = nullptr;
+    QPushButton* m_guessButton = nullptr;
 
-    QPushButton m_shrinkMapButton;
-    QPushButton m_enlargeMapButton;
+    QPushButton* m_shrinkMapButton = nullptr;
+    QPushButton* m_enlargeMapButton = nullptr;
 
     double m_mapToWindowWidthRatio = 0;
 

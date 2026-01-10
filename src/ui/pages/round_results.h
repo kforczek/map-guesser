@@ -30,13 +30,13 @@ signals:
     void continueButtonClicked();
 
 private /*members*/:
-    QVBoxLayout m_layout;
+    QVBoxLayout* m_layout = nullptr;
 
-    QLabel m_distanceLabel;
-    QLabel m_pointsLabel;
+    QLabel* m_distanceLabel = nullptr;
+    QLabel* m_pointsLabel = nullptr;
 
-    google::DistanceMap m_distanceMap;
-    QPushButton m_continueButton;
+    google::DistanceMap* m_distanceMap = nullptr;
+    QPushButton* m_continueButton = nullptr;
 
 private /*methods*/:
     void setupLayout();
@@ -44,7 +44,6 @@ private /*methods*/:
     void setupDistanceMap();
     void setupContinueButton();
     void setupBottomSpacing();
-    void addToLayout(QWidget& widget, Qt::Alignment alignment = Qt::Alignment());
 
     void onContinueButtonClicked();
 

@@ -1,5 +1,4 @@
 #pragma once
-#include <QWebChannel>
 #include <QWebEngineView>
 
 #include "polygon_map_bridge.h"
@@ -24,8 +23,7 @@ signals:
     void mapChanged(util::Consumable<geo::Map> updatedMap);
 
 private:
-    QWebChannel m_channel;
-    PolygonMapBridge m_bridge;
+    PolygonMapBridge* m_bridge = nullptr;
 
     void initBridge();
     void resetHtmlContent(const geo::Point& startLocation);
