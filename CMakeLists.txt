@@ -90,6 +90,14 @@ add_executable(map_guesser main.cpp
         src/planar/triangulation.h
         src/planar/triangulation.cpp
         src/game/random_point.h
+        src/game/points/calculator_base.h
+        src/game/engine/scoring_system.h
+        src/game/engine/defs.h
+        src/game/engine/scoring_system.cpp
+        src/game/engine/state.h
+        src/game/engine/round_system.h
+        src/game/engine/round_system.cpp
+        src/game/engine/active_round.h
 )
 
 target_include_directories(map_guesser
