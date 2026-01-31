@@ -3,7 +3,7 @@
 #include <qboxlayout.h>
 #include <QMessageBox>
 
-#include "ui/map_file_access.h"
+#include "ui/utils/map_file_access.h"
 #include "lambert/projection.h"
 
 namespace
@@ -44,9 +44,16 @@ void GameSetupPage::onStartGameButtonClicked()
         geo::Map geoMap = m_propMap->getValue();
         planar::Map projectedMap = lambert::project(geoMap);
 
+        const unsigned int roundsCnt = m_propRoundsCnt->getValue();
         const unsigned int maxRoundPoints = m_propMaxRoundPoints->getValue();
 
-        game::Params gameParams{std::move(geoMap), std::move(projectedMap), maxRoundPoints};
+        auto gameParams = std::make_shared<game::Params>();
+        gameParams->geoMap = std::move(geoMap);
+        gameParams->projectedMap = std::move(projectedMap);
+        gameParams->roundsCnt = roundsCnt;
+        gameParams->maxRoundPoints = maxRoundPoints;
+        gameParams->playerNames.push_back("[Singleplayer]");
+
         emit startGame(std::move(gameParams));
     }
     catch (std::runtime_error& err)

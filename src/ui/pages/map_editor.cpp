@@ -3,8 +3,8 @@
 #include <QFile>
 #include <QMessageBox>
 
-#include "ui/map_file_access.h"
-#include "ui/map_file_selector.h"
+#include "ui/utils/map_file_access.h"
+#include "ui/utils/map_file_selector.h"
 
 namespace ui::pages
 {
@@ -36,7 +36,7 @@ void MapEditorPage::onLoadRequested()
 {
     const QString& startPath = m_mapFilePath ? *m_mapFilePath : "";
 
-    if (QString filePath = GetOpenMapPath(this, startPath); !filePath.isEmpty())
+    if (QString filePath = utils::GetOpenMapPath(this, startPath); !filePath.isEmpty())
         loadMap(std::move(filePath));
 }
 
@@ -56,7 +56,7 @@ void MapEditorPage::onSaveAsRequested()
 {
     const QString& startPath = m_mapFilePath ? *m_mapFilePath : "";
 
-    QString filePath = GetSaveMapPath(this, startPath);
+    QString filePath = utils::GetSaveMapPath(this, startPath);
     if (filePath.isEmpty())
         return;
 
@@ -71,7 +71,7 @@ void MapEditorPage::loadMap(QString filePath)
     {
         tryLoadMap(std::move(filePath));
     }
-    catch (MapFileAccessError& err)
+    catch (utils::MapFileAccessError& err)
     {
         QMessageBox::critical(this, "Load error", err.what());
     }
@@ -79,7 +79,7 @@ void MapEditorPage::loadMap(QString filePath)
 
 void MapEditorPage::tryLoadMap(QString filePath)
 {
-    m_mapData = LoadMapFromFile(filePath);
+    m_mapData = utils::LoadMapFromFile(filePath);
     m_mapFilePath = std::move(filePath);
 
     m_mapView->loadMap(*m_mapData);
@@ -94,7 +94,7 @@ void MapEditorPage::saveMap()
     {
         trySaveMap();
     }
-    catch (MapFileAccessError& err)
+    catch (utils::MapFileAccessError& err)
     {
         QMessageBox::critical(this, "Save error", err.what());
     }
@@ -105,7 +105,7 @@ void MapEditorPage::trySaveMap() const
     assert(m_mapData);
     assert(m_mapFilePath);
 
-    SaveMapToFile(*m_mapData, *m_mapFilePath);
+    utils::SaveMapToFile(*m_mapData, *m_mapFilePath);
 }
 
 }

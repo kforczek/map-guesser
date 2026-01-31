@@ -4,7 +4,7 @@
 
 #include "geo/map.h"
 
-namespace ui
+namespace ui::utils
 {
 
 geo::Map LoadMapFromFile(const QString& path);

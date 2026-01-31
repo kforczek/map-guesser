@@ -1,26 +1,35 @@
 #pragma once
-
-namespace geo
-{
-class Point;
-}
+#include "defs.h"
+#include "geo/point.h"
 
 namespace game
 {
 
 struct Params;
 
-class RoundResults
+// ###################################################################################################
+
+struct PlayerRoundResult
 {
-public:
-    RoundResults(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams);
+    PlayerRoundResult(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams);
 
-    double distanceMeters() const;
-    unsigned int points() const;
-
-private:
-    double m_distanceMeters = 0;
-    unsigned int m_points = 0;
+    geo::Point guess;
+    double distanceMeters = 0;
+    unsigned int points = 0;
 };
+
+// ###################################################################################################
+
+using TPlayer2Result = std::unordered_map<TPlayerName, PlayerRoundResult>;
+
+struct RoundResults
+{
+    RoundResults(const geo::Point& correctLocation, const TPlayer2Guess& guesses, const Params& gameParams);
+
+    geo::Point correctLocation;
+    TPlayer2Result playerResults;
+};
+
+// ###################################################################################################
 
 }

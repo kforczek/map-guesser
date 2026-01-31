@@ -21,7 +21,7 @@ public:
     explicit StreetViewPage(QWidget* parent);
 
     const geo::Point& getStreetViewLocation() const;
-    void startNewRound(const geo::Point& location);
+    void startNextRound(const geo::Point& location);
 
     void setCenter(const geo::Point& center);
 

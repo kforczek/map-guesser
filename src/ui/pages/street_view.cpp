@@ -56,7 +56,7 @@ const geo::Point& StreetViewPage::getStreetViewLocation() const
     return m_streetView->getLocation();
 }
 
-void StreetViewPage::startNewRound(const geo::Point& location)
+void StreetViewPage::startNextRound(const geo::Point& location)
 {
     m_streetView->setLocation(location);
     m_interactiveMap->removeLocationMarker();

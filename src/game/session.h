@@ -1,29 +1,29 @@
 #pragma once
 #include "params.h"
-#include "engine/active_round.h"
-#include "engine/round_system.h"
-#include "engine/scoring_system.h"
-#include "engine/state.h"
+#include "mode/engine.h"
+
+namespace game::mode
+{
+struct IGameStateObserver;
+}
 
 namespace game
 {
 
-// TODO: [multiplayer] this becomes ServerSession
+// TODO: [multiplayer] this becomes ServerSession, ClientSession should probably have no engine
 class Session
 {
 public:
-    explicit Session(Params gameParams);
+    explicit Session(std::shared_ptr<Params> gameParams, game::mode::IGameStateObserver& observer);
 
     const Params& params() const;
 
+    // TODO remove direct access
+    game::mode::IEngine& engine();
+
 private:
-    Params m_gameParams;
-
-    engine::GameState m_gameState;
-    engine::ActiveRound m_activeRound;
-
-    std::unique_ptr<engine::IScoringSystem> m_scoringSystem;
-    std::unique_ptr<engine::IRoundSystem> m_roundSystem;
+    std::shared_ptr<Params> m_gameParams;
+    std::unique_ptr<game::mode::IEngine> m_engine;
 };
 
 }

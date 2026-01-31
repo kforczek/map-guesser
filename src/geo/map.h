@@ -8,6 +8,9 @@ namespace geo
 class Map
 {
 public:
+    Map() = default;
+    explicit Map(std::vector<Region> regions);
+
     static Map fromJson(const QJsonDocument& json);
     QJsonDocument toJson() const;
 
@@ -17,8 +20,6 @@ public:
 
 private:
     std::vector<Region> m_regions;
-
-    explicit Map(std::vector<Region> regions);
 };
 
 }

@@ -34,8 +34,8 @@ add_executable(map_guesser main.cpp
         src/ui/google/html_reader.cpp
         src/ui/google/interactive_map_bridge.h
         src/ui/google/interactive_map_bridge.cpp
-        src/game/main_window.h
-        src/game/main_window.cpp
+        src/ui/main_window.h
+        src/ui/main_window.cpp
         src/ui/google/distance_map.h
         src/ui/google/distance_map.cpp
         src/ui/google/distance_map_bridge.h
@@ -49,9 +49,7 @@ add_executable(map_guesser main.cpp
         src/ui/pages/round_results.h
         src/ui/pages/round_results.cpp
         src/game/round_results.h
-        src/game/results.cpp
-        src/game/error_message.h
-        src/game/error_message.cpp
+        src/game/round_results.cpp
         src/ui/pages/start.h
         src/ui/pages/start.cpp
         src/ui/pages/map_editor.h
@@ -65,8 +63,8 @@ add_executable(map_guesser main.cpp
         src/geo/map_import.cpp
         src/geo/map_export.cpp
         src/util/consumable.h
-        src/ui/map_file_selector.h
-        src/ui/map_file_selector.cpp
+        src/ui/utils/map_file_selector.h
+        src/ui/utils/map_file_selector.cpp
         src/planar/point.h
         src/planar/map.h
         src/planar/map.cpp
@@ -76,8 +74,8 @@ add_executable(map_guesser main.cpp
         src/ui/widgets/propedit.h
         src/ui/widgets/propedit.cpp
         src/ui/pages/game_setup.cpp
-        src/ui/map_file_access.h
-        src/ui/map_file_access.cpp
+        src/ui/utils/map_file_access.h
+        src/ui/utils/map_file_access.cpp
         src/game/session.cpp
         src/lambert/projection.h
         src/lambert/projection.cpp
@@ -90,19 +88,21 @@ add_executable(map_guesser main.cpp
         src/planar/triangulation.h
         src/planar/triangulation.cpp
         src/game/random_point.h
-        src/game/points/calculator_base.h
-        src/game/engine/scoring_system.h
-        src/game/engine/defs.h
-        src/game/engine/scoring_system.cpp
-        src/game/engine/state.h
-        src/game/engine/round_system.h
-        src/game/engine/round_system.cpp
-        src/game/engine/active_round.h
+        src/game/mode/engine.h
+        src/game/game.h
+        src/game/mode/engine_base.h
+        src/game/mode/engine_fixed_rounds.h
+        src/game/mode/engine_fixed_rounds.cpp
+        src/game/game.cpp
+        src/ui/controller.h
+        src/ui/controller.cpp
+        src/ui/commands.h
+        src/game/mode/engine_base.cpp
+        src/game/mode/observer.h
+        src/game/defs.h
 )
 
-target_include_directories(map_guesser
-        PUBLIC ${CMAKE_SOURCE_DIR}/include
-        PRIVATE ${CMAKE_SOURCE_DIR}/src
+target_include_directories(map_guesser PRIVATE ${CMAKE_SOURCE_DIR}/src
 )
 target_link_libraries(map_guesser PRIVATE Qt6::Widgets Qt6::WebEngineWidgets curl)
 

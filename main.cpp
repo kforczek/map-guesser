@@ -3,8 +3,10 @@
 #include <QWebEngineSettings>
 #include <QLoggingCategory>
 
-#include "src/game/main_window.h"
+#include "game/game.h"
+#include "ui/main_window.h"
 #include "geo/point.h"
+#include "ui/controller.h"
 
 namespace
 {
@@ -51,8 +53,11 @@ int main(int argc, char *argv[])
     app.setStyleSheet(getStyleSheet());
 
     // TODO: check for active token during setup (before game), maybe validate the token somehow
-    game::MainWindow window{};
-    window.showFullScreen();
+    game::MapGuesserGame mapGuesser;
+    ui::MainWindow mainWindow;
+
+    ui::Controller controller{mapGuesser, mainWindow};
+    mainWindow.showFullScreen();
 
     return QApplication::exec();
 }

@@ -4,7 +4,6 @@
 
 #include "game/params.h"
 #include "ui/widgets/propedit.h"
-#include "util/consumable.h"
 
 namespace ui::pages
 {
@@ -16,7 +15,7 @@ public:
     explicit GameSetupPage(QWidget* parent);
 
 signals:
-    void startGame(util::Consumable<game::Params> gameParams);
+    void startGame(std::shared_ptr<game::Params> gameParams);
 
 private:
     widgets::MapPropertyEditor* m_propMap = nullptr;

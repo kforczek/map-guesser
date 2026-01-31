@@ -1,4 +1,4 @@
-#include "ui/map_file_selector.h"
+#include "map_file_selector.h"
 #include <QFileDialog>
 
 namespace
@@ -9,7 +9,7 @@ const QString STR_FILTER = "Map Guesser map files (*.mg) ;; All files (*)";
 
 }
 
-namespace ui
+namespace ui::utils
 {
 
 QString GetOpenMapPath(QWidget* parent /*= nullptr*/, const QString& startPath /*= {}*/)

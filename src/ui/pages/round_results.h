@@ -7,7 +7,8 @@
 
 namespace game
 {
-class RoundResults;
+struct RoundResults;
+struct PlayerRoundResult;
 }
 
 namespace ui::pages
@@ -19,11 +20,8 @@ class RoundResultsPage final : public QFrame
 public:
     explicit RoundResultsPage(QWidget* parent);
 
-    void setActualLocation(const geo::Point& location);
-    void setGuessedLocation(const geo::Point& location);
-    void setInfo(const game::RoundResults& roundResults);
-
     void setCenter(const geo::Point& center);
+    void setData(const game::RoundResults& roundResults);
 
 signals:
     // TODO [naming] -> nextRoundRequested() etc
@@ -47,8 +45,8 @@ private /*methods*/:
 
     void onContinueButtonClicked();
 
-    void updateDistanceLabel(const game::RoundResults& roundResults);
-    void updatePointsLabel(const game::RoundResults& roundResults);
+    void updateDistanceLabel(const game::PlayerRoundResult& result);
+    void updatePointsLabel(const game::PlayerRoundResult& result);
 };
 
 }

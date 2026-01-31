@@ -3,7 +3,7 @@
 
 class QWidget;
 
-namespace ui
+namespace ui::utils
 {
 
 QString GetOpenMapPath(QWidget* parent, const QString& startPath = {});

@@ -8,6 +8,7 @@ namespace planar
 class Map
 {
 public:
+    Map() = default;
     explicit Map(std::vector<Triangle> triangles);
 
     Point getRandomPoint() const;

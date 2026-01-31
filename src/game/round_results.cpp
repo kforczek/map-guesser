@@ -1,6 +1,5 @@
-#include "game/params.h"
-#include "game/round_results.h"
-#include "geo/point.h"
+#include "round_results.h"
+#include "params.h"
 
 namespace
 {
@@ -40,20 +39,22 @@ unsigned int calcRoundPoints(
 namespace game
 {
 
-RoundResults::RoundResults(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams)
-    : m_distanceMeters(actualLoc.distanceTo(guessedLoc))
-    , m_points(calcRoundPoints(m_distanceMeters, gameParams.projectedMap.totalArea(), gameParams.maxRoundPoints))
+PlayerRoundResult::PlayerRoundResult(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams)
+    : guess(guessedLoc)
+    , distanceMeters(actualLoc.distanceTo(guessedLoc))
+    , points(calcRoundPoints(distanceMeters, gameParams.projectedMap.totalArea(), gameParams.maxRoundPoints))
 {
 }
 
-double RoundResults::distanceMeters() const
+RoundResults::RoundResults(const geo::Point& correctLocation, const TPlayer2Guess& guesses, const Params& gameParams)
+    : correctLocation(correctLocation)
 {
-    return m_distanceMeters;
-}
-
-unsigned int RoundResults::points() const
-{
-    return m_points;
+    playerResults.reserve(guesses.size());
+    for (const auto& [playerName, guess] : guesses)
+    {
+        PlayerRoundResult playerResult{correctLocation, guess, gameParams};
+        playerResults.try_emplace(playerName, playerResult);
+    }
 }
 
 }
