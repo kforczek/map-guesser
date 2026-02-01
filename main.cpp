@@ -5,8 +5,7 @@
 
 #include "game/game.h"
 #include "ui/main_window.h"
-#include "geo/point.h"
-#include "ui/controller.h"
+#include "ui/bridge/connection.h"
 
 namespace
 {
@@ -56,7 +55,7 @@ int main(int argc, char *argv[])
     game::MapGuesserGame mapGuesser;
     ui::MainWindow mainWindow;
 
-    ui::Controller controller{mapGuesser, mainWindow};
+    ui::bridge::Connect(mapGuesser, mainWindow);
     mainWindow.showFullScreen();
 
     return QApplication::exec();

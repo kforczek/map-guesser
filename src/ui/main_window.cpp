@@ -41,9 +41,9 @@ void MainWindow::showPlayerGuessed(const std::string& playerName)
     // TODO [multiplayer]: highlight that a player has guessed
 }
 
-void MainWindow::showRoundResults(const game::RoundResults& roundResults)
+void MainWindow::showRoundResults(const game::RoundResults& roundResults, bool isGameOver)
 {
-    m_roundResultsPage.setData(roundResults);
+    m_roundResultsPage.setData(roundResults, isGameOver);
     m_layout.setCurrentWidget(&m_roundResultsPage);
 }
 
@@ -89,7 +89,7 @@ void MainWindow::initConnections()
     connect(&m_mapEditorPage, &pages::MapEditorPage::closePage, this, &MainWindow::onStartPageRequested);
 
     connect(&m_streetViewPage, &pages::StreetViewPage::guessMade, this, &MainWindow::guessSubmitted);
-    connect(&m_roundResultsPage, &pages::RoundResultsPage::continueButtonClicked, this, &MainWindow::nextRoundRequested);
+    connect(&m_roundResultsPage, &pages::RoundResultsPage::nextRoundRequested, this, &MainWindow::nextRoundRequested);
 
     connect(&m_escShortcut, &QShortcut::activated, [this]() { toggleFullScreen(false); });
     connect(&m_f11Shortcut, &QShortcut::activated, [this]() { toggleFullScreen(); });

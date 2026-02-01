@@ -22,14 +22,15 @@ public:
     void setMapCenter(const geo::Point& centerPoint);
     void startNextRound(const geo::Point& location);
     void showPlayerGuessed(const std::string& playerName);
-    void showRoundResults(const game::RoundResults& roundResults);
+    void showRoundResults(const game::RoundResults& roundResults, bool isGameOver);
 
     QMessageBox::StandardButton showErrorMessage(QString errDetails);
 
 signals:
-    void nextRoundRequested();
     void startGameRequested(std::shared_ptr<game::Params> gameParams);
     void guessSubmitted(const geo::Point& guessedLocation);
+    void nextRoundRequested();
+    void summaryRequested();
 
 private /*fields*/:
     QStackedLayout m_layout;

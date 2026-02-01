@@ -21,20 +21,21 @@ public:
     explicit RoundResultsPage(QWidget* parent);
 
     void setCenter(const geo::Point& center);
-    void setData(const game::RoundResults& roundResults);
+    void setData(const game::RoundResults& roundResults, bool isGameOver);
 
 signals:
-    // TODO [naming] -> nextRoundRequested() etc
-    void continueButtonClicked();
+    void nextRoundRequested();
+    void summaryRequested();
 
 private /*members*/:
     QVBoxLayout* m_layout = nullptr;
+    bool m_isGameOver = false;
 
     QLabel* m_distanceLabel = nullptr;
     QLabel* m_pointsLabel = nullptr;
 
     google::DistanceMap* m_distanceMap = nullptr;
-    QPushButton* m_continueButton = nullptr;
+    QPushButton* m_proceedButton = nullptr;
 
 private /*methods*/:
     void setupLayout();
@@ -43,7 +44,7 @@ private /*methods*/:
     void setupContinueButton();
     void setupBottomSpacing();
 
-    void onContinueButtonClicked();
+    void onProceedButtonClicked();
 
     void updateDistanceLabel(const game::PlayerRoundResult& result);
     void updatePointsLabel(const game::PlayerRoundResult& result);

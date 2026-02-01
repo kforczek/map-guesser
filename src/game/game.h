@@ -1,7 +1,7 @@
 #pragma once
 #include "session.h"
 #include "mode/observer.h"
-#include "ui/commands.h"
+#include "ui/bridge/commands.h"
 
 namespace game
 {
@@ -10,7 +10,7 @@ class MapGuesserGame final : public game::mode::IGameStateObserver
 {
 public:
     // game -> ui
-    void setUiCommands(ui::Commands commands);
+    void setUiCommands(ui::bridge::Commands commands);
 
     // ui -> game
     void onCreateSession(std::shared_ptr<Params> gameParams);
@@ -22,7 +22,7 @@ public:
 
 private:
     std::optional<Session> m_gameSession;
-    ui::Commands m_uiCommands;
+    ui::bridge::Commands m_uiCommands;
 };
 
 }

@@ -17,8 +17,8 @@ double FixedRoundsEngine::getTotalPoints(const TPlayerName& player) const
 
 bool FixedRoundsEngine::isGameOver() const
 {
-    // TODO
-    return false;
+    assert(m_gameParams->roundsCnt > 0);
+    return m_roundNumber >= m_gameParams->roundsCnt;
 }
 
 void FixedRoundsEngine::registerGuess(const TPlayerName& player, const geo::Point& guess)
@@ -32,6 +32,7 @@ void FixedRoundsEngine::registerGuess(const TPlayerName& player, const geo::Poin
 
 void FixedRoundsEngine::startNextRound(const geo::Point& correctLocation)
 {
+    ++m_roundNumber;
     m_correctLocation = correctLocation;
 }
 

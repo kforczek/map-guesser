@@ -6,7 +6,7 @@
 namespace game
 {
 
-void MapGuesserGame::setUiCommands(ui::Commands commands)
+void MapGuesserGame::setUiCommands(ui::bridge::Commands commands)
 {
     m_uiCommands = std::move(commands);
 }
@@ -36,7 +36,7 @@ void MapGuesserGame::onStartNextRound()
         catch (std::runtime_error& err)
         {
             const auto decision = m_uiCommands.showErrorMessage(err.what());
-            if (decision == ui::ErrorAction::Abort)
+            if (decision == ui::bridge::Commands::ErrorAction::Abort)
                 exit(1);
         }
     }
@@ -54,7 +54,8 @@ void MapGuesserGame::onGuessSubmitted(const geo::Point& guessedLocation)
 
 void MapGuesserGame::onRoundFinished(const RoundResults &roundResults) const
 {
-    m_uiCommands.showRoundResults(roundResults);
+    assert(m_gameSession);
+    m_uiCommands.showRoundResults(roundResults, m_gameSession->engine().isGameOver());
 }
 
 }

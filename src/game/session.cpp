@@ -17,6 +17,11 @@ const Params& Session::params() const
     return *m_gameParams;
 }
 
+const game::mode::IEngine& Session::engine() const
+{
+    return *m_engine;
+}
+
 game::mode::IEngine& Session::engine()
 {
     return *m_engine;

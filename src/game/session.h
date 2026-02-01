@@ -19,6 +19,7 @@ public:
     const Params& params() const;
 
     // TODO remove direct access
+    const game::mode::IEngine& engine() const;
     game::mode::IEngine& engine();
 
 private:

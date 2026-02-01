@@ -12,7 +12,7 @@ RoundResultsPage::RoundResultsPage(QWidget* parent)
     , m_distanceLabel(new QLabel(this))
     , m_pointsLabel(new QLabel(this))
     , m_distanceMap(new google::DistanceMap(this))
-    , m_continueButton(new QPushButton("Next Round", this)) // TODO: "Next Round" or "Summary" if game has ended
+    , m_proceedButton(new QPushButton("Next Round", this))
 {
     setupLayout();
     setupInfoLabels();
@@ -26,7 +26,7 @@ void RoundResultsPage::setCenter(const geo::Point& center)
     m_distanceMap->setCenter(center);
 }
 
-void RoundResultsPage::setData(const game::RoundResults& roundResults)
+void RoundResultsPage::setData(const game::RoundResults& roundResults, bool isGameOver)
 {
     m_distanceMap->setActualLocation(roundResults.correctLocation);
 
@@ -37,6 +37,12 @@ void RoundResultsPage::setData(const game::RoundResults& roundResults)
 
     updateDistanceLabel(playerResult);
     updatePointsLabel(playerResult);
+
+    if (isGameOver)
+    {
+        m_isGameOver = true;
+        m_proceedButton->setText("Summary");
+    }
 }
 
 void RoundResultsPage::setupLayout()
@@ -62,10 +68,10 @@ void RoundResultsPage::setupDistanceMap()
 
 void RoundResultsPage::setupContinueButton()
 {
-    m_layout->addWidget(m_continueButton, 0, Qt::AlignCenter);
-    m_continueButton->setMinimumSize(100, 40);
+    m_layout->addWidget(m_proceedButton, 0, Qt::AlignCenter);
+    m_proceedButton->setMinimumSize(100, 40);
 
-    connect(m_continueButton, &QPushButton::clicked, this, &RoundResultsPage::onContinueButtonClicked);
+    connect(m_proceedButton, &QPushButton::clicked, this, &RoundResultsPage::onProceedButtonClicked);
 }
 
 void RoundResultsPage::setupBottomSpacing()
@@ -73,9 +79,16 @@ void RoundResultsPage::setupBottomSpacing()
     m_layout->addSpacing(10);
 }
 
-void RoundResultsPage::onContinueButtonClicked()
+void RoundResultsPage::onProceedButtonClicked()
 {
-    emit continueButtonClicked();
+    if (m_isGameOver)
+    {
+        emit summaryRequested();
+    }
+    else
+    {
+        emit nextRoundRequested();
+    }
 }
 
 void RoundResultsPage::updateDistanceLabel(const game::PlayerRoundResult& result)

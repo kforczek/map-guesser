@@ -25,6 +25,7 @@ public:
 private:
     std::shared_ptr<Params> m_gameParams;
 
+    size_t m_roundNumber = 0;
     geo::Point m_correctLocation;
     TPlayer2Guess m_guesses;
 

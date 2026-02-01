@@ -94,12 +94,12 @@ add_executable(map_guesser main.cpp
         src/game/mode/engine_fixed_rounds.h
         src/game/mode/engine_fixed_rounds.cpp
         src/game/game.cpp
-        src/ui/controller.h
-        src/ui/controller.cpp
-        src/ui/commands.h
+        src/ui/bridge/commands.h
         src/game/mode/engine_base.cpp
         src/game/mode/observer.h
         src/game/defs.h
+        src/ui/bridge/connection.h
+        src/ui/bridge/connection.cpp
 )
 
 target_include_directories(map_guesser PRIVATE ${CMAKE_SOURCE_DIR}/src
