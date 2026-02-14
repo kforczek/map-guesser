@@ -6,15 +6,15 @@
 namespace game::mode
 {
 
-void EngineBase::setObserver(const IGameStateObserver& observer)
+void EngineBase::setObserver(IGameStateObserver& observer)
 {
     m_observer = &observer;
 }
 
-void EngineBase::notifyRoundFinished(const RoundResults& roundResults) const
+void EngineBase::notifyRoundFinished()
 {
     if (m_observer)
-        m_observer->onRoundFinished(roundResults);
+        m_observer->onRoundFinished();
 }
 
 // void EngineBase::notifyOpponentGuessed(TPlayerId opponentId) const

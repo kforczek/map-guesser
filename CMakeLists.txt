@@ -100,6 +100,8 @@ add_executable(map_guesser main.cpp
         src/game/defs.h
         src/ui/bridge/connection.h
         src/ui/bridge/connection.cpp
+        src/ui/pages/summary.h
+        src/ui/pages/summary.cpp
 )
 
 target_include_directories(map_guesser PRIVATE ${CMAKE_SOURCE_DIR}/src

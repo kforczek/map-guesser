@@ -9,6 +9,11 @@ namespace game::mode
 FixedRoundsEngine::FixedRoundsEngine(std::shared_ptr<Params> gameParams)
     : m_gameParams(std::move(gameParams)) { }
 
+RoundResults FixedRoundsEngine::calcRoundResults() const
+{
+    return RoundResults{m_correctLocation, m_guesses, *m_gameParams};
+}
+
 double FixedRoundsEngine::getTotalPoints(const TPlayerName& player) const
 {
     // TODO
@@ -23,28 +28,24 @@ bool FixedRoundsEngine::isGameOver() const
 
 void FixedRoundsEngine::registerGuess(const TPlayerName& player, const geo::Point& guess)
 {
+    assert(!m_guesses.contains(player));
     m_guesses[player] = guess;
 
     const bool allPlayersGuessed = m_guesses.size() == m_gameParams->playersCnt();
     if (allPlayersGuessed)
-        finishRound();
+        notifyRoundFinished();
 }
 
 void FixedRoundsEngine::startNextRound(const geo::Point& correctLocation)
 {
     ++m_roundNumber;
     m_correctLocation = correctLocation;
+    m_guesses.clear();
 }
 
 void FixedRoundsEngine::pauseGame()
 {
     // TODO
-}
-
-void FixedRoundsEngine::finishRound()
-{
-    const RoundResults roundResults{m_correctLocation, m_guesses, *m_gameParams};
-    notifyRoundFinished(roundResults);
 }
 
 }

@@ -1,5 +1,14 @@
 #include "ui/pages/round_results.h"
-#include "../../game/round_results.h"
+#include "game/round_results.h"
+#include "ui/google/distance_map.h"
+
+namespace
+{
+
+const QString BUTTON_TEXT_NEXT_ROUND = "Next Round";
+const QString BUTTON_TEXT_SUMMARY = "Summary";
+
+}
 
 namespace ui::pages
 {
@@ -12,7 +21,7 @@ RoundResultsPage::RoundResultsPage(QWidget* parent)
     , m_distanceLabel(new QLabel(this))
     , m_pointsLabel(new QLabel(this))
     , m_distanceMap(new google::DistanceMap(this))
-    , m_proceedButton(new QPushButton("Next Round", this))
+    , m_proceedButton(new QPushButton(BUTTON_TEXT_NEXT_ROUND, this))
 {
     setupLayout();
     setupInfoLabels();
@@ -26,7 +35,7 @@ void RoundResultsPage::setCenter(const geo::Point& center)
     m_distanceMap->setCenter(center);
 }
 
-void RoundResultsPage::setData(const game::RoundResults& roundResults, bool isGameOver)
+void RoundResultsPage::setData(const game::RoundResults& roundResults)
 {
     m_distanceMap->setActualLocation(roundResults.correctLocation);
 
@@ -37,11 +46,17 @@ void RoundResultsPage::setData(const game::RoundResults& roundResults, bool isGa
 
     updateDistanceLabel(playerResult);
     updatePointsLabel(playerResult);
+}
 
-    if (isGameOver)
+void RoundResultsPage::setContinueButtonType(EContinueButtonType type)
+{
+    if (type == EContinueButtonType::NextRound)
     {
-        m_isGameOver = true;
-        m_proceedButton->setText("Summary");
+        m_proceedButton->setText(BUTTON_TEXT_NEXT_ROUND);
+    }
+    else
+    {
+        m_proceedButton->setText(BUTTON_TEXT_SUMMARY);
     }
 }
 
@@ -81,14 +96,7 @@ void RoundResultsPage::setupBottomSpacing()
 
 void RoundResultsPage::onProceedButtonClicked()
 {
-    if (m_isGameOver)
-    {
-        emit summaryRequested();
-    }
-    else
-    {
-        emit nextRoundRequested();
-    }
+    emit closePage();
 }
 
 void RoundResultsPage::updateDistanceLabel(const game::PlayerRoundResult& result)
@@ -110,7 +118,7 @@ void RoundResultsPage::updateDistanceLabel(const game::PlayerRoundResult& result
 void RoundResultsPage::updatePointsLabel(const game::PlayerRoundResult& result)
 {
     std::string pointsText = "Points: ";
-    pointsText += std::to_string(result.points);
+    pointsText += std::to_string(result.distancePoints);
 
     m_pointsLabel->setText(pointsText.c_str());
 }

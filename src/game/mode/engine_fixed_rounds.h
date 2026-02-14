@@ -14,6 +14,7 @@ class FixedRoundsEngine final : public EngineBase
 public:
     explicit FixedRoundsEngine(std::shared_ptr<Params> gameParams);
 
+    RoundResults calcRoundResults() const override;
     double getTotalPoints(const TPlayerName& player) const override;
     bool isGameOver() const override;
 
@@ -28,8 +29,6 @@ private:
     size_t m_roundNumber = 0;
     geo::Point m_correctLocation;
     TPlayer2Guess m_guesses;
-
-    void finishRound();
 };
 
 }

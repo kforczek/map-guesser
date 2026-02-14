@@ -42,7 +42,8 @@ namespace game
 PlayerRoundResult::PlayerRoundResult(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams)
     : guess(guessedLoc)
     , distanceMeters(actualLoc.distanceTo(guessedLoc))
-    , points(calcRoundPoints(distanceMeters, gameParams.projectedMap.totalArea(), gameParams.maxRoundPoints))
+    , distancePoints(calcRoundPoints(distanceMeters, gameParams.projectedMap.totalArea(), gameParams.maxRoundPoints))
+    , pointsChange(distancePoints)
 {
 }
 

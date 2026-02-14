@@ -30,12 +30,18 @@ struct Commands
     using TCmdShowPlayerGuessed = std::function<void(const std::string& playerName)>;
     using TCmdShowRoundResults = std::function<void(const game::RoundResults& results, bool isGameOver)>;
     using TCmdShowErrorMessage = std::function<ErrorAction(const std::string& what)>;
+    using TCmdShowGameSummary = std::function<void(
+        const std::vector<std::string>& leaderboard,
+        const std::vector<game::RoundResults>& roundsHistory,
+        int initialPoints
+    )>;
 
     TCmdSetMapCenter        setMapCenter;
     TCmdStartNextRound      startNextRound;
     TCmdShowPlayerGuessed   showPlayerGuessed;
     TCmdShowRoundResults    showRoundResults;
     TCmdShowErrorMessage    showErrorMessage;
+    TCmdShowGameSummary     showGameSummary;
 };
 
 // ###################################################################

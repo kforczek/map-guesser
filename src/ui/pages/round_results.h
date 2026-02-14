@@ -3,12 +3,20 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include "ui/google/distance_map.h"
+namespace geo
+{
+class Point;
+}
 
 namespace game
 {
 struct RoundResults;
 struct PlayerRoundResult;
+}
+
+namespace ui::google
+{
+class DistanceMap;
 }
 
 namespace ui::pages
@@ -17,19 +25,24 @@ namespace ui::pages
 class RoundResultsPage final : public QFrame
 {
     Q_OBJECT
-public:
+public /*helpers*/:
+    enum class EContinueButtonType {
+        NextRound,
+        Summary
+    };
+
+public /*methods*/:
     explicit RoundResultsPage(QWidget* parent);
 
     void setCenter(const geo::Point& center);
-    void setData(const game::RoundResults& roundResults, bool isGameOver);
+    void setData(const game::RoundResults& roundResults);
+    void setContinueButtonType(EContinueButtonType type);
 
-signals:
-    void nextRoundRequested();
-    void summaryRequested();
+/*public*/ signals:
+    void closePage();
 
 private /*members*/:
     QVBoxLayout* m_layout = nullptr;
-    bool m_isGameOver = false;
 
     QLabel* m_distanceLabel = nullptr;
     QLabel* m_pointsLabel = nullptr;

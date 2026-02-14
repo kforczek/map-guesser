@@ -34,6 +34,14 @@ Commands createUiCommands(MainWindow& mainWindow)
         return bt == QMessageBox::Retry ? Commands::ErrorAction::Retry : Commands::ErrorAction::Abort;
     };
 
+    uiCommands.showGameSummary = [&mainWindow](
+        const std::vector<std::string>& leaderboard,
+        const std::vector<game::RoundResults>& roundsHistory,
+        int initialPoints
+    ) {
+        mainWindow.showGameSummary(leaderboard, roundsHistory, initialPoints);
+    };
+
     return uiCommands;
 }
 
@@ -47,7 +55,7 @@ void connectUiSignals(const MainWindow& mainWindow, game::MapGuesserGame& logicL
 
     QObject::connect(&mainWindow, &MainWindow::nextRoundRequested,
         [&logicLayer]() {
-            logicLayer.onStartNextRound();
+            logicLayer.onNextRoundRequested();
         });
 
     QObject::connect(&mainWindow, &MainWindow::guessSubmitted,

@@ -18,11 +18,41 @@ void MapGuesserGame::onCreateSession(std::shared_ptr<Params> gameParams)
     const geo::Point& centerPoint = m_gameSession->params().geoMap.center();
     m_uiCommands.setMapCenter(centerPoint);
 
-    onStartNextRound();
+    onNextRoundRequested();
 }
 
 // ReSharper disable CppMemberFunctionMayBeConst
-void MapGuesserGame::onStartNextRound()
+void MapGuesserGame::onNextRoundRequested()
+{
+    assert(m_gameSession);
+    if (m_gameSession->engine().isGameOver())
+    {
+        showGameSummary();
+    }
+    else
+    {
+        startNextRound();
+    }
+}
+// ReSharper restore CppMemberFunctionMayBeConst
+
+void MapGuesserGame::onGuessSubmitted(const geo::Point& guessedLocation)
+{
+    assert(m_gameSession);
+    m_gameSession->engine().registerGuess("", guessedLocation);
+}
+
+void MapGuesserGame::onRoundFinished()
+{
+    assert(m_gameSession);
+
+    RoundResults roundResults = m_gameSession->engine().calcRoundResults();
+    m_roundsHistory.push_back(std::move(roundResults));
+
+    m_uiCommands.showRoundResults(m_roundsHistory.back(), m_gameSession->engine().isGameOver());
+}
+
+void MapGuesserGame::startNextRound()
 {
     assert(m_gameSession);
 
@@ -44,18 +74,12 @@ void MapGuesserGame::onStartNextRound()
     m_uiCommands.startNextRound(*location);
     m_gameSession->engine().startNextRound(*location);
 }
-// ReSharper restore CppMemberFunctionMayBeConst
 
-void MapGuesserGame::onGuessSubmitted(const geo::Point& guessedLocation)
+void MapGuesserGame::showGameSummary()
 {
-    assert(m_gameSession);
-    m_gameSession->engine().registerGuess("", guessedLocation);
-}
-
-void MapGuesserGame::onRoundFinished(const RoundResults &roundResults) const
-{
-    assert(m_gameSession);
-    m_uiCommands.showRoundResults(roundResults, m_gameSession->engine().isGameOver());
+    // TODO: multiplayer
+    // TODO: game modes with different initial points
+    m_uiCommands.showGameSummary({""}, m_roundsHistory, 0);
 }
 
 }

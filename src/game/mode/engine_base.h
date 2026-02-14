@@ -18,14 +18,14 @@ struct IGameStateObserver;
 class EngineBase : public IEngine
 {
 public:
-    void setObserver(const IGameStateObserver& observer) override;
+    void setObserver(IGameStateObserver& observer) override;
 
 protected /*methods*/:
-    void notifyRoundFinished(const RoundResults& roundResults) const;
+    void notifyRoundFinished();
     //void notifyOpponentGuessed(TPlayerId opponentId) const;
 
 private:
-    const IGameStateObserver* m_observer = nullptr;
+    IGameStateObserver* m_observer = nullptr;
 };
 
 // #################################################################
