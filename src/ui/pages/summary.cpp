@@ -7,12 +7,62 @@
 #include <QTableWidget>
 #include <QStringList>
 #include <ranges>
+#include <QStyledItemDelegate>
+#include <QPainter>
 
 #include "game/round_results.h"
 #include "ui/google/distance_map.h"
 
 namespace
 {
+
+// #############################################################################################
+
+class HtmlDelegate final: public QStyledItemDelegate
+{
+public:
+	explicit HtmlDelegate(QObject* parent = nullptr)
+		: QStyledItemDelegate(parent) {}
+
+	void paint(QPainter* painter,
+			   const QStyleOptionViewItem& option,
+			   const QModelIndex& index) const override
+	{
+		QStyleOptionViewItem opt = option;
+		initStyleOption(&opt, index);
+
+		opt.text.clear();
+		opt.widget->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, opt.widget);
+
+		QTextDocument doc;
+		// Inherit the correct foreground color (respects selection highlight too)
+		const QColor color = opt.palette.color(
+			opt.state & QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text);
+		doc.setDefaultStyleSheet(QString("body { color: %1; }").arg(color.name()));
+		doc.setHtml(QString("<body>%1</body>").arg(index.data(Qt::DisplayRole).toString()));
+		doc.setTextWidth(opt.rect.width());
+
+		// Center vertically
+		const int docHeight = doc.size().height();
+		const int yOffset = (opt.rect.height() - docHeight) / 2;
+
+		painter->save();
+		painter->translate(opt.rect.left(), opt.rect.top() + yOffset);
+		doc.drawContents(painter);
+		painter->restore();
+	}
+
+	QSize sizeHint(const QStyleOptionViewItem& option,
+				   const QModelIndex& index) const override
+	{
+		QTextDocument doc;
+		doc.setHtml(index.data(Qt::DisplayRole).toString());
+		// Don't constrain width here — just get the natural height
+		return QSize(doc.idealWidth(), doc.size().height());
+	}
+};
+
+// #############################################################################################
 
 QStringList createColumnNames(size_t roundsCnt)
 {
@@ -46,6 +96,8 @@ QString formatCaptionForMultipleWinners(std::ranges::viewable_range auto&& winne
 	return caption;
 }
 
+// #############################################################################################
+
 }
 
 namespace ui::pages
@@ -60,6 +112,8 @@ SummaryPage::SummaryPage(QWidget* parent)
 	, m_showNextRoundButton(new QPushButton("->", this))
 	, m_finishButton(new QPushButton("Finish", this))
 {
+	m_leaderboardTable->setItemDelegate(new HtmlDelegate(m_leaderboardTable));
+
 	auto* leaderboardTab = new QFrame(this);
 	leaderboardTab->setLayout(new QVBoxLayout(leaderboardTab));
 	leaderboardTab->layout()->addWidget(m_summaryLabel);
@@ -151,6 +205,9 @@ void SummaryPage::updateLeaderboardTable(const TLeaderboard& leaderboard, int in
 			m_leaderboardTable->setItem(rowIdx, colIdx, item);
 		}
 	}
+
+	m_leaderboardTable->resizeRowsToContents();
+	m_leaderboardTable->resizeColumnsToContents();
 }
 
 void SummaryPage::updateSummaryLabel(const TLeaderboard& leaderboard, int initialPoints)
@@ -222,7 +279,6 @@ int SummaryPage::getWinnersCount(const TLeaderboard& leaderboard) const
 	return winnersCount;
 }
 
-	// TODO [multiplayer]
 	/*
 	 *                  KAYEFF WINS!
 	 *
