@@ -113,11 +113,13 @@ SummaryPage::SummaryPage(QWidget* parent)
 	, m_finishButton(new QPushButton("Finish", this))
 {
 	m_leaderboardTable->setItemDelegate(new HtmlDelegate(m_leaderboardTable));
+	m_leaderboardTable->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
 	auto* leaderboardTab = new QFrame(this);
-	leaderboardTab->setLayout(new QVBoxLayout(leaderboardTab));
-	leaderboardTab->layout()->addWidget(m_summaryLabel);
-	leaderboardTab->layout()->addWidget(m_leaderboardTable);
+	auto* leaderboardTabLayout = new QVBoxLayout(leaderboardTab);
+	leaderboardTab->setLayout(leaderboardTabLayout);
+	leaderboardTabLayout->addWidget(m_summaryLabel, 0);
+	leaderboardTabLayout->addWidget(m_leaderboardTable, 1);
 
 	auto* roundsTabButtons = new QFrame(this);
 	roundsTabButtons->setLayout(new QHBoxLayout(roundsTabButtons));
@@ -125,9 +127,11 @@ SummaryPage::SummaryPage(QWidget* parent)
 	roundsTabButtons->layout()->addWidget(m_showNextRoundButton);
 
 	auto* roundsTab = new QFrame(this);
-	roundsTab->setLayout(new QVBoxLayout(roundsTab));
-	roundsTab->layout()->addWidget(m_distanceMap);
-	roundsTab->layout()->addWidget(roundsTabButtons);
+	auto* roundsTabLayout = new QVBoxLayout(roundsTab);
+
+	roundsTabLayout->addWidget(m_distanceMap, 1);
+	roundsTabLayout->addWidget(roundsTabButtons, 0);
+	roundsTab->setLayout(roundsTabLayout);
 
 	auto* tabWidget = new QTabWidget(this);
 	tabWidget->addTab(leaderboardTab, "Leaderboard");
