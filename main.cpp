@@ -1,6 +1,5 @@
 #include <QApplication>
 #include <QFile>
-#include <QWebEngineSettings>
 #include <QLoggingCategory>
 
 #include "game/game.h"

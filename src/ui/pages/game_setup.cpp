@@ -3,7 +3,7 @@
 #include <qboxlayout.h>
 #include <QMessageBox>
 
-#include "ui/utils/map_file_access.h"
+#include "ui/mapfile/access.h"
 #include "lambert/projection.h"
 
 namespace

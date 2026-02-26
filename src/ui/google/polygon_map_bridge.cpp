@@ -1,6 +1,10 @@
 #include "polygon_map_bridge.h"
+
+#include <QJsonDocument>
 #include <QWidget>
 #include <QWebEnginePage>
+
+#include "ui/mapfile/access.h"
 
 namespace ui::google
 {
@@ -29,7 +33,7 @@ void PolygonMapBridge::onMapChanged(const QString& jsonMap)
         return;
 
     const auto jsonDoc = QJsonDocument::fromJson(jsonMap.toUtf8());
-    auto geoMap = geo::Map::fromJson(jsonDoc);
+    auto geoMap = mapfile::FromJson(jsonDoc);
     emit mapChanged(std::move(geoMap));
 }
 

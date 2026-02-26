@@ -5,6 +5,7 @@
 
 #include <iomanip>
 #include <sstream>
+#include <cassert>
 
 namespace
 {
@@ -98,7 +99,7 @@ Point Point::toUnit(UnitType unit) const
     return Point{m_latitude * conv, m_longitude * conv, unit};
 }
 
-QString Point::toHtmlStr() const
+std::string Point::toHtmlStr() const
 {
     const Point degPt = this->toUnit(UnitType::Degrees);
 
@@ -108,7 +109,7 @@ QString Point::toHtmlStr() const
     formatter << ", lng: ";
     formatter << formatCoord << degPt.longitude();
 
-    return formatter.str().c_str();
+    return formatter.str();
 }
 
 std::string Point::toUrlStr() const

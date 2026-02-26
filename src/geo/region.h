@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "point.h"
 
 namespace geo

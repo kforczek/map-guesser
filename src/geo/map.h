@@ -1,5 +1,5 @@
 #pragma once
-#include <QJsonDocument>
+#include <vector>
 #include "region.h"
 
 namespace geo
@@ -10,9 +10,6 @@ class Map
 public:
     Map() = default;
     explicit Map(std::vector<Region> regions);
-
-    static Map fromJson(const QJsonDocument& json);
-    QJsonDocument toJson() const;
 
     const std::vector<Region>& regions() const;
 

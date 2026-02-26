@@ -31,7 +31,7 @@ void StreetView::setLocation(const geo::Point& location)
     m_location = location;
 
     QString fullHtml = m_htmlTemplate;
-    fullHtml.replace("__LOCATION__", location.toHtmlStr());
+    fullHtml.replace("__LOCATION__", location.toHtmlStr().c_str());
     setHtml(fullHtml);
 }
 

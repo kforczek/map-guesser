@@ -1,6 +1,5 @@
 #pragma once
-#include <QString>
-
+#include <string>
 
 namespace geo
 {
@@ -28,7 +27,7 @@ public:
     Point toUnit(UnitType unit) const;
 
     // Formatted for HTML usages (always in degrees!): "lat: 123.123456, lng: 123.123456"
-    QString toHtmlStr() const;
+    std::string toHtmlStr() const;
 
     // Formatted for URL usages (always in degrees!): "123.123456,123.123456"
     std::string toUrlStr() const;

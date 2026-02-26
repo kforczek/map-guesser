@@ -1,4 +1,5 @@
 #include "engine_fixed_rounds.h"
+#include <cassert>
 
 #include "game/params.h"
 #include "game/round_results.h"

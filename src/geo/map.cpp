@@ -1,4 +1,6 @@
 #include "geo/map.h"
+
+#include <algorithm>
 #include <ranges>
 
 namespace geo

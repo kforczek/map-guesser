@@ -1,7 +1,6 @@
 #include "game.h"
-
 #include "random_point.h"
-#include "ui/main_window.h"
+#include <cassert>
 
 namespace game
 {

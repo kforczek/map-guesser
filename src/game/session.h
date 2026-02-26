@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "params.h"
 #include "mode/engine.h"
 

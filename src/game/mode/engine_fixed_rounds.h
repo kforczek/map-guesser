@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "engine_base.h"
 
 namespace game

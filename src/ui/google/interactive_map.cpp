@@ -48,7 +48,7 @@ void InteractiveMap::initBridge()
 void InteractiveMap::resetHtmlContent(const geo::Point& startLocation)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
-    html.replace("__CENTER__", startLocation.toHtmlStr());
+    html.replace("__CENTER__", startLocation.toHtmlStr().c_str());
     setHtml(html);
 }
 

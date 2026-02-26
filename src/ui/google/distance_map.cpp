@@ -51,7 +51,7 @@ void DistanceMap::initBridge()
 void DistanceMap::initHtmlContent(const geo::Point& mapCenter)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
-    html.replace("__CENTER__", mapCenter.toHtmlStr());
+    html.replace("__CENTER__", mapCenter.toHtmlStr().c_str());
     setHtml(html);
 }
 

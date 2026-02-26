@@ -1,6 +1,9 @@
 #include "round_results.h"
 #include "params.h"
 
+#include <algorithm>
+#include <cmath>
+
 namespace
 {
 

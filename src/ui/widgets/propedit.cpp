@@ -6,8 +6,8 @@
 #include <QSpinBox>
 #include <QPushButton>
 
-#include "ui/utils/map_file_access.h"
-#include "ui/utils/map_file_selector.h"
+#include "ui/mapfile/access.h"
+#include "ui/mapfile/selector.h"
 
 namespace
 {
@@ -50,12 +50,12 @@ MapPropertyEditor::MapPropertyEditor(QWidget* parent)
 geo::Map MapPropertyEditor::getValue() const
 {
     const QString mapPath = m_valueEdit->text();
-    return utils::LoadMapFromFile(mapPath);
+    return mapfile::LoadFromFile(mapPath);
 }
 
 void MapPropertyEditor::onBrowseButtonClicked()
 {
-    const QString browsedPath = utils::GetOpenMapPath(this, m_valueEdit->text());
+    const QString browsedPath = mapfile::GetOpenMapPath(this, m_valueEdit->text());
     m_valueEdit->setText(browsedPath);
 }
 

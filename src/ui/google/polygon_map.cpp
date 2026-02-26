@@ -4,6 +4,8 @@
 
 #include <QWebChannel>
 
+#include "ui/mapfile/access.h"
+
 namespace
 {
 
@@ -30,7 +32,7 @@ PolygonMap::PolygonMap(QWidget* parent)
 // ReSharper disable once CppMemberFunctionMayBeConst
 void PolygonMap::loadMap(const geo::Map& map)
 {
-    m_bridge->loadMap(map.toJson().toJson());
+    m_bridge->loadMap(mapfile::ToJson(map).toJson());
 }
 
 void PolygonMap::initBridge()
@@ -45,7 +47,7 @@ void PolygonMap::initBridge()
 void PolygonMap::resetHtmlContent(const geo::Point& startLocation)
 {
     QString html = google::ReadAndFillApiToken(HTML_PATH);
-    html.replace("__CENTER__", startLocation.toHtmlStr());
+    html.replace("__CENTER__", startLocation.toHtmlStr().c_str());
     setHtml(html);
 }
 
