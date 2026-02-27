@@ -14,11 +14,11 @@ class Point;
 namespace ui::pages
 {
 
-class StreetViewPage final : public QFrame
+class GameplayPage final : public QFrame
 {
     Q_OBJECT
 public:
-    explicit StreetViewPage(QWidget* parent);
+    explicit GameplayPage(QWidget* parent);
 
     const geo::Point& getStreetViewLocation() const;
     void startNextRound(const geo::Point& location);

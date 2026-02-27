@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.30)
 project(map_guesser)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
@@ -111,8 +112,8 @@ add_library(ui STATIC
         src/ui/google/polygon_map_bridge.cpp
         src/ui/main_window.h
         src/ui/main_window.cpp
-        src/ui/pages/street_view.h
-        src/ui/pages/street_view.cpp
+        src/ui/pages/gameplay.h
+        src/ui/pages/gameplay.cpp
         src/ui/pages/round_results.h
         src/ui/pages/round_results.cpp
         src/ui/pages/start.h

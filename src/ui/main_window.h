@@ -23,7 +23,7 @@ namespace pages
 {
 class StartPage;
 class GameSetupPage;
-class StreetViewPage;
+class GameplayPage;
 class RoundResultsPage;
 class SummaryPage;
 class MapEditorPage;
@@ -57,7 +57,7 @@ private /*fields*/:
 
     pages::StartPage* m_startPage = nullptr;
     pages::GameSetupPage* m_gameSetupPage = nullptr;
-    pages::StreetViewPage* m_streetViewPage = nullptr;
+    pages::GameplayPage* m_gameplayPage = nullptr;
     pages::RoundResultsPage* m_roundResultsPage = nullptr;
     pages::SummaryPage* m_summaryPage = nullptr;
     pages::MapEditorPage* m_mapEditorPage = nullptr;
