@@ -15,7 +15,12 @@ DistanceMap::DistanceMap(QWidget* parent)
     , m_bridge(new DistanceMapBridge(this))
 {
     initBridge();
-    initHtmlContent({0, 0, geo::UnitType::Degrees});
+    initHtmlContent();
+}
+
+void DistanceMap::setCenter(const geo::Point& center)
+{
+    m_bridge->setCenter(center);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
@@ -36,11 +41,6 @@ void DistanceMap::setDistance(const double distance)
     m_bridge->setDistance(distance);
 }
 
-void DistanceMap::setCenter(const geo::Point& center)
-{
-    initHtmlContent(center);
-}
-
 void DistanceMap::initBridge()
 {
     auto* channel = new QWebChannel(this);
@@ -48,10 +48,9 @@ void DistanceMap::initBridge()
     page()->setWebChannel(channel);
 }
 
-void DistanceMap::initHtmlContent(const geo::Point& mapCenter)
+void DistanceMap::initHtmlContent()
 {
-    QString html = google::ReadAndFillApiToken(HTML_PATH);
-    html.replace("__CENTER__", mapCenter.toHtmlStr().c_str());
+    const QString html = google::ReadAndFillApiToken(HTML_PATH);
     setHtml(html);
 }
 

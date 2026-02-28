@@ -1,10 +1,6 @@
 #pragma once
 #include <QObject>
-
-namespace geo
-{
-class Point;
-}
+#include "geo/point.h"
 
 namespace ui::google
 {
@@ -17,8 +13,15 @@ public:
 
     void setLocation(const geo::Point& location);
 
+public slots:
+    void onHtmlReady();
+
 signals:
     void locationChangeRequest(double lat, double lng);
+
+private:
+    bool m_htmlReady = false;
+    geo::Point m_location;
 };
 
 }

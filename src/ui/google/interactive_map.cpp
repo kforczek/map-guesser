@@ -17,7 +17,7 @@ InteractiveMap::InteractiveMap(QWidget* parent)
     , m_bridge(new InteractiveMapBridge(this))
 {
     initBridge();
-    resetHtmlContent({0, 0, geo::UnitType::Degrees});
+    initHtmlContent();
 }
 
 const std::optional<geo::Point>& InteractiveMap::currLocation() const
@@ -33,7 +33,7 @@ void InteractiveMap::removeLocationMarker()
 
 void InteractiveMap::setCenter(const geo::Point& center)
 {
-    resetHtmlContent(center);
+    m_bridge->setCenter(center);
 }
 
 void InteractiveMap::initBridge()
@@ -42,13 +42,12 @@ void InteractiveMap::initBridge()
     channel->registerObject("bridge", m_bridge);
     page()->setWebChannel(channel);
 
-    connect(m_bridge, &InteractiveMapBridge::locationSet, this, [this](){ emit guessMarkerPlaced(); });
+    connect(m_bridge, &InteractiveMapBridge::locationSet, this, &InteractiveMap::guessMarkerPlaced);
 }
 
-void InteractiveMap::resetHtmlContent(const geo::Point& startLocation)
+void InteractiveMap::initHtmlContent()
 {
-    QString html = google::ReadAndFillApiToken(HTML_PATH);
-    html.replace("__CENTER__", startLocation.toHtmlStr().c_str());
+    const QString html = google::ReadAndFillApiToken(HTML_PATH);
     setHtml(html);
 }
 

@@ -1,18 +1,13 @@
 #include "polygon_map.h"
 #include "html_reader.h"
-#include "geo/point.h"
-
-#include <QWebChannel>
-
+#include "polygon_map_bridge.h"
 #include "ui/mapfile/access.h"
+#include <QWebChannel>
 
 namespace
 {
 
 const QString HTML_PATH = "html/polygon_map.html";
-
-// TODO: setting actual center upon load
-const geo::Point START_LOCATION{ 51.7592, 19.4550, geo::UnitType::Degrees };
 
 }
 
@@ -24,7 +19,7 @@ PolygonMap::PolygonMap(QWidget* parent)
     , m_bridge(new PolygonMapBridge(this, page()))
 {
     initBridge();
-    resetHtmlContent(START_LOCATION);
+    initHtmlContent();
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
@@ -44,10 +39,9 @@ void PolygonMap::initBridge()
     connect(m_bridge, &PolygonMapBridge::mapChanged, this, &PolygonMap::mapChanged);
 }
 
-void PolygonMap::resetHtmlContent(const geo::Point& startLocation)
+void PolygonMap::initHtmlContent()
 {
-    QString html = google::ReadAndFillApiToken(HTML_PATH);
-    html.replace("__CENTER__", startLocation.toHtmlStr().c_str());
+    const QString html = google::ReadAndFillApiToken(HTML_PATH);
     setHtml(html);
 }
 

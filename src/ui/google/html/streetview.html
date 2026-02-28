@@ -118,6 +118,7 @@
             bridge.locationChangeRequest.connect((lat, lng) => {
                 setLocation(lat, lng);
             });
+            bridge.onHtmlReady();
         });
     }
 </script>

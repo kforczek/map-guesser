@@ -29,7 +29,7 @@ private:
     InteractiveMapBridge* m_bridge = nullptr;
 
     void initBridge();
-    void resetHtmlContent(const geo::Point& startLocation);
+    void initHtmlContent();
 };
 
 }

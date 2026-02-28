@@ -39,6 +39,10 @@
         return Math.log2(magic * expectedLineLengthInPixels / distance);
     }
 
+    function setCenter(lat, lng) {
+        map.setCenter({ lat, lng });
+    }
+
     function setMarkerActual(lat, lng) {
         const pos = {lat, lng};
         if (!markerActual) {
@@ -96,14 +100,12 @@
     }
 
     function initMap() {
-        const center = { __CENTER__ };
-
         map = new google.maps.Map(document.getElementById("map"), {
             zoom: 6,
-            center: center,
+            center: { lat: 0, lng: 0 },
             disableDefaultUI: true,
             clickableIcons: false,
-            mapId: "FixedMap"
+            mapId: "DistanceMap"
         });
 
         line = new google.maps.Polyline({
@@ -117,9 +119,11 @@
 
         new QWebChannel(qt.webChannelTransport, (channel) => {
             bridge = channel.objects.bridge;
+            bridge.updateCenter.connect(setCenter);
             bridge.updateMarkerActual.connect(setMarkerActual);
             bridge.updateMarkerGuessed.connect(setMarkerGuessed);
-            bridge.updateDistance.connect(setDistance)
+            bridge.updateDistance.connect(setDistance);
+            bridge.onHtmlReady();
         });
     }
 </script>

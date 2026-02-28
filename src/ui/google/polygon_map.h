@@ -1,15 +1,12 @@
 #pragma once
 #include <QWebEngineView>
-
-#include "polygon_map_bridge.h"
-
-namespace geo
-{
-class Point;
-}
+#include "geo/map.h"
+#include "util/consumable.h"
 
 namespace ui::google
 {
+
+class PolygonMapBridge;
 
 class PolygonMap final : public QWebEngineView
 {
@@ -26,7 +23,7 @@ private:
     PolygonMapBridge* m_bridge = nullptr;
 
     void initBridge();
-    void resetHtmlContent(const geo::Point& startLocation);
+    void initHtmlContent();
 };
 
 }

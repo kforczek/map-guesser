@@ -14,17 +14,26 @@ class InteractiveMapBridge final : public QObject
 public:
     using QObject::QObject;
 
+    void setCenter(const geo::Point& center);
+
     const std::optional<geo::Point>& location() const;
     void removeLocationMarker();
 
 signals:
-    void locationSet();
+    // bridge -> js
+    void updateCenter(double lat, double lng);
     void markerRemoveRequest();
 
+    // bridge -> backend
+    void locationSet();
+
 public slots:
+    void onHtmlReady();
     void onCoordsChanged(double lat, double lng);
 
 private:
+    bool m_htmlReady = false;
+    geo::Point m_center;
     std::optional<geo::Point> m_currLocation;
 };
 

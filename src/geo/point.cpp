@@ -129,4 +129,9 @@ bool Point::operator==(const Point& other) const
     return m_latitude == other.m_latitude && m_longitude == other.m_longitude && m_unit == other.m_unit;
 }
 
+bool Point::operator!=(const Point& other) const
+{
+    return !(*this == other);
+}
+
 }
