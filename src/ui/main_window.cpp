@@ -4,10 +4,11 @@
 #include <QMessageBox>
 #include <QShortcut>
 
-#include "pages/game_setup.h"
 #include "pages/start.h"
-#include "pages/round_results.h"
+#include "pages/game_setup.h"
 #include "pages/gameplay.h"
+#include "pages/round_results.h"
+#include "pages/ghost_walk.h"
 #include "pages/summary.h"
 #include "pages/map_editor.h"
 
@@ -22,24 +23,27 @@ MainWindow::MainWindow()
     , m_gameSetupPage(new pages::GameSetupPage(this))
     , m_gameplayPage(new pages::GameplayPage(this))
     , m_roundResultsPage(new pages::RoundResultsPage(this))
+    , m_ghostWalkPage(new pages::GhostWalkPage(this))
     , m_summaryPage(new pages::SummaryPage(this))
     , m_mapEditorPage(new pages::MapEditorPage(this))
     , m_escShortcut(new QShortcut(QKeySequence(Qt::Key_Escape), this))
     , m_f11Shortcut(new QShortcut(QKeySequence(Qt::Key_F11), this))
 {
     initWindowProperties();
-    initLayoutPages();
+    initLayoutPagesStackup();
     initConnections();
 }
 
 void MainWindow::setMapCenter(const geo::Point& centerPoint)
 {
-    m_gameplayPage->setCenter(centerPoint);
+    m_gameplayPage->setMapCenter(centerPoint);
     m_roundResultsPage->setCenter(centerPoint);
 }
 
 void MainWindow::startNextRound(const geo::Point& location)
 {
+    m_currentLocation = location;
+
     m_gameplayPage->startNextRound(location);
     m_layout->setCurrentWidget(m_gameplayPage);
 }
@@ -65,6 +69,7 @@ void MainWindow::showGameSummary(
     int initialPoints
 )
 {
+    m_currentLocation = geo::Point{};
     m_summaryPage->setData(leaderboard, roundsHistory, initialPoints);
     m_layout->setCurrentWidget(m_summaryPage);
 }
@@ -92,28 +97,41 @@ void MainWindow::initWindowProperties()
     setWindowFlag(Qt::Window, true);
 }
 
-void MainWindow::initLayoutPages()
+void MainWindow::initLayoutPagesStackup()
 {
     m_layout->addWidget(m_startPage);
     m_layout->addWidget(m_gameSetupPage);
     m_layout->addWidget(m_gameplayPage);
     m_layout->addWidget(m_roundResultsPage);
+    m_layout->addWidget(m_ghostWalkPage);
     m_layout->addWidget(m_summaryPage);
     m_layout->addWidget(m_mapEditorPage);
 }
 
 void MainWindow::initConnections()
 {
+    // Start page
     connect(m_startPage, &pages::StartPage::singlePlayerRequested, this, &MainWindow::onSinglePlayerRequested);
     connect(m_startPage, &pages::StartPage::mapEditorRequested, this, &MainWindow::onMapEditorRequested);
 
+    // Game setup page
     connect(m_gameSetupPage, &pages::GameSetupPage::startGame, this, &MainWindow::startGameRequested);
     connect(m_gameplayPage, &pages::GameplayPage::guessMade, this, &MainWindow::guessSubmitted);
 
+    // Round results page
     connect(m_roundResultsPage, &pages::RoundResultsPage::closePage, this, &MainWindow::nextRoundRequested);
+    connect(m_roundResultsPage, &pages::RoundResultsPage::ghostWalkRequested, this, &MainWindow::onGhostWalkEnterRequested);
+
+    // Ghost walk page
+    connect(m_ghostWalkPage, &pages::GhostWalkPage::closePage, this, &MainWindow::onGhostWalkExitRequested);
+
+    // Summary page
     connect(m_summaryPage, &pages::SummaryPage::closePage, this, &MainWindow::onStartPageRequested);
+
+    // Map editor page
     connect(m_mapEditorPage, &pages::MapEditorPage::closePage, this, &MainWindow::onStartPageRequested);
 
+    // Key handlers
     connect(m_escShortcut, &QShortcut::activated, [this]() { toggleFullScreen(false); });
     connect(m_f11Shortcut, &QShortcut::activated, [this]() { toggleFullScreen(); });
 }
@@ -139,6 +157,17 @@ void MainWindow::onSinglePlayerRequested()
 void MainWindow::onMapEditorRequested()
 {
     m_layout->setCurrentWidget(m_mapEditorPage);
+}
+
+void MainWindow::onGhostWalkEnterRequested()
+{
+    m_ghostWalkPage->setLocation(m_currentLocation);
+    m_layout->setCurrentWidget(m_ghostWalkPage);
+}
+
+void MainWindow::onGhostWalkExitRequested()
+{
+    m_layout->setCurrentWidget(m_roundResultsPage);
 }
 
 }

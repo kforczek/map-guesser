@@ -122,6 +122,8 @@ add_library(ui STATIC
         src/ui/pages/map_editor.cpp
         src/ui/pages/game_setup.h
         src/ui/pages/game_setup.cpp
+        src/ui/pages/ghost_walk.h
+        src/ui/pages/ghost_walk.cpp
         src/ui/pages/summary.h
         src/ui/pages/summary.cpp
         src/ui/widgets/map_editor_top_bar.h

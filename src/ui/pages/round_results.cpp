@@ -26,7 +26,7 @@ RoundResultsPage::RoundResultsPage(QWidget* parent)
     setupLayout();
     setupInfoLabels();
     setupDistanceMap();
-    setupContinueButton();
+    setupBottomButtons();
     setupBottomSpacing();
 }
 
@@ -81,12 +81,28 @@ void RoundResultsPage::setupDistanceMap()
     m_distanceMap->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
-void RoundResultsPage::setupContinueButton()
+void RoundResultsPage::setupBottomButtons()
 {
-    m_layout->addWidget(m_proceedButton, 0, Qt::AlignCenter);
+    auto* ghostWalkButton = new QPushButton("Ghost Walk", this);
+
     m_proceedButton->setMinimumSize(100, 40);
+    ghostWalkButton->setMinimumSize(100, 40);
+
+    auto* leftWidget = new QWidget(this);
+    auto* leftLayout = new QHBoxLayout(leftWidget);
+    leftLayout->setContentsMargins(10, 0, 0, 0);
+    leftLayout->addWidget(ghostWalkButton);
+    leftLayout->addStretch();
+
+    auto* bottomBarLayout = new QHBoxLayout;
+    m_layout->addLayout(bottomBarLayout);
+
+    bottomBarLayout->addWidget(leftWidget, 1);
+    bottomBarLayout->addWidget(m_proceedButton, 0, Qt::AlignCenter);
+    bottomBarLayout->addStretch(1);
 
     connect(m_proceedButton, &QPushButton::clicked, this, &RoundResultsPage::onProceedButtonClicked);
+    connect(ghostWalkButton, &QPushButton::clicked, this, &RoundResultsPage::ghostWalkRequested);
 }
 
 void RoundResultsPage::setupBottomSpacing()

@@ -1,14 +1,10 @@
 #pragma once
 #include <QFrame>
 #include <QMessageBox>
+#include "geo/point.h"
 
 class QStackedLayout;
 class QShortcut;
-
-namespace geo
-{
-class Point;
-}
 
 namespace game
 {
@@ -25,6 +21,7 @@ class StartPage;
 class GameSetupPage;
 class GameplayPage;
 class RoundResultsPage;
+class GhostWalkPage;
 class SummaryPage;
 class MapEditorPage;
 }
@@ -59,17 +56,18 @@ private /*fields*/:
     pages::GameSetupPage* m_gameSetupPage = nullptr;
     pages::GameplayPage* m_gameplayPage = nullptr;
     pages::RoundResultsPage* m_roundResultsPage = nullptr;
+    pages::GhostWalkPage* m_ghostWalkPage = nullptr;
     pages::SummaryPage* m_summaryPage = nullptr;
     pages::MapEditorPage* m_mapEditorPage = nullptr;
 
     QShortcut* m_escShortcut = nullptr;
     QShortcut* m_f11Shortcut = nullptr;
 
-    bool m_isGameOver = false;
+    geo::Point m_currentLocation;
 
 private /*methods*/:
     void initWindowProperties();
-    void initLayoutPages();
+    void initLayoutPagesStackup();
     void initConnections();
 
     void toggleFullScreen(std::optional<bool> fullScreen = std::nullopt);
@@ -81,6 +79,12 @@ private slots:
     // Start page
     void onSinglePlayerRequested();
     void onMapEditorRequested();
+
+    // Round results page
+    void onGhostWalkEnterRequested();
+
+    // Ghost walk page
+    void onGhostWalkExitRequested();
 };
 
 }

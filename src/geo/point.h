@@ -32,6 +32,8 @@ public:
     // Formatted for URL usages (always in degrees!): "123.123456,123.123456"
     std::string toUrlStr() const;
 
+    bool operator==(const Point& other) const;
+
 private:
     double m_latitude = 0;
     double m_longitude = 0;

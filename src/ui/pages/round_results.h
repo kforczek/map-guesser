@@ -39,6 +39,7 @@ public /*methods*/:
     void setContinueButtonType(EContinueButtonType type);
 
 /*public*/ signals:
+    void ghostWalkRequested();
     void closePage();
 
 private /*members*/:
@@ -54,7 +55,7 @@ private /*methods*/:
     void setupLayout();
     void setupInfoLabels();
     void setupDistanceMap();
-    void setupContinueButton();
+    void setupBottomButtons();
     void setupBottomSpacing();
 
     void onProceedButtonClicked();

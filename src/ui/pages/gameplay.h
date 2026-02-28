@@ -1,14 +1,16 @@
 #pragma once
-#include <qboxlayout.h>
 #include <QFrame>
 #include <QPushButton>
-
-#include "ui/google/interactive_map.h"
-#include "ui/google/streetview.h"
 
 namespace geo
 {
 class Point;
+}
+
+namespace ui::google
+{
+class StreetView;
+class InteractiveMap;
 }
 
 namespace ui::pages
@@ -23,7 +25,7 @@ public:
     const geo::Point& getStreetViewLocation() const;
     void startNextRound(const geo::Point& location);
 
-    void setCenter(const geo::Point& center);
+    void setMapCenter(const geo::Point& center);
 
 signals:
     void guessMade(const geo::Point& location);

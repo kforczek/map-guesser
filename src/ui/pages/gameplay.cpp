@@ -1,4 +1,6 @@
 #include "ui/pages/gameplay.h"
+#include "ui/google/interactive_map.h"
+#include "ui/google/streetview.h"
 
 namespace
 {
@@ -63,7 +65,7 @@ void GameplayPage::startNextRound(const geo::Point& location)
     m_guessButton->setEnabled(false);
 }
 
-void GameplayPage::setCenter(const geo::Point& center)
+void GameplayPage::setMapCenter(const geo::Point& center)
 {
     m_interactiveMap->setCenter(center);
 }
