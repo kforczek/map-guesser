@@ -134,6 +134,8 @@ add_library(ui STATIC
         src/ui/mapfile/selector.cpp
         src/ui/mapfile/access.h
         src/ui/mapfile/access.cpp
+        src/ui/google/streetview_bridge.h
+        src/ui/google/streetview_bridge.cpp
 )
 target_include_directories(ui PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(ui PUBLIC cxx_std_23)

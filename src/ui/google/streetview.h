@@ -7,6 +7,8 @@ class QWidget;
 namespace ui::google
 {
 
+class StreetViewBridge;
+
 class StreetView final : public QWebEngineView
 {
 public:
@@ -17,10 +19,12 @@ public:
     void returnToStart();
 
 private:
-    QString m_htmlTemplate;
+    StreetViewBridge* m_bridge = nullptr;
     geo::Point m_location;
 
     void initViewSettings() const;
+    void initBridge();
+    void initHtmlContent();
 };
 
 }

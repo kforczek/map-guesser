@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qt + Google Street View</title>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     <style>
         html, body, #pano {
             height: 100%;
@@ -11,14 +12,12 @@
             padding: 0;
             overflow: hidden;
         }
-        /* Force hardware acceleration */
         #pano {
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
         }
-
         #cheat {
             position: absolute;
             width: auto;
@@ -31,7 +30,6 @@
             font-size: 14px;
             display: none;
         }
-
         #compass_box {
             position: absolute;
             box-sizing: border-box;
@@ -46,7 +44,6 @@
             border-radius: 50%;
             border: 1px solid black;
         }
-
         #compass {
             color: #e40707;
             position: absolute;
@@ -55,7 +52,6 @@
             top: 0;
             left: 0;
             text-align: center;
-
         }
     </style>
 </head>
@@ -66,55 +62,63 @@
     <div id="compass">⬤</div>
 </div>
 
-
 <script>
     document.addEventListener('keydown', function(event) {
-        if (event.key === 'Shift') {
+        if (event.key === 'Shift')
             document.getElementById('cheat').style.display = 'block';
-        }
+    });
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'Shift')
+            document.getElementById('cheat').style.display = 'none';
     });
 
-    document.addEventListener('keyup', function(event) {
-        if (event.key === 'Shift') {
-            document.getElementById('cheat').style.display = 'none';
-        }
-    });
-    let panorama;
+    let panorama = null;
+    let bridge = null;
 
     function changeCompass(pov) {
         const compass = document.getElementById("compass");
-        let northAngle = 360 - pov.heading;
-        compass.style.transform = "rotate(" + northAngle + "deg)";
+        compass.style.transform = "rotate(" + (360 - pov.heading) + "deg)";
+    }
+
+    function setLocation(lat, lng) {
+        const location = { lat: lat, lng: lng };
+        document.getElementById("cheat").innerHTML = "Latitude: " + lat + "<br>Longitude: " + lng;
+
+        if (panorama) {
+            panorama.setPosition(location);
+        } else {
+            panorama = new google.maps.StreetViewPanorama(
+                document.getElementById("pano"),
+                {
+                    position: location,
+                    pov: { heading: 210, pitch: 10 },
+                    zoom: 1,
+                    addressControl: false,
+                    linksControl: false,
+                    panControl: false,
+                    motionTrackingControl: false,
+                    enableCloseButton: false,
+                    motionTracking: false,
+                    clickToGo: true,
+                    scrollwheel: true,
+                    showRoadLabels: false
+                }
+            );
+            panorama.addListener("pov_changed", () => {
+                changeCompass(panorama.getPov());
+            });
+        }
+
+        changeCompass(panorama.getPov());
     }
 
     function initMap() {
-        const location = { __LOCATION__ };
-        document.getElementById("cheat").innerHTML = "Latitude: " + location.lat + "<br>Longitude: " + location.lng;
-        panorama = new google.maps.StreetViewPanorama(
-            document.getElementById("pano"),
-            {
-                position: location,
-                pov: { heading: 210, pitch: 10 },
-                zoom: 1,
-                addressControl: false,
-                linksControl: false,
-                panControl: false,
-                motionTrackingControl: false,
-                enableCloseButton: false,
-                //disableDefaultUI: true,
-                // Performance optimizations
-                motionTracking: false,  // Disable motion tracking
-                // Better quality settings
-                clickToGo: true,
-                scrollwheel: true,
-                showRoadLabels: false
-            }
-        );
-        changeCompass(panorama.getPov());
-        panorama.addListener("pov_changed", () => {
-            changeCompass(panorama.getPov());
-
-        })
+        new QWebChannel(qt.webChannelTransport, (channel) => {
+            bridge = channel.objects.bridge;
+            bridge.locationChangeRequest.connect((lat, lng) => {
+                setLocation(lat, lng);
+            });
+        });
     }
 </script>
 <script async defer

@@ -2,8 +2,10 @@
 #include "google/token.h"
 #include "html_reader.h"
 #include "geo/point.h"
+#include "streetview_bridge.h"
 
 #include <QFile>
+#include <QWebChannel>
 #include <QWebEngineSettings>
 
 namespace
@@ -16,9 +18,11 @@ namespace ui::google
 
 StreetView::StreetView(QWidget* parent /*= nullptr*/)
     : QWebEngineView(parent)
-    , m_htmlTemplate(google::ReadAndFillApiToken(HTML_PATH))
+    , m_bridge(new StreetViewBridge(this))
 {
     initViewSettings();
+    initBridge();
+    initHtmlContent();
 }
 
 const geo::Point& StreetView::getLocation() const
@@ -29,10 +33,7 @@ const geo::Point& StreetView::getLocation() const
 void StreetView::setLocation(const geo::Point& location)
 {
     m_location = location;
-
-    QString fullHtml = m_htmlTemplate;
-    fullHtml.replace("__LOCATION__", location.toHtmlStr().c_str());
-    setHtml(fullHtml);
+    m_bridge->setLocation(location);
 }
 
 void StreetView::returnToStart()
@@ -50,6 +51,19 @@ void StreetView::initViewSettings() const
     settings()->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, false);
     settings()->setAttribute(QWebEngineSettings::ScrollAnimatorEnabled, true);
     settings()->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
+}
+
+void StreetView::initBridge()
+{
+    auto* channel = new QWebChannel(this);
+    channel->registerObject("bridge", m_bridge);
+    page()->setWebChannel(channel);
+}
+
+void StreetView::initHtmlContent()
+{
+    const QString html = google::ReadAndFillApiToken(HTML_PATH);
+    setHtml(html);
 }
 
 }

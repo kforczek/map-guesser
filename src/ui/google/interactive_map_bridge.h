@@ -7,7 +7,7 @@
 namespace ui::google
 {
 
-class InteractiveMapBridge : public QObject
+class InteractiveMapBridge final : public QObject
 {
     Q_OBJECT
 
