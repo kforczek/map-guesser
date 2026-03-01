@@ -104,14 +104,49 @@ namespace ui::pages
 {
 
 SummaryPage::SummaryPage(QWidget* parent)
-	: QFrame(parent)
-	, m_summaryLabel(new QLabel(this))
-	, m_leaderboardTable(new QTableWidget(this))
-	, m_distanceMap(new google::DistanceMap(this))
-	, m_showPrevRoundButton(new QPushButton("<-", this))
-	, m_showNextRoundButton(new QPushButton("->", this))
-	, m_finishButton(new QPushButton("Finish", this))
+	: QFrame(parent) { }
+
+void SummaryPage::setData(const TLeaderboard& leaderboard, const std::vector<game::RoundResults>& roundsHistory, int initialPoints)
 {
+	ensureInitialized();
+
+	assert(!roundsHistory.empty());
+	m_roundsHistory = &roundsHistory;
+	m_currDisplayedRoundIdx = 0;
+
+	updateSummaryLabel(leaderboard, initialPoints);
+	updateLeaderboardTable(leaderboard, initialPoints);
+	updateDistanceMap();
+	updateNavigationButtons();
+}
+
+void SummaryPage::onShowPrevRoundButtonClicked()
+{
+	--m_currDisplayedRoundIdx;
+
+	updateDistanceMap();
+	updateNavigationButtons();
+}
+void SummaryPage::onShowNextRoundButtonClicked()
+{
+	++m_currDisplayedRoundIdx;
+
+	updateDistanceMap();
+	updateNavigationButtons();
+}
+
+void SummaryPage::ensureInitialized()
+{
+	if (m_initialized)
+		return;
+
+	m_summaryLabel = new QLabel(this);
+	m_leaderboardTable = new QTableWidget(this);
+	m_distanceMap = new google::DistanceMap(this);
+	m_showPrevRoundButton = new QPushButton("<-", this);
+	m_showNextRoundButton = new QPushButton("->", this);
+	m_finishButton = new QPushButton("Finish", this);
+
 	m_leaderboardTable->setItemDelegate(new HtmlDelegate(m_leaderboardTable));
 	m_leaderboardTable->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
@@ -144,33 +179,8 @@ SummaryPage::SummaryPage(QWidget* parent)
 	connect(m_showPrevRoundButton, &QPushButton::clicked, this, &SummaryPage::onShowPrevRoundButtonClicked);
 	connect(m_showNextRoundButton, &QPushButton::clicked, this, &SummaryPage::onShowNextRoundButtonClicked);
 	connect(m_finishButton, &QPushButton::clicked, this, &SummaryPage::closePage);
-}
 
-void SummaryPage::setData(const TLeaderboard& leaderboard, const std::vector<game::RoundResults>& roundsHistory, int initialPoints)
-{
-	assert(!roundsHistory.empty());
-	m_roundsHistory = &roundsHistory;
-	m_currDisplayedRoundIdx = 0;
-
-	updateSummaryLabel(leaderboard, initialPoints);
-	updateLeaderboardTable(leaderboard, initialPoints);
-	updateDistanceMap();
-	updateNavigationButtons();
-}
-
-void SummaryPage::onShowPrevRoundButtonClicked()
-{
-	--m_currDisplayedRoundIdx;
-
-	updateDistanceMap();
-	updateNavigationButtons();
-}
-void SummaryPage::onShowNextRoundButtonClicked()
-{
-	++m_currDisplayedRoundIdx;
-
-	updateDistanceMap();
-	updateNavigationButtons();
+	m_initialized = true;
 }
 
 void SummaryPage::resizeLeaderboardTable(const TLeaderboard& leaderboard)

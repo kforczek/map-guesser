@@ -156,6 +156,7 @@ void MainWindow::onSinglePlayerRequested()
 
 void MainWindow::onMapEditorRequested()
 {
+    m_mapEditorPage->preparePage();
     m_layout->setCurrentWidget(m_mapEditorPage);
 }
 

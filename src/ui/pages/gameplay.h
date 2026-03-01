@@ -1,11 +1,7 @@
 #pragma once
 #include <QFrame>
 #include <QPushButton>
-
-namespace geo
-{
-class Point;
-}
+#include "geo/point.h"
 
 namespace ui::google
 {
@@ -35,6 +31,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private /*fields*/:
+    bool m_initialized = false;
     google::StreetView* m_streetView = nullptr;
     google::InteractiveMap* m_interactiveMap = nullptr;
 
@@ -45,8 +42,12 @@ private /*fields*/:
     QPushButton* m_enlargeMapButton = nullptr;
 
     double m_mapToWindowWidthRatio = 0;
+    geo::Point m_mapCenter;
 
 private /*methods*/:
+    void ensureInitialized();
+
+    void resize();
     void resizeStreetView();
     void resizeAndMoveMap(int newWidth = 0, int newHeight = 0);
     void moveMapSizeButtons();

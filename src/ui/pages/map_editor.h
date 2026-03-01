@@ -14,6 +14,8 @@ class MapEditorPage final : public QFrame
 public:
     explicit MapEditorPage(QWidget* parent);
 
+    void preparePage();
+
 signals:
     void closePage();
 

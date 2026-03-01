@@ -9,9 +9,26 @@ namespace ui::pages
 {
 
 GhostWalkPage::GhostWalkPage(QWidget* parent)
-    : QFrame(parent)
-    , m_streetView(new google::StreetView(this))
+    : QFrame(parent) { }
+
+void GhostWalkPage::setLocation(const geo::Point& location)
 {
+    if (m_currLocation == location)
+        return;
+
+    ensureInitialized();
+
+    m_currLocation = location;
+    m_streetView->setLocation(location);
+}
+
+void GhostWalkPage::ensureInitialized()
+{
+    if (m_streetView)
+        return;
+
+    m_streetView = new google::StreetView(this);
+
     auto* layout = new QVBoxLayout(this);
     setLayout(layout);
 
@@ -32,15 +49,6 @@ GhostWalkPage::GhostWalkPage(QWidget* parent)
     layout->addLayout(bottomBar);
 
     connect(exitButton, &QPushButton::clicked, this, &GhostWalkPage::closePage);
-}
-
-void GhostWalkPage::setLocation(const geo::Point& location)
-{
-    if (m_currLocation == location)
-        return;
-
-    m_currLocation = location;
-    m_streetView->setLocation(location);
 }
 
 }

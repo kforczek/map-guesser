@@ -2,11 +2,7 @@
 #include <qboxlayout.h>
 #include <QLabel>
 #include <QPushButton>
-
-namespace geo
-{
-class Point;
-}
+#include "geo/point.h"
 
 namespace game
 {
@@ -43,6 +39,7 @@ public /*methods*/:
     void closePage();
 
 private /*members*/:
+    bool m_initialized = false;
     QVBoxLayout* m_layout = nullptr;
 
     QLabel* m_distanceLabel = nullptr;
@@ -51,7 +48,10 @@ private /*members*/:
     google::DistanceMap* m_distanceMap = nullptr;
     QPushButton* m_proceedButton = nullptr;
 
+    geo::Point m_mapCenter;
+
 private /*methods*/:
+    void ensureInitialized();
     void setupLayout();
     void setupInfoLabels();
     void setupDistanceMap();

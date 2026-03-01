@@ -24,6 +24,9 @@ signals:
 private /*fields*/:
     google::StreetView* m_streetView = nullptr;
     geo::Point m_currLocation;
+
+private /*methods*/:
+    void ensureInitialized();
 };
 
 }

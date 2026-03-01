@@ -31,6 +31,8 @@ signals:
     void closePage();
 
 private /*fields*/:
+    bool m_initialized = false;
+
     QLabel* m_summaryLabel = nullptr;
     QTableWidget* m_leaderboardTable = nullptr;
 
@@ -48,6 +50,8 @@ private slots:
     void onShowNextRoundButtonClicked();
 
 private /*methods*/:
+    void ensureInitialized();
+
     void resizeLeaderboardTable(const TLeaderboard& leaderboard);
     void updateLeaderboardTable(const TLeaderboard& leaderboard, int initialPoints);
     void updateSummaryLabel(const TLeaderboard& leaderboard, int initialPoints);

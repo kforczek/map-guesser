@@ -10,10 +10,20 @@ namespace ui::pages
 {
 
 MapEditorPage::MapEditorPage(QWidget* parent)
-    : QFrame(parent)
-    , m_topBar(new widgets::MapEditorTopBar(this))
-    , m_mapView(new google::PolygonMap(this))
+    : QFrame(parent) { }
+
+void MapEditorPage::preparePage()
 {
+    const bool topBarExists = m_topBar != nullptr;
+    const bool mapViewExists = m_mapView != nullptr;
+    assert(topBarExists == mapViewExists);
+
+    if (topBarExists && mapViewExists)
+        return;
+
+    m_topBar = new widgets::MapEditorTopBar(this);
+    m_mapView = new google::PolygonMap(this);
+
     setLayout(new QVBoxLayout(this));
 
     layout()->addWidget(m_topBar);

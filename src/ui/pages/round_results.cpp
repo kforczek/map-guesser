@@ -16,27 +16,20 @@ namespace ui::pages
 // ReSharper disable CppMemberFunctionMayBeConst
 
 RoundResultsPage::RoundResultsPage(QWidget* parent)
-    : QFrame(parent)
-    , m_layout(new QVBoxLayout(this))
-    , m_distanceLabel(new QLabel(this))
-    , m_pointsLabel(new QLabel(this))
-    , m_distanceMap(new google::DistanceMap(this))
-    , m_proceedButton(new QPushButton(BUTTON_TEXT_NEXT_ROUND, this))
-{
-    setupLayout();
-    setupInfoLabels();
-    setupDistanceMap();
-    setupBottomButtons();
-    setupBottomSpacing();
-}
+    : QFrame(parent) { }
 
 void RoundResultsPage::setCenter(const geo::Point& center)
 {
-    m_distanceMap->setCenter(center);
+    m_mapCenter = center;
+
+    if (m_distanceMap)
+        m_distanceMap->setCenter(m_mapCenter);
 }
 
 void RoundResultsPage::setData(const game::RoundResults& roundResults)
 {
+    ensureInitialized();
+
     m_distanceMap->setActualLocation(roundResults.correctLocation);
 
     // TODO: [multiplayer] iterate over all players
@@ -50,6 +43,8 @@ void RoundResultsPage::setData(const game::RoundResults& roundResults)
 
 void RoundResultsPage::setContinueButtonType(EContinueButtonType type)
 {
+    ensureInitialized();
+
     if (type == EContinueButtonType::NextRound)
     {
         m_proceedButton->setText(BUTTON_TEXT_NEXT_ROUND);
@@ -60,29 +55,54 @@ void RoundResultsPage::setContinueButtonType(EContinueButtonType type)
     }
 }
 
+void RoundResultsPage::ensureInitialized()
+{
+    if (m_initialized)
+        return;
+
+    setupLayout();
+    setupInfoLabels();
+    setupDistanceMap();
+    setupBottomButtons();
+    setupBottomSpacing();
+
+    m_initialized = true;
+}
+
 void RoundResultsPage::setupLayout()
 {
-    setLayout(m_layout);
+    m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
+
+    setLayout(m_layout);
 }
 
 void RoundResultsPage::setupInfoLabels()
 {
-    m_layout->addWidget(m_distanceLabel, 0, Qt::AlignCenter);
-    m_layout->addWidget(m_pointsLabel, 0, Qt::AlignCenter);
+    m_distanceLabel = new QLabel(this);
+    m_pointsLabel = new QLabel(this);
 
     m_distanceLabel->setFont(QFont{"Times New Roman", 20});
     m_pointsLabel->setFont(QFont{"Times New Roman", 20});
+
+    m_layout->addWidget(m_distanceLabel, 0, Qt::AlignCenter);
+    m_layout->addWidget(m_pointsLabel, 0, Qt::AlignCenter);
 }
 
 void RoundResultsPage::setupDistanceMap()
 {
-    m_layout->addWidget(m_distanceMap);
+    m_distanceMap = new google::DistanceMap(this);
     m_distanceMap->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    if (m_mapCenter != geo::Point{})
+        m_distanceMap->setCenter(m_mapCenter);
+
+    m_layout->addWidget(m_distanceMap);
 }
 
 void RoundResultsPage::setupBottomButtons()
 {
+    m_proceedButton = new QPushButton(BUTTON_TEXT_NEXT_ROUND, this);
     auto* ghostWalkButton = new QPushButton("Ghost Walk", this);
 
     m_proceedButton->setMinimumSize(100, 40);
