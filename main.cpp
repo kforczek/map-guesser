@@ -1,10 +1,12 @@
 #include <QApplication>
 #include <QFile>
 #include <QLoggingCategory>
+#include <QStandardPaths>
 
 #include "game/game.h"
 #include "ui/main_window.h"
 #include "ui/bridge/connection.h"
+#include "user/dir.h"
 
 namespace
 {
@@ -45,10 +47,14 @@ int main(int argc, char *argv[])
 {
     qputenv(WEB_ENGINE_VAR_NAME, WEB_ENGINE_FLAGS);
     QLoggingCategory::setFilterRules(FILTER_RULES);
+    QCoreApplication::setApplicationName("MapGuesser");
 
     QApplication app{argc, argv};
 
     app.setStyleSheet(getStyleSheet());
+
+    const QString userDirPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    user::SetUserDirPath(userDirPath.toStdString());
 
     // TODO: check for active token during setup (before game), maybe validate the token somehow
     game::MapGuesserGame mapGuesser;

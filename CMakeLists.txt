@@ -89,6 +89,15 @@ target_include_directories(game PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(game PUBLIC cxx_std_23)
 target_link_libraries(game PUBLIC geo planar lambert google)
 
+add_library(user STATIC
+        src/user/dir.h
+        src/user/dir.cpp
+        src/user/api_usage.h
+        src/user/api_usage.cpp
+)
+target_include_directories(user PUBLIC ${CMAKE_SOURCE_DIR}/src)
+target_compile_features(user PUBLIC cxx_std_23)
+
 # --- ui ---
 add_library(ui STATIC
         src/ui/bridge/commands.h
@@ -139,11 +148,11 @@ add_library(ui STATIC
 )
 target_include_directories(ui PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(ui PUBLIC cxx_std_23)
-target_link_libraries(ui PUBLIC Qt6::Widgets PRIVATE Qt6::WebEngineWidgets)
+target_link_libraries(ui PUBLIC Qt6::Widgets PRIVATE Qt6::WebEngineWidgets user)
 
 # --- executable ---
 add_executable(map_guesser main.cpp)
-target_link_libraries(map_guesser PRIVATE game ui)
+target_link_libraries(map_guesser PRIVATE game ui user)
 
 # TODO: compile content to constexpr strings
 file(COPY ${CMAKE_SOURCE_DIR}/src/ui/google/html/ DESTINATION ${CMAKE_BINARY_DIR}/html)
