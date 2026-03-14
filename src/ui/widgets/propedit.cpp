@@ -67,6 +67,7 @@ PositiveNumberPropertyEditor::PositiveNumberPropertyEditor(QWidget* parent, cons
 {
     initEditor(*this, propertyName, *m_valueEdit);
 
+    m_valueEdit->setGroupSeparatorShown(true);
     m_valueEdit->setMinimum(values.minValue);
     m_valueEdit->setMaximum(values.maxValue);
     m_valueEdit->setValue(values.initialValue);
@@ -78,6 +79,11 @@ unsigned int PositiveNumberPropertyEditor::getValue() const
     assert(val >= 0);
 
     return static_cast<unsigned int>(val);
+}
+
+void PositiveNumberPropertyEditor::setValue(unsigned int value)
+{
+    m_valueEdit->setValue(static_cast<int>(value));
 }
 
 }

@@ -30,6 +30,7 @@ class RoundResultsPage;
 class GhostWalkPage;
 class SummaryPage;
 class MapEditorPage;
+class SettingsPage;
 }
 
 class MainWindow final : public QFrame
@@ -66,6 +67,7 @@ private /*fields*/:
     pages::GhostWalkPage* m_ghostWalkPage = nullptr;
     pages::SummaryPage* m_summaryPage = nullptr;
     pages::MapEditorPage* m_mapEditorPage = nullptr;
+    pages::SettingsPage* m_settingsPage = nullptr;
 
     QShortcut* m_escShortcut = nullptr;
     QShortcut* m_f11Shortcut = nullptr;
@@ -86,6 +88,7 @@ private slots:
     // Start page
     void onSinglePlayerRequested();
     void onMapEditorRequested();
+    void onSettingsRequested();
 
     // Round results page
     void onGhostWalkEnterRequested();

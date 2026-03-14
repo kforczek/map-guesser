@@ -17,9 +17,6 @@ nlohmann::json LoadJsonFile(const std::filesystem::path& path)
     if (in.peek() != std::ifstream::traits_type::eof())
         in >> entries;
 
-    if (!entries.is_array())
-        throw JsonAccessError{"Log file does not contain a JSON array."};
-
     return entries;
 }
 

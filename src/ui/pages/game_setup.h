@@ -3,7 +3,12 @@
 #include <QPushButton>
 
 #include "game/params.h"
-#include "ui/widgets/propedit.h"
+
+namespace ui::widgets
+{
+class MapPropertyEditor;
+class PositiveNumberPropertyEditor;
+}
 
 namespace ui::pages
 {

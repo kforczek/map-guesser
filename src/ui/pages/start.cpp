@@ -74,6 +74,7 @@ void StartPage::addExtraButtons(QVBoxLayout& layout)
     bottomBarLayout->addWidget(mapEditorButton);
 
     connect(mapEditorButton, &QPushButton::clicked, this, &StartPage::mapEditorRequested);
+    connect(settingsButton, &QPushButton::clicked, this, &StartPage::settingsRequested);
 }
 
 }

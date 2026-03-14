@@ -32,7 +32,9 @@ public:
     struct Values;
 
     explicit PositiveNumberPropertyEditor(QWidget* parent, const QString& propertyName, const Values& values);
+
     unsigned int getValue() const;
+    void setValue(unsigned int value);
 
 private:
     QSpinBox* m_valueEdit = nullptr;

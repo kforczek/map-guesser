@@ -4,6 +4,7 @@
 #include <QMessageBox>
 
 #include "ui/mapfile/access.h"
+#include "ui/widgets/propedit.h"
 #include "lambert/projection.h"
 
 namespace

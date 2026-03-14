@@ -15,6 +15,7 @@ public:
 signals:
     void singlePlayerRequested();
     void mapEditorRequested();
+    void settingsRequested();
 
 private /*methods*/:
     void addGameplayButtons(QVBoxLayout& layout);

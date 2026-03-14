@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #include "api_usage/counter.h"
+#include "api_usage/msg.h"
 #include "pages/start.h"
 #include "pages/game_setup.h"
 #include "pages/gameplay.h"
@@ -15,13 +16,14 @@
 #include "pages/map_editor.h"
 
 #include "game/round_results.h"
+#include "pages/settings.h"
 
 namespace ui
 {
 
 MainWindow::MainWindow()
     : m_layout(new QStackedLayout(this))
-    , m_apiUsageCounter(new api_usage::Counter(this))
+    , m_apiUsageCounter(new api_usage::Counter())
     , m_startPage(new pages::StartPage(this))
     , m_gameSetupPage(new pages::GameSetupPage(this))
     , m_gameplayPage(new pages::GameplayPage(this, *m_apiUsageCounter))
@@ -29,6 +31,7 @@ MainWindow::MainWindow()
     , m_ghostWalkPage(new pages::GhostWalkPage(this, *m_apiUsageCounter))
     , m_summaryPage(new pages::SummaryPage(this, *m_apiUsageCounter))
     , m_mapEditorPage(new pages::MapEditorPage(this, *m_apiUsageCounter))
+    , m_settingsPage(new pages::SettingsPage(this, *m_apiUsageCounter))
     , m_escShortcut(new QShortcut(QKeySequence(Qt::Key_Escape), this))
     , m_f11Shortcut(new QShortcut(QKeySequence(Qt::Key_F11), this))
 {
@@ -36,7 +39,9 @@ MainWindow::MainWindow()
     initLayoutPagesStackup();
     initConnections();
 
-    QTimer::singleShot(0, this, [this](){ m_apiUsageCounter->handleWarnings(); });
+    QTimer::singleShot(0, this, [this]() {
+        api_usage::HandleWarnings(this, m_apiUsageCounter->getStats());
+    });
 }
 
 void MainWindow::setMapCenter(const geo::Point& centerPoint)
@@ -111,6 +116,7 @@ void MainWindow::initLayoutPagesStackup()
     m_layout->addWidget(m_ghostWalkPage);
     m_layout->addWidget(m_summaryPage);
     m_layout->addWidget(m_mapEditorPage);
+    m_layout->addWidget(m_settingsPage);
 }
 
 void MainWindow::initConnections()
@@ -118,6 +124,7 @@ void MainWindow::initConnections()
     // Start page
     connect(m_startPage, &pages::StartPage::singlePlayerRequested, this, &MainWindow::onSinglePlayerRequested);
     connect(m_startPage, &pages::StartPage::mapEditorRequested, this, &MainWindow::onMapEditorRequested);
+    connect(m_startPage, &pages::StartPage::settingsRequested, this, &MainWindow::onSettingsRequested);
 
     // Game setup page
     connect(m_gameSetupPage, &pages::GameSetupPage::startGame, this, &MainWindow::startGameRequested);
@@ -136,6 +143,9 @@ void MainWindow::initConnections()
     // Map editor page
     connect(m_mapEditorPage, &pages::MapEditorPage::closePage, this, &MainWindow::onStartPageRequested);
 
+    // Settings page
+    connect(m_settingsPage, &pages::SettingsPage::closePage, this, &MainWindow::onStartPageRequested);
+
     // Key handlers
     connect(m_escShortcut, &QShortcut::activated, [this]() { toggleFullScreen(false); });
     connect(m_f11Shortcut, &QShortcut::activated, [this]() { toggleFullScreen(); });
@@ -152,7 +162,7 @@ void MainWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullop
 void MainWindow::onStartPageRequested()
 {
     m_layout->setCurrentWidget(m_startPage);
-    m_apiUsageCounter->handleWarnings();
+    api_usage::HandleWarnings(this, m_apiUsageCounter->getStats());
 }
 
 void MainWindow::onSinglePlayerRequested()
@@ -164,6 +174,12 @@ void MainWindow::onMapEditorRequested()
 {
     m_mapEditorPage->preparePage();
     m_layout->setCurrentWidget(m_mapEditorPage);
+}
+
+void MainWindow::onSettingsRequested()
+{
+    m_settingsPage->reloadData();
+    m_layout->setCurrentWidget(m_settingsPage);
 }
 
 void MainWindow::onGhostWalkEnterRequested()

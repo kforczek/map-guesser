@@ -151,6 +151,10 @@ add_library(ui STATIC
         src/ui/google/streetview_bridge.cpp
         src/ui/api_usage/counter.h
         src/ui/api_usage/counter.cpp
+        src/ui/pages/settings.h
+        src/ui/pages/settings.cpp
+        src/ui/api_usage/msg.h
+        src/ui/api_usage/msg.cpp
 )
 target_include_directories(ui PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(ui PUBLIC cxx_std_23)

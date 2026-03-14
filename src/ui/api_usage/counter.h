@@ -1,25 +1,23 @@
 #pragma once
-#include <QWidget>
+#include <map>
 #include "user/api_usage.h"
 
 namespace ui::api_usage
 {
 
-class Counter final : public QWidget
+// TODO: move this logic to user::settings
+class Counter final
 {
 public:
-    explicit Counter(QWidget* parent);
+    explicit Counter();
 
     bool isLimitReached(user::ApiCategory category) const;
     void logApiUsage(user::ApiCategory category);
 
-    void handleWarnings();
+    const std::map<user::ApiCategory, size_t>& getStats() const;
 
 private:
-    std::unordered_map<user::ApiCategory, size_t> m_currCounts;
-    std::unordered_map<user::ApiCategory, size_t> m_countsAtLastWarning;
-
-    void showWarning(user::ApiCategory category);
+    std::map<user::ApiCategory, size_t> m_currCounts;
 };
 
 }

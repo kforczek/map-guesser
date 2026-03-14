@@ -17,8 +17,8 @@ using namespace user;
 // ######################################################################################
 
 std::unordered_map<user::ApiCategory, size_t> apiLimits{
-            {user::ApiCategory::StreetView, 0},
-            {user::ApiCategory::Maps, 0}
+            {user::ApiCategory::StreetView, 5000},
+            {user::ApiCategory::Maps, 10000}
 };
 
 // ######################################################################################
@@ -69,6 +69,20 @@ void Save()
     cache::SetApiLimits(jsonData);
 
     SaveJsonFile(SETTINGS_FILE_PATH, jsonData);
+}
+
+Values Get()
+{
+    Values data;
+    data.apiStreetViewLimit = cache::apiLimits.at(ApiCategory::StreetView);
+    data.apiMapsLimit = cache::apiLimits.at(ApiCategory::Maps);
+    return data;
+}
+
+void Set(const Values& data)
+{
+    cache::apiLimits.at(ApiCategory::StreetView) = data.apiStreetViewLimit;
+    cache::apiLimits.at(ApiCategory::Maps) = data.apiMapsLimit;
 }
 
 size_t GetApiLimit(ApiCategory category)
