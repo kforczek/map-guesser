@@ -3,7 +3,9 @@
 #include <QStackedLayout>
 #include <QMessageBox>
 #include <QShortcut>
+#include <QTimer>
 
+#include "api_usage/counter.h"
 #include "pages/start.h"
 #include "pages/game_setup.h"
 #include "pages/gameplay.h"
@@ -19,19 +21,22 @@ namespace ui
 
 MainWindow::MainWindow()
     : m_layout(new QStackedLayout(this))
+    , m_apiUsageCounter(new api_usage::Counter(this))
     , m_startPage(new pages::StartPage(this))
     , m_gameSetupPage(new pages::GameSetupPage(this))
-    , m_gameplayPage(new pages::GameplayPage(this))
-    , m_roundResultsPage(new pages::RoundResultsPage(this))
-    , m_ghostWalkPage(new pages::GhostWalkPage(this))
-    , m_summaryPage(new pages::SummaryPage(this))
-    , m_mapEditorPage(new pages::MapEditorPage(this))
+    , m_gameplayPage(new pages::GameplayPage(this, *m_apiUsageCounter))
+    , m_roundResultsPage(new pages::RoundResultsPage(this, *m_apiUsageCounter))
+    , m_ghostWalkPage(new pages::GhostWalkPage(this, *m_apiUsageCounter))
+    , m_summaryPage(new pages::SummaryPage(this, *m_apiUsageCounter))
+    , m_mapEditorPage(new pages::MapEditorPage(this, *m_apiUsageCounter))
     , m_escShortcut(new QShortcut(QKeySequence(Qt::Key_Escape), this))
     , m_f11Shortcut(new QShortcut(QKeySequence(Qt::Key_F11), this))
 {
     initWindowProperties();
     initLayoutPagesStackup();
     initConnections();
+
+    QTimer::singleShot(0, this, [this](){ m_apiUsageCounter->handleWarnings(); });
 }
 
 void MainWindow::setMapCenter(const geo::Point& centerPoint)
@@ -147,6 +152,7 @@ void MainWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullop
 void MainWindow::onStartPageRequested()
 {
     m_layout->setCurrentWidget(m_startPage);
+    m_apiUsageCounter->handleWarnings();
 }
 
 void MainWindow::onSinglePlayerRequested()

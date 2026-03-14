@@ -103,8 +103,9 @@ QString formatCaptionForMultipleWinners(std::ranges::viewable_range auto&& winne
 namespace ui::pages
 {
 
-SummaryPage::SummaryPage(QWidget* parent)
-	: QFrame(parent) { }
+SummaryPage::SummaryPage(QWidget* parent, api_usage::Counter& apiUsageCounter)
+	: QFrame(parent)
+	, m_apiUsageCounter(&apiUsageCounter) { }
 
 void SummaryPage::setData(const TLeaderboard& leaderboard, const std::vector<game::RoundResults>& roundsHistory, int initialPoints)
 {
@@ -142,7 +143,7 @@ void SummaryPage::ensureInitialized()
 
 	m_summaryLabel = new QLabel(this);
 	m_leaderboardTable = new QTableWidget(this);
-	m_distanceMap = new google::DistanceMap(this);
+	m_distanceMap = new google::DistanceMap(this, *m_apiUsageCounter);
 	m_showPrevRoundButton = new QPushButton("<-", this);
 	m_showNextRoundButton = new QPushButton("->", this);
 	m_finishButton = new QPushButton("Finish", this);

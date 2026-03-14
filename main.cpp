@@ -7,6 +7,7 @@
 #include "ui/main_window.h"
 #include "ui/bridge/connection.h"
 #include "user/dir.h"
+#include "user/settings.h"
 
 namespace
 {
@@ -55,6 +56,8 @@ int main(int argc, char *argv[])
 
     const QString userDirPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     user::SetUserDirPath(userDirPath.toStdString());
+
+    user::settings::Load();
 
     // TODO: check for active token during setup (before game), maybe validate the token somehow
     game::MapGuesserGame mapGuesser;

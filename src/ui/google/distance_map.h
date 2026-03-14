@@ -9,13 +9,18 @@ namespace geo
 class Point;
 }
 
+namespace ui::api_usage
+{
+class Counter;
+}
+
 namespace ui::google
 {
 
 class DistanceMap final : public QWebEngineView
 {
 public:
-    explicit DistanceMap(QWidget* parent);
+    explicit DistanceMap(QWidget* parent, api_usage::Counter& counter);
 
     void setCenter(const geo::Point& center);
 
@@ -25,6 +30,8 @@ public:
 
 private:
     DistanceMapBridge* m_bridge = nullptr;
+
+    bool tryIncreaseApiCounter(api_usage::Counter& counter);
 
     void initBridge();
     void initHtmlContent();

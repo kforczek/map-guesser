@@ -1,8 +1,13 @@
 #include "interactive_map.h"
+
+#include <QMessageBox>
+
 #include "html_reader.h"
 #include "geo/point.h"
 
 #include <QWebChannel>
+
+#include "ui/api_usage/counter.h"
 
 namespace
 {
@@ -12,10 +17,13 @@ const QString HTML_PATH = "html/interactive_map.html";
 namespace ui::google
 {
 
-InteractiveMap::InteractiveMap(QWidget* parent)
+InteractiveMap::InteractiveMap(QWidget* parent, api_usage::Counter& counter)
     : QWebEngineView(parent)
     , m_bridge(new InteractiveMapBridge(this))
 {
+    if (!tryIncreaseApiCounter(counter))
+        return;
+
     initBridge();
     initHtmlContent();
 }
@@ -34,6 +42,18 @@ void InteractiveMap::removeLocationMarker()
 void InteractiveMap::setCenter(const geo::Point& center)
 {
     m_bridge->setCenter(center);
+}
+
+bool InteractiveMap::tryIncreaseApiCounter(api_usage::Counter& counter)
+{
+    if (counter.isLimitReached(user::ApiCategory::Maps))
+    {
+        QMessageBox::critical(this, "Maps", "You have reached the limit of Maps API usage.");
+        return false;
+    }
+
+    counter.logApiUsage(user::ApiCategory::Maps);
+    return true;
 }
 
 void InteractiveMap::initBridge()

@@ -3,6 +3,11 @@
 #include <QPushButton>
 #include "geo/point.h"
 
+namespace ui::api_usage
+{
+class Counter;
+}
+
 namespace ui::google
 {
 class StreetView;
@@ -16,7 +21,7 @@ class GameplayPage final : public QFrame
 {
     Q_OBJECT
 public:
-    explicit GameplayPage(QWidget* parent);
+    explicit GameplayPage(QWidget* parent, api_usage::Counter& apiUsageCounter);
 
     const geo::Point& getStreetViewLocation() const;
     void startNextRound(const geo::Point& location);
@@ -32,6 +37,8 @@ protected:
 
 private /*fields*/:
     bool m_initialized = false;
+    api_usage::Counter* m_apiUsageCounter = nullptr;
+
     google::StreetView* m_streetView = nullptr;
     google::InteractiveMap* m_interactiveMap = nullptr;
 

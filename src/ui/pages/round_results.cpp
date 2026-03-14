@@ -15,8 +15,9 @@ namespace ui::pages
 
 // ReSharper disable CppMemberFunctionMayBeConst
 
-RoundResultsPage::RoundResultsPage(QWidget* parent)
-    : QFrame(parent) { }
+RoundResultsPage::RoundResultsPage(QWidget* parent, api_usage::Counter& apiUsageCounter)
+    : QFrame(parent)
+    , m_apiUsageCounter(&apiUsageCounter) { }
 
 void RoundResultsPage::setCenter(const geo::Point& center)
 {
@@ -91,7 +92,7 @@ void RoundResultsPage::setupInfoLabels()
 
 void RoundResultsPage::setupDistanceMap()
 {
-    m_distanceMap = new google::DistanceMap(this);
+    m_distanceMap = new google::DistanceMap(this, *m_apiUsageCounter);
     m_distanceMap->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     if (m_mapCenter != geo::Point{})

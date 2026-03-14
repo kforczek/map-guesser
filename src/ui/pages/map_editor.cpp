@@ -9,8 +9,9 @@
 namespace ui::pages
 {
 
-MapEditorPage::MapEditorPage(QWidget* parent)
-    : QFrame(parent) { }
+MapEditorPage::MapEditorPage(QWidget* parent, api_usage::Counter& apiUsageCounter)
+    : QFrame(parent)
+    , m_apiUsageCounter(&apiUsageCounter) { }
 
 void MapEditorPage::preparePage()
 {
@@ -22,7 +23,7 @@ void MapEditorPage::preparePage()
         return;
 
     m_topBar = new widgets::MapEditorTopBar(this);
-    m_mapView = new google::PolygonMap(this);
+    m_mapView = new google::PolygonMap(this, *m_apiUsageCounter);
 
     setLayout(new QVBoxLayout(this));
 

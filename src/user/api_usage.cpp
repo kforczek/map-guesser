@@ -8,6 +8,7 @@
 #include <nlohmann/json.hpp>
 
 #include "dir.h"
+#include "json.h"
 
 namespace chr = std::chrono;
 
@@ -17,16 +18,6 @@ namespace
 using namespace user;
 
 const std::string PACIFIC_TIMEZONE_NAME = "America/Los_Angeles";
-
-const std::unordered_map<ApiCategory, std::string> API_CATEGORIES_TO_STR{
-    {ApiCategory::StreetView, "StreetView"},
-    {ApiCategory::Maps, "Maps"}
-};
-
-const std::unordered_map<std::string, ApiCategory> STR_TO_API_CATEGORIES{
-        {"StreetView", ApiCategory::StreetView},
-        {"Maps", ApiCategory::Maps}
-};
 
 // #################################################################################################
 
@@ -39,10 +30,13 @@ public:
     static Timestamp fromString(const std::string& rawStr);
     std::string toString() const;
 
+    bool isCurrentPacificMonth() const;
     chr::zoned_time<chr::seconds> toPacific() const;
 
 private:
     chr::local_seconds m_localTime;
+
+    chr::year_month toPacificYearMonth() const;
 };
 
 Timestamp::Timestamp(chr::local_seconds localTime)
@@ -72,10 +66,15 @@ std::string Timestamp::toString() const
     return std::format("{:%FT%T}", m_localTime);
 }
 
+bool Timestamp::isCurrentPacificMonth() const
+{
+    return toPacificYearMonth() == Timestamp::now().toPacificYearMonth();
+}
+
 std::chrono::zoned_time<std::chrono::seconds> Timestamp::toPacific() const
 {
     const auto* localZone   = chr::current_zone();
-    const auto* pacificZone = chr::locate_zone("America/Los_Angeles");
+    const auto* pacificZone = chr::locate_zone(PACIFIC_TIMEZONE_NAME);
 
     const chr::zoned_time localZoned{localZone, m_localTime};
     const chr::sys_time<chr::seconds> utc = localZoned.get_sys_time();
@@ -83,17 +82,28 @@ std::chrono::zoned_time<std::chrono::seconds> Timestamp::toPacific() const
     return chr::zoned_time{pacificZone, utc};
 }
 
+chr::year_month Timestamp::toPacificYearMonth() const
+{
+    const auto pacificNow = chr::floor<chr::days>(toPacific().get_local_time());
+    const chr::year_month_day pacificNowYmd{pacificNow};
+
+    return chr::year_month{pacificNowYmd.year(), pacificNowYmd.month()};
+}
+
 // #################################################################################################
 
 class ApiUsageEntry
 {
 public:
+    ApiUsageEntry(Timestamp timestamp, ApiCategory apiCategory);
+
+    ApiCategory apiCategory() const;
+    bool isCurrentPacificMonth() const;
+
     static ApiUsageEntry fromJson(const nlohmann::json& json);
     nlohmann::json toJson() const;
 
 private:
-    ApiUsageEntry(Timestamp timestamp, ApiCategory apiCategory);
-
     Timestamp m_timestamp;
     ApiCategory m_apiCategory;
 };
@@ -101,6 +111,16 @@ private:
 ApiUsageEntry::ApiUsageEntry(Timestamp timestamp, ApiCategory apiCategory)
     : m_timestamp(timestamp)
     , m_apiCategory(apiCategory) { }
+
+ApiCategory ApiUsageEntry::apiCategory() const
+{
+    return m_apiCategory;
+}
+
+bool ApiUsageEntry::isCurrentPacificMonth() const
+{
+    return m_timestamp.isCurrentPacificMonth();
+}
 
 /*static*/ ApiUsageEntry ApiUsageEntry::fromJson(const nlohmann::json& json)
 {
@@ -117,59 +137,17 @@ ApiUsageEntry::ApiUsageEntry(Timestamp timestamp, ApiCategory apiCategory)
     const auto categoryStr  = json["api_category"].get<std::string>();
 
     const Timestamp timestamp = Timestamp::fromString(timestampStr);
+    const ApiCategory apiCategory = FromString(categoryStr);
 
-    const auto apiCategoryIt = STR_TO_API_CATEGORIES.find(categoryStr);
-    if (apiCategoryIt == STR_TO_API_CATEGORIES.end())
-    {
-        throw ApiUsageAccessError{
-            std::format("Unknown api_category: \"{}\"", categoryStr)
-        };
-    }
-
-    return ApiUsageEntry{timestamp, apiCategoryIt->second};
+    return ApiUsageEntry{timestamp, apiCategory};
 }
 
 nlohmann::json ApiUsageEntry::toJson() const
 {
     return {
-    {"timestamp", m_timestamp.toString()},
-    {"api_category", API_CATEGORIES_TO_STR.at(m_apiCategory)}
+        {"timestamp", m_timestamp.toString()},
+        {"api_category", ToString(m_apiCategory)}
     };
-}
-
-// #################################################################################################
-
-
-// #################################################################################################
-
-nlohmann::json LoadJsonFile(const std::filesystem::path& path)
-{
-    auto entries = nlohmann::json::array();
-    if (!std::filesystem::exists(path))
-        return entries;
-
-    std::ifstream in{path};
-    if (!in)
-        throw ApiUsageAccessError{"Cannot open log file for reading: " + path.string()};
-    
-    if (in.peek() != std::ifstream::traits_type::eof())
-        in >> entries;
-
-    if (!entries.is_array())
-        throw ApiUsageAccessError{"Log file does not contain a JSON array."};
-
-    return entries;
-}
-
-// #################################################################################################
-
-void SaveJsonFile(const std::filesystem::path& path, const nlohmann::json& entries)
-{
-    std::ofstream out{path};
-    if (!out)
-        throw ApiUsageAccessError{"Cannot open log file for writing: " + path.string()};
-
-    out << entries.dump(2) << '\n';
 }
 
 // #################################################################################################
@@ -187,20 +165,38 @@ std::filesystem::path BuildLogFilePath()
 namespace user
 {
 
+std::string ToString(ApiCategory category)
+{
+    static const std::unordered_map<ApiCategory, std::string> API_CATEGORIES_TO_STR{
+        {ApiCategory::StreetView, "StreetView"},
+        {ApiCategory::Maps, "Maps"}
+    };
+
+    return API_CATEGORIES_TO_STR.at(category);
+}
+
+ApiCategory FromString(const std::string& str)
+{
+    static const std::unordered_map<std::string, ApiCategory> STR_TO_API_CATEGORIES{
+        {"StreetView", ApiCategory::StreetView},
+        {"Maps", ApiCategory::Maps}
+    };
+
+    return STR_TO_API_CATEGORIES.at(str);
+}
+
 void LogApiUsage(ApiCategory category)
 {
     const std::filesystem::path logPath = BuildLogFilePath();
     nlohmann::json entries = LoadJsonFile(logPath);
 
-    entries.push_back({
-        {"category",  category},
-        {"timestamp", Timestamp::now().toString()}
-    });
+    const ApiUsageEntry newEntry{Timestamp::now(), category};
+    entries.push_back(newEntry.toJson());
 
     SaveJsonFile(logPath, entries);
 }
 
-size_t GetApiUsageCount(ApiCategory category)
+size_t CountMonthlyApiUsage(ApiCategory category)
 {
     const std::filesystem::path logPath = BuildLogFilePath();
     if (!std::filesystem::exists(logPath))
@@ -208,38 +204,18 @@ size_t GetApiUsageCount(ApiCategory category)
 
     nlohmann::json entries = LoadJsonFile(logPath);
 
-    const auto pacific_now = Timestamp::now().toPacific();
-    const auto now_days =
-        chr::floor<chr::days>(pacific_now.get_local_time());
-    const chr::year_month_day now_ymd{now_days};
-    const chr::year_month current_pacific_ym{
-        now_ymd.year(), now_ymd.month()
-    };
+    size_t count = 0;
 
-    std::size_t count = 0;
-
-    for (const auto& entry : entries)
+    for (const auto& jsonEntry : entries)
     {
-        if (!entry.contains("category") || !entry.contains("timestamp"))
+        ApiUsageEntry entry = ApiUsageEntry::fromJson(jsonEntry);
+        if (entry.apiCategory() != category)
             continue;
 
-        if (entry["category"].get<std::string>() !=
-            API_CATEGORIES_TO_STR.at(category))
+        if (!entry.isCurrentPacificMonth())
             continue;
 
-        Timestamp ts =
-            Timestamp::fromString(entry["timestamp"].get<std::string>());
-
-        const auto pacific = ts.toPacific();
-        const auto entry_days =
-            chr::floor<chr::days>(pacific.get_local_time());
-        const chr::year_month_day entry_ymd{entry_days};
-        const chr::year_month entry_pacific_ym{
-            entry_ymd.year(), entry_ymd.month()
-        };
-
-        if (entry_pacific_ym == current_pacific_ym)
-            ++count;
+        ++count;
     }
 
     return count;

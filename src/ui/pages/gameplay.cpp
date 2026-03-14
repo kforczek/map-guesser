@@ -1,6 +1,10 @@
 #include "ui/pages/gameplay.h"
+
+#include <QMessageBox>
+
 #include "ui/google/interactive_map.h"
 #include "ui/google/streetview.h"
+#include "ui/api_usage/counter.h"
 
 namespace
 {
@@ -26,8 +30,9 @@ namespace ui::pages
 
 // ReSharper disable CppMemberFunctionMayBeConst
 
-GameplayPage::GameplayPage(QWidget* parent)
-    : QFrame(parent) { }
+GameplayPage::GameplayPage(QWidget* parent, api_usage::Counter& apiUsageCounter)
+    : QFrame(parent)
+    , m_apiUsageCounter(&apiUsageCounter) { }
 
 const geo::Point& GameplayPage::getStreetViewLocation() const
 {
@@ -76,8 +81,8 @@ void GameplayPage::ensureInitialized()
     if (m_initialized)
         return;
 
-    m_streetView = new google::StreetView(this);
-    m_interactiveMap = new google::InteractiveMap(this);
+    m_streetView = new google::StreetView(this, *m_apiUsageCounter);
+    m_interactiveMap = new google::InteractiveMap(this, *m_apiUsageCounter);
     m_returnToStartButton = new QPushButton("Return to start", this);
     m_guessButton = new QPushButton("Guess", this);
     m_shrinkMapButton = new QPushButton("-", this);

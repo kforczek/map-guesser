@@ -8,6 +8,11 @@ namespace geo
 class Point;
 }
 
+namespace ui::api_usage
+{
+class Counter;
+}
+
 namespace ui::google
 {
 
@@ -15,7 +20,7 @@ class InteractiveMap final : public QWebEngineView
 {
     Q_OBJECT
 public:
-    explicit InteractiveMap(QWidget* parent);
+    explicit InteractiveMap(QWidget* parent, api_usage::Counter& counter);
 
     const std::optional<geo::Point>& currLocation() const;
     void removeLocationMarker();
@@ -27,6 +32,8 @@ signals:
 
 private:
     InteractiveMapBridge* m_bridge = nullptr;
+
+    bool tryIncreaseApiCounter(api_usage::Counter& counter);
 
     void initBridge();
     void initHtmlContent();

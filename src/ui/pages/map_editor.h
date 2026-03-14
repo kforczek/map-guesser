@@ -12,7 +12,7 @@ class MapEditorPage final : public QFrame
 {
     Q_OBJECT
 public:
-    explicit MapEditorPage(QWidget* parent);
+    explicit MapEditorPage(QWidget* parent, api_usage::Counter& apiUsageCounter);
 
     void preparePage();
 
@@ -20,6 +20,8 @@ signals:
     void closePage();
 
 private /*fields*/:
+    api_usage::Counter* m_apiUsageCounter = nullptr;
+
     widgets::MapEditorTopBar* m_topBar = nullptr;
     google::PolygonMap* m_mapView = nullptr;
 

@@ -13,8 +13,11 @@ enum class ApiCategory
     Maps
 };
 
+std::string ToString(ApiCategory category);
+ApiCategory FromString(const std::string& str);
+
 void LogApiUsage(ApiCategory category);
-size_t GetApiUsageCount(ApiCategory category);
+size_t CountMonthlyApiUsage(ApiCategory category);
 
 class ApiUsageAccessError final : public std::runtime_error
 {

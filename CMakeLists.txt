@@ -94,6 +94,10 @@ add_library(user STATIC
         src/user/dir.cpp
         src/user/api_usage.h
         src/user/api_usage.cpp
+        src/user/settings.h
+        src/user/settings.cpp
+        src/user/json.h
+        src/user/json.cpp
 )
 target_include_directories(user PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(user PUBLIC cxx_std_23)
@@ -145,6 +149,8 @@ add_library(ui STATIC
         src/ui/mapfile/access.cpp
         src/ui/google/streetview_bridge.h
         src/ui/google/streetview_bridge.cpp
+        src/ui/api_usage/counter.h
+        src/ui/api_usage/counter.cpp
 )
 target_include_directories(ui PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(ui PUBLIC cxx_std_23)
