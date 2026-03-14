@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "ui/api_usage/counter.h"
 #include "ui/api_usage/msg.h"
 #include "ui/widgets/propedit.h"
 
@@ -22,9 +21,8 @@ const QString API_MAPS_LIMIT_PROP_NAME = "Maps API limit (0 = tracking disabled)
 namespace ui::pages
 {
 
-SettingsPage::SettingsPage(QWidget* parent, const api_usage::Counter& apiUsageCounter)
+SettingsPage::SettingsPage(QWidget* parent)
     : QFrame(parent)
-    , m_apiUsageCounter(&apiUsageCounter)
     , m_propApiStreetViewLimit(new widgets::PositiveNumberPropertyEditor(this, API_STREETVIEW_LIMIT_PROP_NAME, API_USAGE_VALS))
     , m_propApiMapsLimit(new widgets::PositiveNumberPropertyEditor(this, API_MAPS_LIMIT_PROP_NAME, API_USAGE_VALS))
 {
@@ -71,7 +69,7 @@ void SettingsPage::onCloseButtonClicked()
 
 void SettingsPage::onApiUsageInfoButtonClicked()
 {
-    api_usage::ShowInfo(this, m_apiUsageCounter->getStats());
+    api_usage::ShowInfo(this);
 }
 
 user::settings::Values SettingsPage::collectPageData()

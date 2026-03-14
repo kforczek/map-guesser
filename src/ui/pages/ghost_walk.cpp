@@ -8,9 +8,8 @@
 namespace ui::pages
 {
 
-GhostWalkPage::GhostWalkPage(QWidget* parent, api_usage::Counter& apiUsageCounter)
-    : QFrame(parent)
-    , m_apiUsageCounter(&apiUsageCounter) { }
+GhostWalkPage::GhostWalkPage(QWidget* parent)
+    : QFrame(parent) { }
 
 void GhostWalkPage::setLocation(const geo::Point& location)
 {
@@ -28,7 +27,7 @@ void GhostWalkPage::ensureInitialized()
     if (m_streetView)
         return;
 
-    m_streetView = new google::StreetView(this, *m_apiUsageCounter);
+    m_streetView = new google::StreetView(this);
 
     auto* layout = new QVBoxLayout(this);
     setLayout(layout);

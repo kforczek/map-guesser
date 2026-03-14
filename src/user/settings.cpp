@@ -1,18 +1,24 @@
 #include "settings.h"
-
-#include <unordered_map>
 #include "json.h"
 #include "dir.h"
+#include "util/unordered_bimap.h"
 
 namespace
 {
+using namespace user;
+
 std::filesystem::path SETTINGS_FILE_PATH;
 const std::string JSON_KEY_API_LIMITS = "api_limits";
+
+const util::unordered_bimap<ApiCategory, std::string> JSON_KEYS_API_CATEGORIES{
+        {ApiCategory::StreetView, "StreetView"},
+        {ApiCategory::Maps, "Maps"}
+};
+
 }
 
 namespace cache
 {
-using namespace user;
 
 // ######################################################################################
 
@@ -30,7 +36,7 @@ void LoadApiLimits(const nlohmann::json& jsonData)
 
     for (const auto& item : jsonData.at(JSON_KEY_API_LIMITS).items())
     {
-        const ApiCategory category = FromString(item.key());
+        const ApiCategory category = JSON_KEYS_API_CATEGORIES.right.at(item.key());
         apiLimits[category] = item.value().get<size_t>();
     }
 }
@@ -40,7 +46,7 @@ void SetApiLimits(nlohmann::json& jsonData)
     nlohmann::json limitsJson = nlohmann::json::object();
 
     for (const auto& [category, limit] : apiLimits)
-        limitsJson[ToString(category)] = limit;
+        limitsJson[JSON_KEYS_API_CATEGORIES.left.at(category)] = limit;
 
     jsonData[JSON_KEY_API_LIMITS] = std::move(limitsJson);
 }

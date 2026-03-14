@@ -5,7 +5,6 @@
 #include <QShortcut>
 #include <QTimer>
 
-#include "api_usage/counter.h"
 #include "api_usage/msg.h"
 #include "pages/start.h"
 #include "pages/game_setup.h"
@@ -23,15 +22,14 @@ namespace ui
 
 MainWindow::MainWindow()
     : m_layout(new QStackedLayout(this))
-    , m_apiUsageCounter(new api_usage::Counter())
     , m_startPage(new pages::StartPage(this))
     , m_gameSetupPage(new pages::GameSetupPage(this))
-    , m_gameplayPage(new pages::GameplayPage(this, *m_apiUsageCounter))
-    , m_roundResultsPage(new pages::RoundResultsPage(this, *m_apiUsageCounter))
-    , m_ghostWalkPage(new pages::GhostWalkPage(this, *m_apiUsageCounter))
-    , m_summaryPage(new pages::SummaryPage(this, *m_apiUsageCounter))
-    , m_mapEditorPage(new pages::MapEditorPage(this, *m_apiUsageCounter))
-    , m_settingsPage(new pages::SettingsPage(this, *m_apiUsageCounter))
+    , m_gameplayPage(new pages::GameplayPage(this))
+    , m_roundResultsPage(new pages::RoundResultsPage(this))
+    , m_ghostWalkPage(new pages::GhostWalkPage(this))
+    , m_summaryPage(new pages::SummaryPage(this))
+    , m_mapEditorPage(new pages::MapEditorPage(this))
+    , m_settingsPage(new pages::SettingsPage(this))
     , m_escShortcut(new QShortcut(QKeySequence(Qt::Key_Escape), this))
     , m_f11Shortcut(new QShortcut(QKeySequence(Qt::Key_F11), this))
 {
@@ -39,9 +37,7 @@ MainWindow::MainWindow()
     initLayoutPagesStackup();
     initConnections();
 
-    QTimer::singleShot(0, this, [this]() {
-        api_usage::HandleWarnings(this, m_apiUsageCounter->getStats());
-    });
+    QTimer::singleShot(0, this, [this](){ api_usage::HandleWarnings(this); });
 }
 
 void MainWindow::setMapCenter(const geo::Point& centerPoint)
@@ -162,7 +158,7 @@ void MainWindow::toggleFullScreen(std::optional<bool> fullScreen /*= std::nullop
 void MainWindow::onStartPageRequested()
 {
     m_layout->setCurrentWidget(m_startPage);
-    api_usage::HandleWarnings(this, m_apiUsageCounter->getStats());
+    api_usage::HandleWarnings(this);
 }
 
 void MainWindow::onSinglePlayerRequested()

@@ -4,7 +4,7 @@
 
 #include "html_reader.h"
 #include "geo/point.h"
-#include "ui/api_usage/counter.h"
+#include "ui/api_usage/limit.h"
 
 namespace
 {
@@ -14,11 +14,11 @@ const QString HTML_PATH = "html/distance_map.html";
 namespace ui::google
 {
 
-DistanceMap::DistanceMap(QWidget* parent, api_usage::Counter& counter)
+DistanceMap::DistanceMap(QWidget* parent)
     : QWebEngineView(parent)
     , m_bridge(new DistanceMapBridge(this))
 {
-    if (!tryIncreaseApiCounter(counter))
+    if (!api_usage::TryLogUsage(this, user::ApiCategory::Maps))
         return;
 
     initBridge();
@@ -46,18 +46,6 @@ void DistanceMap::setGuessedLocation(const geo::Point& location)
 void DistanceMap::setDistance(const double distance)
 {
     m_bridge->setDistance(distance);
-}
-
-bool DistanceMap::tryIncreaseApiCounter(api_usage::Counter& counter)
-{
-    if (counter.isLimitReached(user::ApiCategory::Maps))
-    {
-        QMessageBox::critical(this, "Maps", "You have reached the limit of Maps API usage.");
-        return false;
-    }
-
-    counter.logApiUsage(user::ApiCategory::Maps);
-    return true;
 }
 
 void DistanceMap::initBridge()

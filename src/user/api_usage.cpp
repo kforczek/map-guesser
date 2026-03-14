@@ -1,9 +1,10 @@
 #include "api_usage.h"
+#include "util/unordered_bimap.h"
 #include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <string>
-#include <string_view>
+#include <unordered_set>
 
 #include <nlohmann/json.hpp>
 
@@ -18,6 +19,11 @@ namespace
 using namespace user;
 
 const std::string PACIFIC_TIMEZONE_NAME = "America/Los_Angeles";
+
+const util::unordered_bimap<ApiCategory, std::string> JSON_KEYS{
+        {ApiCategory::StreetView, "StreetView"},
+        {ApiCategory::Maps, "Maps"}
+};
 
 // #################################################################################################
 
@@ -137,7 +143,7 @@ bool ApiUsageEntry::isCurrentPacificMonth() const
     const auto categoryStr  = json["api_category"].get<std::string>();
 
     const Timestamp timestamp = Timestamp::fromString(timestampStr);
-    const ApiCategory apiCategory = FromString(categoryStr);
+    const ApiCategory apiCategory = JSON_KEYS.right.at(categoryStr);
 
     return ApiUsageEntry{timestamp, apiCategory};
 }
@@ -146,7 +152,7 @@ nlohmann::json ApiUsageEntry::toJson() const
 {
     return {
         {"timestamp", m_timestamp.toString()},
-        {"api_category", ToString(m_apiCategory)}
+        {"api_category", JSON_KEYS.left.at(m_apiCategory)}
     };
 }
 
@@ -158,52 +164,12 @@ std::filesystem::path BuildLogFilePath()
     return GetUserDirPath() / LOG_FILE_NAME;
 }
 
+}
+
 // #################################################################################################
 
-}
-
-namespace user
+size_t CountMonthlyApiUsage(const nlohmann::json& entries, ApiCategory category)
 {
-
-std::string ToString(ApiCategory category)
-{
-    static const std::unordered_map<ApiCategory, std::string> API_CATEGORIES_TO_STR{
-        {ApiCategory::StreetView, "StreetView"},
-        {ApiCategory::Maps, "Maps"}
-    };
-
-    return API_CATEGORIES_TO_STR.at(category);
-}
-
-ApiCategory FromString(const std::string& str)
-{
-    static const std::unordered_map<std::string, ApiCategory> STR_TO_API_CATEGORIES{
-        {"StreetView", ApiCategory::StreetView},
-        {"Maps", ApiCategory::Maps}
-    };
-
-    return STR_TO_API_CATEGORIES.at(str);
-}
-
-void LogApiUsage(ApiCategory category)
-{
-    const std::filesystem::path logPath = BuildLogFilePath();
-    nlohmann::json entries = LoadJsonFile(logPath);
-
-    const ApiUsageEntry newEntry{Timestamp::now(), category};
-    entries.push_back(newEntry.toJson());
-
-    SaveJsonFile(logPath, entries);
-}
-
-size_t CountMonthlyApiUsage(ApiCategory category)
-{
-    const std::filesystem::path logPath = BuildLogFilePath();
-    if (!std::filesystem::exists(logPath))
-        return 0;
-
-    nlohmann::json entries = LoadJsonFile(logPath);
-
     size_t count = 0;
 
     for (const auto& jsonEntry : entries)
@@ -219,6 +185,51 @@ size_t CountMonthlyApiUsage(ApiCategory category)
     }
 
     return count;
+}
+
+// #################################################################################################
+
+namespace cache
+{
+
+std::filesystem::path logFilePath;
+nlohmann::json currEntries;
+Stats currStats;
+
+void ensureInitialized()
+{
+    if (!currEntries.empty() && !currStats.empty())
+        return;
+
+    logFilePath = BuildLogFilePath();
+    currEntries = LoadJsonFile(logFilePath);
+
+    for (const auto& [category, _] : JSON_KEYS.left)
+        currStats[category] = CountMonthlyApiUsage(currEntries, category);
+}
+
+}
+
+// #################################################################################################
+
+namespace user
+{
+
+void LogApiUsage(ApiCategory category)
+{
+    cache::ensureInitialized();
+
+    const ApiUsageEntry newEntry{Timestamp::now(), category};
+    cache::currEntries.push_back(newEntry.toJson());
+    ++cache::currStats[category];
+
+    SaveJsonFile(cache::logFilePath, cache::currEntries);
+}
+
+const Stats& GetApiUsageStats()
+{
+    cache::ensureInitialized();
+    return cache::currStats;
 }
 
 }

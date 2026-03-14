@@ -16,11 +16,6 @@ struct Params;
 namespace ui
 {
 
-namespace api_usage
-{
-class Counter;
-}
-
 namespace pages
 {
 class StartPage;
@@ -58,7 +53,6 @@ signals:
 
 private /*fields*/:
     QStackedLayout* m_layout = nullptr;
-    api_usage::Counter* m_apiUsageCounter = nullptr;
 
     pages::StartPage* m_startPage = nullptr;
     pages::GameSetupPage* m_gameSetupPage = nullptr;

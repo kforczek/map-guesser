@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <expected>
+#include <map>
 #include <stdexcept>
 #include <string>
 
@@ -13,11 +14,10 @@ enum class ApiCategory
     Maps
 };
 
-std::string ToString(ApiCategory category);
-ApiCategory FromString(const std::string& str);
+using Stats = std::map<ApiCategory, size_t>;
 
+const Stats& GetApiUsageStats();
 void LogApiUsage(ApiCategory category);
-size_t CountMonthlyApiUsage(ApiCategory category);
 
 class ApiUsageAccessError final : public std::runtime_error
 {

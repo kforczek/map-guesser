@@ -55,13 +55,13 @@ void showWarning(QWidget* parent, user::ApiCategory category, size_t currUsage)
 namespace ui::api_usage
 {
 
-void ShowInfo(QWidget* parent, const std::map<user::ApiCategory, size_t>& stats)
+void ShowInfo(QWidget* parent)
 {
     std::stringstream ss;
     ss.imbue(std::locale{""});
 
     ss << "API usage this month:\n\n";
-    for (const auto& [category, currUsage] : stats)
+    for (const auto& [category, currUsage] : user::GetApiUsageStats())
     {
         const size_t limit = user::settings::GetApiLimit(category);
         ss << "  " << API_CATEGORY_TO_STRING.at(category) << ": " << currUsage << " of " << limit << std::endl;
@@ -70,16 +70,16 @@ void ShowInfo(QWidget* parent, const std::map<user::ApiCategory, size_t>& stats)
     QMessageBox::information(parent, "API usage stats", ss.str().c_str());
 }
 
-void HandleWarnings(QWidget* parent, const std::map<user::ApiCategory, size_t>& stats)
+void HandleWarnings(QWidget* parent)
 {
-    for (const auto& [category, currUsage] : stats)
+    for (const auto& [category, currUsage] : user::GetApiUsageStats())
     {
         const size_t limit = user::settings::GetApiLimit(category);
         if (isNewThresholdCrossed(currUsage, STATS_AT_LAST_WARNING[category], limit))
             showWarning(parent, category, currUsage);
     }
 
-    STATS_AT_LAST_WARNING = stats;
+    STATS_AT_LAST_WARNING = user::GetApiUsageStats();
 }
 
 }

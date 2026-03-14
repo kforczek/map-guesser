@@ -4,11 +4,6 @@
 #include <QPushButton>
 #include "geo/point.h"
 
-namespace ui::api_usage
-{
-class Counter;
-}
-
 namespace game
 {
 struct RoundResults;
@@ -33,7 +28,7 @@ public /*helpers*/:
     };
 
 public /*methods*/:
-    explicit RoundResultsPage(QWidget* parent, api_usage::Counter& apiUsageCounter);
+    explicit RoundResultsPage(QWidget* parent);
 
     void setCenter(const geo::Point& center);
     void setData(const game::RoundResults& roundResults);
@@ -46,8 +41,6 @@ public /*methods*/:
 private /*members*/:
     bool m_initialized = false;
     QVBoxLayout* m_layout = nullptr;
-
-    api_usage::Counter* m_apiUsageCounter = nullptr;
 
     QLabel* m_distanceLabel = nullptr;
     QLabel* m_pointsLabel = nullptr;

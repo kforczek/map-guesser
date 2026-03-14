@@ -1,11 +1,6 @@
 #pragma once
 #include <QFrame>
 
-namespace ui::api_usage
-{
-class Counter;
-}
-
 class QLabel;
 class QTableWidget;
 class QPushButton;
@@ -29,7 +24,7 @@ class SummaryPage final : public QFrame
 public:
     using TLeaderboard = std::vector</*playerName*/ std::string>;
 
-    explicit SummaryPage(QWidget* parent, api_usage::Counter& apiUsageCounter);
+    explicit SummaryPage(QWidget* parent);
     void setData(const TLeaderboard& leaderboard, const std::vector<game::RoundResults>& roundsHistory, int initialPoints);
 
 signals:
@@ -37,8 +32,6 @@ signals:
 
 private /*fields*/:
     bool m_initialized = false;
-
-    api_usage::Counter* m_apiUsageCounter = nullptr;
 
     QLabel* m_summaryLabel = nullptr;
     QTableWidget* m_leaderboardTable = nullptr;

@@ -9,7 +9,7 @@
 #include <QWebChannel>
 #include <QWebEngineSettings>
 
-#include "ui/api_usage/counter.h"
+#include "ui/api_usage/limit.h"
 
 namespace
 {
@@ -19,11 +19,11 @@ const QString HTML_PATH = "html/streetview.html";
 namespace ui::google
 {
 
-StreetView::StreetView(QWidget* parent, api_usage::Counter& apiUsageCounter)
+StreetView::StreetView(QWidget* parent)
     : QWebEngineView(parent)
     , m_bridge(new StreetViewBridge(this))
 {
-    if (tryIncreaseApiCounter(apiUsageCounter))
+    if (!api_usage::TryLogUsage(this, user::ApiCategory::StreetView))
         return;
 
     initViewSettings();
@@ -45,18 +45,6 @@ void StreetView::setLocation(const geo::Point& location)
 void StreetView::returnToStart()
 {
     setLocation(m_location);
-}
-
-bool StreetView::tryIncreaseApiCounter(api_usage::Counter& counter)
-{
-    if (counter.isLimitReached(user::ApiCategory::StreetView))
-    {
-        QMessageBox::critical(this, "Street View", "You have reached the limit of Street View API usage.");
-        return false;
-    }
-
-    counter.logApiUsage(user::ApiCategory::StreetView);
-    return true;
 }
 
 void StreetView::initViewSettings() const
