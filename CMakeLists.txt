@@ -108,7 +108,7 @@ target_compile_features(ui PUBLIC cxx_std_23)
 target_link_libraries(ui PUBLIC Qt6::Widgets PRIVATE Qt6::WebEngineWidgets user)
 
 # --- executable ---
-add_executable(map_guesser main.cpp)
+add_executable(map_guesser src/main.cpp)
 target_link_libraries(map_guesser PRIVATE game ui user)
 
 # TODO: compile content to constexpr strings
