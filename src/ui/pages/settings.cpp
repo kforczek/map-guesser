@@ -34,17 +34,21 @@ SettingsPage::SettingsPage(QWidget* parent)
     layout->addWidget(m_propApiMapsLimit);
     layout->addStretch(10);
 
-    auto* apiUsageInfoButton = new QPushButton("API usage info");
-    auto* closeButton = new QPushButton("Close");
+    auto* apiUsageInfoButton = new QPushButton("API usage info", this);
+    auto* closeButton = new QPushButton("Close", this);
+    auto* resetToDefaultsButton = new QPushButton("Reset to defaults", this);
 
     apiUsageInfoButton->setFixedSize(150, 50);
     closeButton->setFixedSize(300, 50);
+    resetToDefaultsButton->setFixedSize(150, 50);
 
     auto* bottomBarLayout = new QHBoxLayout;
     bottomBarLayout->addStretch(10);
     bottomBarLayout->addWidget(apiUsageInfoButton);
     bottomBarLayout->addStretch(1);
     bottomBarLayout->addWidget(closeButton);
+    bottomBarLayout->addStretch(1);
+    bottomBarLayout->addWidget(resetToDefaultsButton);
     bottomBarLayout->addStretch(10);
 
     layout->addLayout(bottomBarLayout);
@@ -52,24 +56,33 @@ SettingsPage::SettingsPage(QWidget* parent)
 
     connect(apiUsageInfoButton, &QPushButton::clicked, this, &SettingsPage::onApiUsageInfoButtonClicked);
     connect(closeButton, &QPushButton::clicked, this, &SettingsPage::onCloseButtonClicked);
+    connect(resetToDefaultsButton, &QPushButton::clicked, this, &SettingsPage::onResetToDefaultsButtonClicked);
 }
 
 void SettingsPage::reloadData()
 {
-    const user::settings::Values data = user::settings::Get();
-    m_propApiStreetViewLimit->setValue(data.apiStreetViewLimit);
-    m_propApiMapsLimit->setValue(data.apiMapsLimit);
-}
-
-void SettingsPage::onCloseButtonClicked()
-{
-    handleSave();
-    emit closePage();
+    setPageData(user::settings::Get());
 }
 
 void SettingsPage::onApiUsageInfoButtonClicked()
 {
     api_usage::ShowInfo(this);
+}
+
+void SettingsPage::onCloseButtonClicked()
+{
+    if (handleSave())
+    {
+        emit closePage();
+    }
+}
+
+void SettingsPage::onResetToDefaultsButtonClicked()
+{
+    if (handleDiscardQuestion())
+    {
+        setPageData(user::settings::Defaults());
+    }
 }
 
 user::settings::Values SettingsPage::collectPageData()
@@ -80,26 +93,53 @@ user::settings::Values SettingsPage::collectPageData()
     return data;
 }
 
-void SettingsPage::handleSave()
+void SettingsPage::setPageData(const user::settings::Values& data)
 {
-    const user::settings::Values pageData = collectPageData();
-    const user::settings::Values fileData = user::settings::Get();
+    m_propApiStreetViewLimit->setValue(data.apiStreetViewLimit);
+    m_propApiMapsLimit->setValue(data.apiMapsLimit);
+}
+
+bool SettingsPage::handleSave()
+{
+    user::settings::Values pageData = collectPageData();
+    user::settings::Values& fileData = user::settings::Get();
 
     if (pageData == fileData)
-        return;
+        return true;
 
-    const bool save = QMessageBox::question(
+    const auto choice = QMessageBox::question(
         this,
-        "Save changes?",
-        "Do you want to save changes?",
-        QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
+        "Unsaved changes",
+        "Save modifications?",
+        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 
-    if (save)
+    if (choice == QMessageBox::Cancel)
+        return false;
+
+    if (choice == QMessageBox::Yes)
     {
-        user::settings::Set(pageData);
+        fileData = std::move(pageData);
         user::settings::Save();
     }
 
+    return true;
+}
+
+bool SettingsPage::handleDiscardQuestion()
+{
+    const user::settings::Values pageData = collectPageData();
+    const user::settings::Values& fileData = user::settings::Get();
+
+    if (pageData == fileData)
+        return true;
+
+    const auto choice = QMessageBox::question(
+        this,
+        "Unsaved changes",
+        "Discard modifications?",
+        QMessageBox::Yes | QMessageBox::No);
+
+    return choice == QMessageBox::Yes;
 }
 
 }

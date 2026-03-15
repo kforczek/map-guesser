@@ -6,14 +6,11 @@
 namespace
 {
 using namespace user;
+using namespace user::settings;
 
 std::filesystem::path SETTINGS_FILE_PATH;
-const std::string JSON_KEY_API_LIMITS = "api_limits";
-
-const util::unordered_bimap<ApiCategory, std::string> JSON_KEYS_API_CATEGORIES{
-        {ApiCategory::StreetView, "StreetView"},
-        {ApiCategory::Maps, "Maps"}
-};
+const std::string KEY_API_LIMIT_STREET_VIEW = "api_limit_streetview";
+const std::string KEY_API_LIMIT_MAPS = "api_limit_maps";
 
 }
 
@@ -22,33 +19,23 @@ namespace cache
 
 // ######################################################################################
 
-std::unordered_map<user::ApiCategory, size_t> apiLimits{
-            {user::ApiCategory::StreetView, 5000},
-            {user::ApiCategory::Maps, 10000}
-};
+Values data;
 
 // ######################################################################################
 
 void LoadApiLimits(const nlohmann::json& jsonData)
 {
-    if (!jsonData.contains(JSON_KEY_API_LIMITS))
-        return;
+    if (const auto svLimitIt = jsonData.find(KEY_API_LIMIT_STREET_VIEW); svLimitIt != jsonData.end())
+        data.apiStreetViewLimit = svLimitIt->get<size_t>();
 
-    for (const auto& item : jsonData.at(JSON_KEY_API_LIMITS).items())
-    {
-        const ApiCategory category = JSON_KEYS_API_CATEGORIES.right.at(item.key());
-        apiLimits[category] = item.value().get<size_t>();
-    }
+    if (const auto mapsLimitIt = jsonData.find(KEY_API_LIMIT_MAPS); mapsLimitIt != jsonData.end())
+        data.apiMapsLimit = mapsLimitIt->get<size_t>();
 }
 
 void SetApiLimits(nlohmann::json& jsonData)
 {
-    nlohmann::json limitsJson = nlohmann::json::object();
-
-    for (const auto& [category, limit] : apiLimits)
-        limitsJson[JSON_KEYS_API_CATEGORIES.left.at(category)] = limit;
-
-    jsonData[JSON_KEY_API_LIMITS] = std::move(limitsJson);
+    jsonData[KEY_API_LIMIT_STREET_VIEW] = data.apiStreetViewLimit;
+    jsonData[KEY_API_LIMIT_MAPS] = data.apiMapsLimit;
 }
 
 }
@@ -77,28 +64,19 @@ void Save()
     SaveJsonFile(SETTINGS_FILE_PATH, jsonData);
 }
 
-Values Get()
+Values& Get()
 {
-    Values data;
-    data.apiStreetViewLimit = cache::apiLimits.at(ApiCategory::StreetView);
-    data.apiMapsLimit = cache::apiLimits.at(ApiCategory::Maps);
-    return data;
+    return cache::data;
 }
 
-void Set(const Values& data)
+Values Defaults()
 {
-    cache::apiLimits.at(ApiCategory::StreetView) = data.apiStreetViewLimit;
-    cache::apiLimits.at(ApiCategory::Maps) = data.apiMapsLimit;
+    return Values{};
 }
 
 size_t GetApiLimit(ApiCategory category)
 {
-    return cache::apiLimits.at(category);
-}
-
-void SetApiLimit(ApiCategory category, size_t limit)
-{
-    cache::apiLimits.at(category) = limit;
+    return (category == ApiCategory::StreetView) ? cache::data.apiStreetViewLimit : cache::data.apiMapsLimit;
 }
 
 }

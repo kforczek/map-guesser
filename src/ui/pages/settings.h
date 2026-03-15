@@ -27,13 +27,16 @@ private /*fields*/:
     widgets::PositiveNumberPropertyEditor* m_propApiMapsLimit = nullptr;
 
 private slots:
-    void onCloseButtonClicked();
     void onApiUsageInfoButtonClicked();
+    void onCloseButtonClicked();
+    void onResetToDefaultsButtonClicked();
 
 private /*methods*/:
     user::settings::Values collectPageData();
+    void setPageData(const user::settings::Values& data);
 
-    void handleSave();
+    bool handleSave();
+    bool handleDiscardQuestion();
 };
 
 }
