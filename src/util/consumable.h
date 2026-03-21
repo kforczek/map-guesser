@@ -10,23 +10,30 @@ template <typename T>
 class consumable
 {
 public:
-    consumable(T val);
+    explicit consumable(std::shared_ptr<T>&& val);
+
     consumable(const consumable&) = default;
     consumable(consumable&&) = default;
+
+    consumable& operator=(const consumable&) = default;
+    consumable& operator=(consumable&&) = default;
+
+    T* operator->() { return m_value.get(); }
 
     [[nodiscard]] T&& consume();
 
 private:
-    struct State
-    {
-        explicit State(T&& v) : value(std::move(v)) {}
-
-        T value;
-        std::atomic<bool> consumed = false;
-    };
-
-    std::shared_ptr<State> m_state;
+    std::shared_ptr<T> m_value;
+    std::shared_ptr<std::atomic<bool>> m_isConsumed = std::make_shared<std::atomic<bool>>(false);
 };
+
+// #################################################################
+
+template <typename T, typename... Args>
+consumable<T> make_consumable(Args&&... args)
+{
+    return consumable<T>(std::make_shared<T>(std::forward<Args>(args)...));
+}
 
 // #################################################################
 
@@ -39,16 +46,16 @@ public:
 // #################################################################
 
 template <typename T>
-consumable<T>::consumable(T val)
-    : m_state(std::make_shared<State>(std::move(val))) { }
+consumable<T>::consumable(std::shared_ptr<T>&& val)
+    : m_value(std::move(val)) { }
 
 template <typename T>
 T&& consumable<T>::consume()
 {
-    if (m_state->consumed.exchange(true))
+    if (m_isConsumed->exchange(true))
         throw EmptyConsumableError("Consumable already consumed");
 
-    return std::move(m_state->value);
+    return std::move(*m_value);
 }
 
 }

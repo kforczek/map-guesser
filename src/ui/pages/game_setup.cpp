@@ -45,11 +45,11 @@ void GameSetupPage::onStartGameButtonClicked()
     {
         const geo::Map geoMap = m_propMap->getValue();
 
-        game::Params gameParams;
-        gameParams.projectedMap = lambert::project(geoMap);
-        gameParams.roundsCnt = m_propRoundsCnt->getValue();
-        gameParams.maxRoundPoints = m_propMaxRoundPoints->getValue();
-        gameParams.playerNames.emplace_back("[Singleplayer]");
+        auto gameParams = util::make_consumable<game::Params>();
+        gameParams->projectedMap = lambert::project(geoMap);
+        gameParams->roundsCnt = m_propRoundsCnt->getValue();
+        gameParams->maxRoundPoints = m_propMaxRoundPoints->getValue();
+        gameParams->playerNames.emplace_back("[Singleplayer]");
 
         emit startGame(std::move(gameParams), geoMap.center());
     }

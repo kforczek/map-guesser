@@ -33,8 +33,11 @@ void PolygonMapBridge::onMapChanged(const QString& jsonMap)
         return;
 
     const auto jsonDoc = QJsonDocument::fromJson(jsonMap.toUtf8());
+
     auto geoMap = mapfile::FromJson(jsonDoc);
-    emit mapChanged(std::move(geoMap));
+    auto consumableGeoMap = util::make_consumable<geo::Map>(std::move(geoMap));
+
+    emit mapChanged(std::move(consumableGeoMap));
 }
 
 }
