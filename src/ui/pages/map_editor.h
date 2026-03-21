@@ -29,7 +29,7 @@ private /*fields*/:
     // TODO: Ctrl+S shortcut
 
 private slots:
-    void onMapChanged(util::Consumable<geo::Map> updatedMap);
+    void onMapChanged(util::consumable<geo::Map> updatedMap);
     void onLoadRequested();
     void onSaveRequested();
     void onSaveAsRequested();

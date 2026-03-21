@@ -1,14 +1,18 @@
 #pragma once
 #include <QFrame>
 #include <QPushButton>
-
 #include "game/params.h"
+#include "geo/map.h"
+#include "planar/map.h"
+#include "util/consumable.h"
 
 namespace ui::widgets
 {
 class MapPropertyEditor;
 class PositiveNumberPropertyEditor;
 }
+
+// ####################################################################
 
 namespace ui::pages
 {
@@ -20,7 +24,7 @@ public:
     explicit GameSetupPage(QWidget* parent);
 
 signals:
-    void startGame(std::shared_ptr<game::Params> gameParams);
+    void startGame(util::consumable<game::Params> gameParams, const geo::Point& centerPoint);
 
 private:
     widgets::MapPropertyEditor* m_propMap = nullptr;

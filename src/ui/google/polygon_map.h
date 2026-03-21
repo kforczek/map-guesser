@@ -17,7 +17,7 @@ public:
     void loadMap(const geo::Map& map);
 
 signals:
-    void mapChanged(util::Consumable<geo::Map> updatedMap);
+    void mapChanged(util::consumable<geo::Map> updatedMap);
 
 private:
     PolygonMapBridge* m_bridge = nullptr;

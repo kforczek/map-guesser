@@ -7,12 +7,17 @@
 namespace game::mode
 {
 
-FixedRoundsEngine::FixedRoundsEngine(std::shared_ptr<Params> gameParams)
+FixedRoundsEngine::FixedRoundsEngine(Params&& gameParams)
     : m_gameParams(std::move(gameParams)) { }
+
+const Params& FixedRoundsEngine::params() const
+{
+    return m_gameParams;
+}
 
 RoundResults FixedRoundsEngine::calcRoundResults() const
 {
-    return RoundResults{m_correctLocation, m_guesses, *m_gameParams};
+    return RoundResults{m_correctLocation, m_guesses, m_gameParams};
 }
 
 double FixedRoundsEngine::getTotalPoints(const TPlayerName& player) const
@@ -23,8 +28,8 @@ double FixedRoundsEngine::getTotalPoints(const TPlayerName& player) const
 
 bool FixedRoundsEngine::isGameOver() const
 {
-    assert(m_gameParams->roundsCnt > 0);
-    return m_roundNumber >= m_gameParams->roundsCnt;
+    assert(m_gameParams.roundsCnt > 0);
+    return m_roundNumber >= m_gameParams.roundsCnt;
 }
 
 void FixedRoundsEngine::registerGuess(const TPlayerName& player, const geo::Point& guess)
@@ -32,8 +37,7 @@ void FixedRoundsEngine::registerGuess(const TPlayerName& player, const geo::Poin
     assert(!m_guesses.contains(player));
     m_guesses[player] = guess;
 
-    const bool allPlayersGuessed = m_guesses.size() == m_gameParams->playersCnt();
-    if (allPlayersGuessed)
+    if (m_guesses.size() == m_gameParams.playersCnt())
         notifyRoundFinished();
 }
 

@@ -64,9 +64,14 @@ void Save()
     SaveJsonFile(SETTINGS_FILE_PATH, jsonData);
 }
 
-Values& Get()
+const Values& Get()
 {
     return cache::data;
+}
+
+void Set(Values&& data)
+{
+    cache::data = std::move(data);
 }
 
 Values Defaults()

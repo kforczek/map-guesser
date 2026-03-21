@@ -7,12 +7,14 @@ namespace util
 
 /* Wrapper for std::shared_ptr<T> with enforced single use */
 template <typename T>
-class Consumable
+class consumable
 {
 public:
-    Consumable(T val);
+    consumable(T val);
+    consumable(const consumable&) = default;
+    consumable(consumable&&) = default;
 
-    [[nodiscard]] T consume();
+    [[nodiscard]] T&& consume();
 
 private:
     struct State
@@ -37,11 +39,11 @@ public:
 // #################################################################
 
 template <typename T>
-Consumable<T>::Consumable(T val)
+consumable<T>::consumable(T val)
     : m_state(std::make_shared<State>(std::move(val))) { }
 
 template <typename T>
-T Consumable<T>::consume()
+T&& consumable<T>::consume()
 {
     if (m_state->consumed.exchange(true))
         throw EmptyConsumableError("Consumable already consumed");

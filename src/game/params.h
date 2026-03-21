@@ -8,7 +8,6 @@ namespace game
 // TODO: some params hierarchy, maybe factory or just variant here
 struct Params
 {
-    geo::Map geoMap;
     planar::Map projectedMap;
 
     std::vector<std::string> playerNames;

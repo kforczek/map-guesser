@@ -1,9 +1,13 @@
 #pragma once
-#include <vector>
 
 #include "game/defs.h"
 #include "game/round_results.h"
 #include "geo/point.h"
+
+namespace game
+{
+struct Params;
+}
 
 namespace game::mode
 {
@@ -16,6 +20,7 @@ public:
 
     virtual void setObserver(IGameStateObserver& observer) = 0;
 
+    virtual const Params& params() const = 0;
     virtual RoundResults calcRoundResults() const = 0;
     virtual double getTotalPoints(const TPlayerName& player) const = 0;
     virtual bool isGameOver() const = 0;

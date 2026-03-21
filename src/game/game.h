@@ -14,7 +14,7 @@ public:
     void setUiCommands(ui::bridge::Commands commands);
 
     // ui -> game
-    void onCreateSession(std::shared_ptr<Params> gameParams);
+    void onCreateSession(Params&& gameParams);
     void onNextRoundRequested();
     void onGuessSubmitted(const geo::Point& guessedLocation);
 

@@ -10,12 +10,9 @@ void MapGuesserGame::setUiCommands(ui::bridge::Commands commands)
     m_uiCommands = std::move(commands);
 }
 
-void MapGuesserGame::onCreateSession(std::shared_ptr<Params> gameParams)
+void MapGuesserGame::onCreateSession(Params&& gameParams)
 {
     m_gameSession = Session{std::move(gameParams), *this};
-
-    const geo::Point& centerPoint = m_gameSession->params().geoMap.center();
-    m_uiCommands.setMapCenter(centerPoint);
 
     onNextRoundRequested();
 }

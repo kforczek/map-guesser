@@ -13,10 +13,6 @@ Commands createUiCommands(MainWindow& mainWindow)
 {
     Commands uiCommands;
 
-    uiCommands.setMapCenter = [&mainWindow](const geo::Point& centerPoint) {
-        mainWindow.setMapCenter(centerPoint);
-    };
-
     uiCommands.startNextRound = [&mainWindow](const geo::Point& location) {
         mainWindow.startNextRound(location);
     };
@@ -49,8 +45,8 @@ Commands createUiCommands(MainWindow& mainWindow)
 void connectUiSignals(const MainWindow& mainWindow, game::MapGuesserGame& logicLayer)
 {
     QObject::connect(&mainWindow, &MainWindow::startGameRequested,
-        [&logicLayer](std::shared_ptr<game::Params> gameParams) {
-            logicLayer.onCreateSession(std::move(gameParams));
+        [&logicLayer](util::consumable<game::Params> gameParams) {
+            logicLayer.onCreateSession(gameParams.consume());
         });
 
     QObject::connect(&mainWindow, &MainWindow::nextRoundRequested,

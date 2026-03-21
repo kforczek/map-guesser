@@ -2,7 +2,11 @@
 #include <QFrame>
 #include <QMessageBox>
 
+#include "game/params.h"
 #include "geo/point.h"
+#include "geo/map.h"
+#include "planar/map.h"
+#include "util/consumable.h"
 
 class QStackedLayout;
 class QShortcut;
@@ -10,7 +14,6 @@ class QShortcut;
 namespace game
 {
 class RoundResults;
-struct Params;
 }
 
 namespace ui
@@ -34,7 +37,6 @@ class MainWindow final : public QFrame
 public:
     explicit MainWindow();
 
-    void setMapCenter(const geo::Point& centerPoint);
     void startNextRound(const geo::Point& location);
     void showPlayerGuessed(const std::string& playerName);
     void showRoundResults(const game::RoundResults& roundResults, bool isGameOver);
@@ -47,7 +49,7 @@ public:
     QMessageBox::StandardButton showErrorMessage(QString errDetails);
 
 signals:
-    void startGameRequested(std::shared_ptr<game::Params> gameParams);
+    void startGameRequested(util::consumable<game::Params> gameParams);
     void guessSubmitted(const geo::Point& guessedLocation);
     void nextRoundRequested();
 
@@ -83,6 +85,9 @@ private slots:
     void onSinglePlayerRequested();
     void onMapEditorRequested();
     void onSettingsRequested();
+
+    // Game setup page
+    void onStartGameRequested(util::consumable<game::Params> gameParams, const geo::Point& centerPoint);
 
     // Round results page
     void onGhostWalkEnterRequested();

@@ -102,7 +102,7 @@ void SettingsPage::setPageData(const user::settings::Values& data)
 bool SettingsPage::handleSave()
 {
     user::settings::Values pageData = collectPageData();
-    user::settings::Values& fileData = user::settings::Get();
+    const user::settings::Values& fileData = user::settings::Get();
 
     if (pageData == fileData)
         return true;
@@ -118,7 +118,7 @@ bool SettingsPage::handleSave()
 
     if (choice == QMessageBox::Yes)
     {
-        fileData = std::move(pageData);
+        user::settings::Set(std::move(pageData));
         user::settings::Save();
     }
 

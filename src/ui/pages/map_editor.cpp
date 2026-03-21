@@ -36,7 +36,7 @@ void MapEditorPage::preparePage()
     connect(m_topBar, &widgets::MapEditorTopBar::closeButtonClicked, this, &MapEditorPage::closePage);
 }
 
-void MapEditorPage::onMapChanged(util::Consumable<geo::Map> updatedMap)
+void MapEditorPage::onMapChanged(util::consumable<geo::Map> updatedMap)
 {
     m_mapData = updatedMap.consume();
     m_topBar->setSaveEnabled(true);

@@ -21,7 +21,7 @@ public:
     Q_INVOKABLE void loadMap(const QString& jsonMap);
 
 signals:
-    void mapChanged(util::Consumable<geo::Map> updatedMap);
+    void mapChanged(util::consumable<geo::Map> updatedMap);
 
 public slots:
     void onMapChanged(const QString& jsonMap);

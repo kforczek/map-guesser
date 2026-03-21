@@ -2,6 +2,7 @@
 #include <memory>
 #include "params.h"
 #include "mode/engine.h"
+#include "planar/map.h"
 
 namespace game::mode
 {
@@ -15,7 +16,7 @@ namespace game
 class Session
 {
 public:
-    explicit Session(std::shared_ptr<Params> gameParams, game::mode::IGameStateObserver& observer);
+    explicit Session(Params&& gameParams, game::mode::IGameStateObserver& observer);
 
     const Params& params() const;
 
@@ -24,8 +25,8 @@ public:
     game::mode::IEngine& engine();
 
 private:
-    std::shared_ptr<Params> m_gameParams;
     std::unique_ptr<game::mode::IEngine> m_engine;
+    planar::Map m_projectedMap;
 };
 
 }

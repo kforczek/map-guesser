@@ -15,10 +15,10 @@ struct Values
 void Load();
 void Save();
 
-Values& Get();
+const Values& Get();
+void Set(Values&& data);
 Values Defaults();
 
-// TODO remove
 size_t GetApiLimit(ApiCategory category);
 
 }

@@ -1,11 +1,7 @@
 #pragma once
 #include <memory>
 #include "engine_base.h"
-
-namespace game
-{
-struct Params;
-}
+#include "game/params.h"
 
 namespace game::mode
 {
@@ -13,8 +9,9 @@ namespace game::mode
 class FixedRoundsEngine final : public EngineBase
 {
 public:
-    explicit FixedRoundsEngine(std::shared_ptr<Params> gameParams);
+    explicit FixedRoundsEngine(Params&& gameParams);
 
+    const Params& params() const override;
     RoundResults calcRoundResults() const override;
     double getTotalPoints(const TPlayerName& player) const override;
     bool isGameOver() const override;
@@ -25,7 +22,7 @@ public:
     void pauseGame() override;
 
 private:
-    std::shared_ptr<Params> m_gameParams;
+    Params m_gameParams;
 
     size_t m_roundNumber = 0;
     geo::Point m_correctLocation;

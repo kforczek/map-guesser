@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <stdexcept>
 
 namespace
 {
@@ -45,6 +46,9 @@ double Map::totalArea() const
 
 const Triangle& Map::getRandomTriangle() const
 {
+    if (m_triangles.empty())
+        throw std::runtime_error{"Map is empty"};
+
     std::uniform_real_distribution dist{0.0, m_totalArea};
     const double rndChoice = dist(RND_ENGINE);
 

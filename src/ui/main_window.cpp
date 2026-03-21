@@ -40,12 +40,6 @@ MainWindow::MainWindow()
     QTimer::singleShot(0, this, [this](){ api_usage::HandleWarnings(this); });
 }
 
-void MainWindow::setMapCenter(const geo::Point& centerPoint)
-{
-    m_gameplayPage->setMapCenter(centerPoint);
-    m_roundResultsPage->setCenter(centerPoint);
-}
-
 void MainWindow::startNextRound(const geo::Point& location)
 {
     m_currentLocation = location;
@@ -123,7 +117,7 @@ void MainWindow::initConnections()
     connect(m_startPage, &pages::StartPage::settingsRequested, this, &MainWindow::onSettingsRequested);
 
     // Game setup page
-    connect(m_gameSetupPage, &pages::GameSetupPage::startGame, this, &MainWindow::startGameRequested);
+    connect(m_gameSetupPage, &pages::GameSetupPage::startGame, this, &MainWindow::onStartGameRequested);
     connect(m_gameplayPage, &pages::GameplayPage::guessMade, this, &MainWindow::guessSubmitted);
 
     // Round results page
@@ -176,6 +170,14 @@ void MainWindow::onSettingsRequested()
 {
     m_settingsPage->reloadData();
     m_layout->setCurrentWidget(m_settingsPage);
+}
+
+void MainWindow::onStartGameRequested(util::consumable<game::Params> gameParams, const geo::Point& centerPoint)
+{
+    m_gameplayPage->setMapCenter(centerPoint);
+    m_roundResultsPage->setCenter(centerPoint);
+
+    emit startGameRequested(std::move(gameParams));
 }
 
 void MainWindow::onGhostWalkEnterRequested()
