@@ -16,7 +16,7 @@ public:
     // ui -> game
     void onCreateSession(Params&& gameParams);
     void onNextRoundRequested();
-    void onGuessSubmitted(const geo::Point& guessedLocation);
+    void onPlayerFinishedRound(const std::optional<geo::Point>& guessedLocation);
 
     // session -> game
     void onRoundFinished() override;

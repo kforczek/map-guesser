@@ -5,6 +5,7 @@
 
 class QLineEdit;
 class QSpinBox;
+class QTimeEdit;
 
 namespace ui::widgets
 {
@@ -40,8 +41,6 @@ private:
     QSpinBox* m_valueEdit = nullptr;
 };
 
-// ########################################################################################
-
 struct PositiveNumberPropertyEditor::Values
 {
     int minValue = 0;
@@ -62,6 +61,20 @@ struct PositiveNumberPropertyEditor::Values
         if (initialValue > maxValue)
             throw std::invalid_argument("initialValue must be <= than maxValue");
     };
+};
+
+// ########################################################################################
+
+class TimePropertyEditor final : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit TimePropertyEditor(QWidget* parent);
+
+    QTime getValue() const;
+
+private:
+    QTimeEdit* m_valueEdit = nullptr;
 };
 
 }

@@ -20,7 +20,7 @@ public:
     void setCenter(const geo::Point& center);
 
     void setActualLocation(const geo::Point& location);
-    void setGuessedLocation(const geo::Point& location);
+    void setGuessedLocation(const std::optional<geo::Point>& location);
     void setDistance(double distance);
 
 private:

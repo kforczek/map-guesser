@@ -32,10 +32,12 @@ void MapGuesserGame::onNextRoundRequested()
 }
 // ReSharper restore CppMemberFunctionMayBeConst
 
-void MapGuesserGame::onGuessSubmitted(const geo::Point& guessedLocation)
+void MapGuesserGame::onPlayerFinishedRound(const std::optional<geo::Point>& guessedLocation)
 {
     assert(m_gameSession);
-    m_gameSession->engine().registerGuess("", guessedLocation);
+    m_gameSession->engine().registerPlayerGuess("", guessedLocation);
+
+    onRoundFinished();
 }
 
 void MapGuesserGame::onRoundFinished()

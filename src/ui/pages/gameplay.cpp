@@ -1,6 +1,8 @@
 #include "ui/pages/gameplay.h"
 
-#include <QMessageBox>
+#include <QPushButton>
+#include <QLabel>
+#include <QTimer>
 
 #include "ui/google/interactive_map.h"
 #include "ui/google/streetview.h"
@@ -22,10 +24,35 @@ constexpr int MAP_Y_INCR = mapHeightFromWidth(MAP_X_INCR);
 constexpr double MIN_MAP_WIDTH_RATIO = 2.0 / 10.0;
 constexpr double MAX_MAP_WIDTH_RATIO = 6.0 / 10.0;
 
+// ##############################################################################
+
+QString formatRoundInfo(unsigned int roundNum, unsigned int roundsCnt)
+{
+    static const QString FORMAT = "Round %1 of %2";
+    return FORMAT
+            .arg(QString::number(roundNum))
+            .arg(QString::number(roundsCnt));
+}
+
+QString formatTimerInfo(unsigned int currTimeSecs)
+{
+    const unsigned int minutes = currTimeSecs / 60;
+    const unsigned int seconds = currTimeSecs - (minutes * 60);
+
+    static const QString FORMAT = "%1:%2";
+    return FORMAT
+        .arg(static_cast<qulonglong>(minutes), 2, 10, QLatin1Char('0'))
+        .arg(static_cast<qulonglong>(seconds), 2, 10, QLatin1Char('0'));
+}
+
+// ##############################################################################
+
 }
 
 namespace ui::pages
 {
+
+// ##############################################################################
 
 // ReSharper disable CppMemberFunctionMayBeConst
 
@@ -45,13 +72,35 @@ const geo::Point& GameplayPage::getStreetViewLocation() const
     return m_streetView->getLocation();
 }
 
+void GameplayPage::prepareNewGame(unsigned int roundsCnt, std::optional<QTime> roundTimeLimit)
+{
+    m_currRoundNumber = 0;
+    m_roundsCnt = roundsCnt;
+    m_roundTimeLimit = roundTimeLimit ? QTime{0, 0}.secsTo(*roundTimeLimit) : 0;
+}
+
 void GameplayPage::startNextRound(const geo::Point& location)
 {
     ensureInitialized();
 
+    ++m_currRoundNumber;
+    m_roundInfoLabel->setText(formatRoundInfo(m_currRoundNumber, m_roundsCnt));
+
+    m_currRoundTimeLeft = m_roundTimeLimit;
+
     m_streetView->setLocation(location);
     m_interactiveMap->removeLocationMarker();
     m_guessButton->setEnabled(false);
+
+    if (m_roundTimeLimit > 0)
+    {
+        m_timerInfoLabel->setVisible(true);
+        m_roundTimer->start(1000);
+    }
+    else
+    {
+        m_timerInfoLabel->setVisible(false);
+    }
 }
 
 void GameplayPage::setMapCenter(const geo::Point& center)
@@ -79,15 +128,37 @@ void GameplayPage::ensureInitialized()
     if (m_initialized)
         return;
 
+    setContentsMargins(0, 0, 0, 0);
+
+    initMembers();
+    initGeometries();
+    initConnections();
+
+    m_initialized = true;
+    resize();
+}
+
+void GameplayPage::initMembers()
+{
     m_streetView = new google::StreetView(this);
     m_interactiveMap = new google::InteractiveMap(this);
+    m_roundInfoLabel = new QLabel(this);
+    m_timerInfoLabel = new QLabel(this);
+    m_roundTimer = new QTimer(this);
     m_returnToStartButton = new QPushButton("Return to start", this);
     m_guessButton = new QPushButton("Guess", this);
     m_shrinkMapButton = new QPushButton("-", this);
     m_enlargeMapButton = new QPushButton("+", this);
 
-    setContentsMargins(0, 0, 0, 0);
+    m_guessButton->setEnabled(false);
 
+    if (m_mapCenter != geo::Point{})
+        m_interactiveMap->setCenter(m_mapCenter);
+}
+
+void GameplayPage::initGeometries()
+{
+    // TODO: necessary? resize() is called in the end anyway
     m_streetView->setGeometry(rect());
     m_interactiveMap->setFixedSize(START_MAP_WIDTH, START_MAP_HEIGHT);
     m_guessButton->setMinimumSize(150, 40);
@@ -95,19 +166,29 @@ void GameplayPage::ensureInitialized()
     m_shrinkMapButton->setFixedSize(30, 30);
     m_enlargeMapButton->setFixedSize(30, 30);
 
-    m_guessButton->setEnabled(false);
+    auto* leftInfoBoxBackground = new QWidget(this);
+    leftInfoBoxBackground->setFixedSize(150, 70);
+    leftInfoBoxBackground->move(10, 10);
 
+    m_roundInfoLabel->setParent(leftInfoBoxBackground);
+    m_roundInfoLabel->setFixedSize(140, 25);
+    m_roundInfoLabel->move(5, 5);
+    m_roundInfoLabel->setText(formatRoundInfo(m_currRoundNumber, m_roundsCnt));
+
+    m_timerInfoLabel->setParent(leftInfoBoxBackground);
+    m_timerInfoLabel->setFixedSize(140, 25);
+    m_timerInfoLabel->move(5, 35);
+    m_timerInfoLabel->setVisible(false);
+}
+
+void GameplayPage::initConnections()
+{
     connect(m_interactiveMap, &google::InteractiveMap::guessMarkerPlaced, this, &GameplayPage::onGuessMarkerPlaced);
+    connect(m_roundTimer, &QTimer::timeout, this, &GameplayPage::onTimerTick);
     connect(m_guessButton, &QPushButton::clicked, this, &GameplayPage::onGuessButtonClicked);
     connect(m_returnToStartButton, &QPushButton::clicked, this, &GameplayPage::onReturnToStartButtonClicked);
     connect(m_shrinkMapButton, &QPushButton::clicked, this, &GameplayPage::onShrinkMapButtonClicked);
     connect(m_enlargeMapButton, &QPushButton::clicked, this, &GameplayPage::onEnlargeMapButtonClicked);
-
-    if (m_mapCenter != geo::Point{})
-        m_interactiveMap->setCenter(m_mapCenter);
-
-    m_initialized = true;
-    resize();
 }
 
 void GameplayPage::resize()
@@ -200,12 +281,22 @@ void GameplayPage::onGuessMarkerPlaced()
     m_guessButton->setEnabled(true);
 }
 
+void GameplayPage::onTimerTick()
+{
+    --m_currRoundTimeLeft;
+    m_timerInfoLabel->setText(formatTimerInfo(m_currRoundTimeLeft));
+
+    if (m_currRoundTimeLeft == 0)
+    {
+        m_roundTimer->stop();
+        emit playerFinishedRound(m_interactiveMap->currLocation());
+    }
+}
+
 void GameplayPage::onGuessButtonClicked()
 {
-    const auto& guessedLocation = m_interactiveMap->currLocation();
-    assert(guessedLocation);
-
-    emit guessMade(*guessedLocation);
+    m_roundTimer->stop();
+    emit playerFinishedRound(m_interactiveMap->currLocation());
 }
 
 void GameplayPage::onReturnToStartButtonClicked()

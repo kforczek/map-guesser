@@ -37,7 +37,7 @@ void DistanceMap::setActualLocation(const geo::Point& location)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
-void DistanceMap::setGuessedLocation(const geo::Point& location)
+void DistanceMap::setGuessedLocation(const std::optional<geo::Point>& location)
 {
     m_bridge->setMarkerGuessed(location);
 }

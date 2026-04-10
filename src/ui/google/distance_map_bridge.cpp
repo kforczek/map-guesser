@@ -1,5 +1,22 @@
 #include "distance_map_bridge.h"
 
+#include <qvariant.h>
+
+namespace
+{
+
+QVariant getLatitude(const std::optional<geo::Point>& point)
+{
+    return point ? QVariant::fromValue(point->latitude()) : QVariant();
+}
+
+QVariant getLongitude(const std::optional<geo::Point>& point)
+{
+    return point ? QVariant::fromValue(point->longitude()) : QVariant();
+}
+
+}
+
 namespace ui::google
 {
 
@@ -19,12 +36,12 @@ void DistanceMapBridge::setMarkerActual(const geo::Point& location)
         emit updateMarkerActual(m_markerActual.latitude(), m_markerActual.longitude());
 }
 
-void DistanceMapBridge::setMarkerGuessed(const geo::Point& location)
+void DistanceMapBridge::setMarkerGuessed(const std::optional<geo::Point>& location)
 {
     m_markerGuessed = location;
 
     if (m_htmlReady)
-        emit updateMarkerGuessed(m_markerGuessed.latitude(), m_markerGuessed.longitude());
+        emit updateMarkerGuessed(getLatitude(m_markerGuessed), getLongitude(m_markerGuessed));
 }
 
 void DistanceMapBridge::setDistance(double distance)
@@ -45,8 +62,8 @@ void DistanceMapBridge::onHtmlReady()
     if (m_markerActual != geo::Point{})
         emit updateMarkerActual(m_markerActual.latitude(), m_markerActual.longitude());
 
-    if (m_markerGuessed != geo::Point{})
-        emit updateMarkerGuessed(m_markerGuessed.latitude(), m_markerGuessed.longitude());
+    if (m_markerGuessed.has_value())
+        emit updateMarkerGuessed(getLatitude(m_markerGuessed), getLongitude(m_markerGuessed));
 
     if (m_distance != 0)
         emit updateDistance(m_distance);

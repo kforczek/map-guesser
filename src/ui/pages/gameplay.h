@@ -1,12 +1,20 @@
 #pragma once
 #include <QFrame>
-#include <QPushButton>
+#include <QTime>
 #include "geo/point.h"
+
+class QLabel;
+class QPushButton;
 
 namespace ui::google
 {
 class StreetView;
 class InteractiveMap;
+}
+
+namespace ui::widgets
+{
+class GameplayRoundInfoBox;
 }
 
 namespace ui::pages
@@ -19,12 +27,14 @@ public:
     explicit GameplayPage(QWidget* parent);
 
     const geo::Point& getStreetViewLocation() const;
+
+    void prepareNewGame(unsigned int roundsCnt, std::optional<QTime> roundTimeLimit);
     void startNextRound(const geo::Point& location);
 
     void setMapCenter(const geo::Point& center);
 
 signals:
-    void guessMade(const geo::Point& location);
+    void playerFinishedRound(const std::optional<geo::Point>& location);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -35,6 +45,16 @@ private /*fields*/:
 
     google::StreetView* m_streetView = nullptr;
     google::InteractiveMap* m_interactiveMap = nullptr;
+
+    unsigned int m_currRoundNumber = 0;
+    unsigned int m_currRoundTimeLeft = 0;
+
+    unsigned int m_roundsCnt = 0;
+    unsigned int m_roundTimeLimit = 0;
+
+    QLabel* m_roundInfoLabel = nullptr;
+    QLabel* m_timerInfoLabel = nullptr;
+    QTimer* m_roundTimer = nullptr;
 
     QPushButton* m_returnToStartButton = nullptr;
     QPushButton* m_guessButton = nullptr;
@@ -48,6 +68,10 @@ private /*fields*/:
 private /*methods*/:
     void ensureInitialized();
 
+    void initMembers();
+    void initGeometries();
+    void initConnections();
+
     void resize();
     void resizeStreetView();
     void resizeAndMoveMap(int newWidth = 0, int newHeight = 0);
@@ -59,6 +83,7 @@ private /*methods*/:
 
 private slots:
     void onGuessMarkerPlaced();
+    void onTimerTick();
 
     void onGuessButtonClicked();
     void onReturnToStartButtonClicked();

@@ -32,7 +32,7 @@ bool FixedRoundsEngine::isGameOver() const
     return m_roundNumber >= m_gameParams.roundsCnt;
 }
 
-void FixedRoundsEngine::registerGuess(const TPlayerName& player, const geo::Point& guess)
+void FixedRoundsEngine::registerPlayerGuess(const TPlayerName& player, const std::optional<geo::Point>& guess)
 {
     assert(!m_guesses.contains(player));
     m_guesses[player] = guess;

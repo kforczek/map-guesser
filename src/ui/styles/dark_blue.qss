@@ -81,6 +81,10 @@ QLabel {
     background: transparent;
 }
 
+QLabel[urgency="normal"]   { color: #d6e1ee; }   /* neutral */
+QLabel[urgency="warning"]  { color: #f0a832; }   /* amber */
+QLabel[urgency="critical"] { color: #ff4d4d; }   /* red */
+
 /* Text inputs */
 QLineEdit, QTextEdit, QPlainTextEdit {
     background-color: #212c3a;

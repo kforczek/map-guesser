@@ -8,18 +8,18 @@ namespace
 {
 
 unsigned int calcRoundPoints(
-    double distance,        // meters
+    std::optional<double> distance,        // meters
     double totalArea,       // m²
     unsigned int maxPoints)
 {
-    if (maxPoints == 0 || totalArea <= 0.0)
+    if (!distance || maxPoints == 0 || totalArea <= 0.0)
         return 0;
 
     // Characteristic map size (meters)
     const double mapScale = std::sqrt(totalArea / M_PI);
 
     // Relative distance (scale-invariant)
-    const double x = distance / mapScale;
+    const double x = *distance / mapScale;
 
     // Tunable parameters
     constexpr double precisionRadius = 0.00001; // ~10 m on Poland-sized map
@@ -42,11 +42,11 @@ unsigned int calcRoundPoints(
 namespace game
 {
 
-PlayerRoundResult::PlayerRoundResult(const geo::Point& actualLoc, const geo::Point& guessedLoc, const Params& gameParams)
+PlayerRoundResult::PlayerRoundResult(const geo::Point& actualLoc, const std::optional<geo::Point>& guessedLoc, const Params& gameParams)
     : guess(guessedLoc)
-    , distanceMeters(actualLoc.distanceTo(guessedLoc))
+    , distanceMeters(guessedLoc.transform([&](const geo::Point& p){return p.distanceTo(actualLoc);}))
     , distancePoints(calcRoundPoints(distanceMeters, gameParams.projectedMap.totalArea(), gameParams.maxRoundPoints))
-    , pointsChange(distancePoints)
+    , pointsChange(static_cast<int>(distancePoints))
 {
 }
 

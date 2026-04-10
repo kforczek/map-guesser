@@ -256,7 +256,7 @@ void SummaryPage::updateDistanceMap()
 
 	// TODO [multiplayer]: show results for all players
 	m_distanceMap->setGuessedLocation(shownRound.playerResults.begin()->second.guess);
-	m_distanceMap->setDistance(shownRound.playerResults.begin()->second.distanceMeters);
+	m_distanceMap->setDistance(shownRound.playerResults.begin()->second.distanceMeters.value_or(0));
 }
 
 void SummaryPage::updateNavigationButtons()

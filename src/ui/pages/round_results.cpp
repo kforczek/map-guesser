@@ -35,7 +35,7 @@ void RoundResultsPage::setData(const game::RoundResults& roundResults)
     // TODO: [multiplayer] iterate over all players
     const game::PlayerRoundResult& playerResult = roundResults.playerResults.begin()->second;
     m_distanceMap->setGuessedLocation(playerResult.guess);
-    m_distanceMap->setDistance(playerResult.distanceMeters);
+    m_distanceMap->setDistance(playerResult.distanceMeters.value_or(0));
 
     updateDistanceLabel(playerResult);
     updatePointsLabel(playerResult);
@@ -137,14 +137,20 @@ void RoundResultsPage::onProceedButtonClicked()
 
 void RoundResultsPage::updateDistanceLabel(const game::PlayerRoundResult& result)
 {
+    if (!result.distanceMeters)
+    {
+        m_distanceLabel->setText("No guess placed!");
+        return;
+    }
+
     std::ostringstream formatter;
     formatter << "Your guess was ";
     formatter << std::fixed << std::setprecision(2);
 
-    if (result.distanceMeters > 1000)
-        formatter << result.distanceMeters / 1000 << " km";
+    if (*result.distanceMeters > 1000)
+        formatter << *result.distanceMeters / 1000 << " km";
     else
-        formatter << result.distanceMeters << " m";
+        formatter << *result.distanceMeters << " m";
 
     formatter << " from the actual location.";
 

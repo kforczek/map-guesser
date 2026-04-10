@@ -25,7 +25,7 @@ public:
     virtual double getTotalPoints(const TPlayerName& player) const = 0;
     virtual bool isGameOver() const = 0;
 
-    virtual void registerGuess(const TPlayerName& player, const geo::Point& guess) = 0;
+    virtual void registerPlayerGuess(const TPlayerName& player, const std::optional<geo::Point>& guess) = 0;
 
     virtual void startNextRound(const geo::Point& correctLocation) = 0;
     virtual void pauseGame() = 0;

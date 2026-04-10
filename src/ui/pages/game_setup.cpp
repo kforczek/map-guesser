@@ -6,7 +6,7 @@
 #include "game/params.h"
 #include "ui/mapfile/access.h"
 #include "ui/widgets/propedit.h"
-#include "lambert/projection.h"
+#include "ui/params.h"
 
 namespace
 {
@@ -24,6 +24,7 @@ GameSetupPage::GameSetupPage(QWidget* parent)
     , m_propMap(new widgets::MapPropertyEditor(this))
     , m_propRoundsCnt(new widgets::PositiveNumberPropertyEditor(this, "Number of rounds", ROUNDS_COUNT_VALS))
     , m_propMaxRoundPoints(new widgets::PositiveNumberPropertyEditor(this, "Max round points", ROUND_POINTS_VALS))
+    , m_propRoundTimeLimit(new widgets::TimePropertyEditor(this))
     , m_startGameButton(new QPushButton("Start Game", this))
 {
     auto* layout = new QVBoxLayout(this);
@@ -33,6 +34,7 @@ GameSetupPage::GameSetupPage(QWidget* parent)
     layout->addWidget(m_propMap);
     layout->addWidget(m_propRoundsCnt);
     layout->addWidget(m_propMaxRoundPoints);
+    layout->addWidget(m_propRoundTimeLimit);
     layout->addStretch();
     layout->addWidget(m_startGameButton);
 
@@ -43,15 +45,14 @@ void GameSetupPage::onStartGameButtonClicked()
 {
     try
     {
-        const geo::Map geoMap = m_propMap->getValue();
+        Params params;
+        params.map = m_propMap->getValue();
+        params.roundsCnt = m_propRoundsCnt->getValue();
+        params.maxRoundPoints = m_propMaxRoundPoints->getValue();
+        params.playerNames.push_back("[Singleplayer]");
+        params.roundTimeLimit = m_propRoundTimeLimit->getValue();
 
-        auto gameParams = util::make_consumable<game::Params>();
-        gameParams->projectedMap = lambert::project(geoMap);
-        gameParams->roundsCnt = m_propRoundsCnt->getValue();
-        gameParams->maxRoundPoints = m_propMaxRoundPoints->getValue();
-        gameParams->playerNames.emplace_back("[Singleplayer]");
-
-        emit startGame(std::move(gameParams), geoMap.center());
+        emit startGame(params);
     }
     catch (std::runtime_error& err)
     {

@@ -19,6 +19,8 @@ class RoundResults;
 namespace ui
 {
 
+struct Params;
+
 namespace pages
 {
 class StartPage;
@@ -49,8 +51,8 @@ public:
     QMessageBox::StandardButton showErrorMessage(QString errDetails);
 
 signals:
-    void startGameRequested(util::consumable<game::Params> gameParams);
-    void guessSubmitted(const geo::Point& guessedLocation);
+    void startGameRequested(const Params& params);
+    void playerFinishedRound(const std::optional<geo::Point>& guessedLocation);
     void nextRoundRequested();
 
 private /*fields*/:
@@ -87,7 +89,7 @@ private slots:
     void onSettingsRequested();
 
     // Game setup page
-    void onStartGameRequested(util::consumable<game::Params> gameParams, const geo::Point& centerPoint);
+    void onStartGameRequested(const Params& params);
 
     // Round results page
     void onGhostWalkEnterRequested();

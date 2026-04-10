@@ -16,7 +16,7 @@ public:
     double getTotalPoints(const TPlayerName& player) const override;
     bool isGameOver() const override;
 
-    void registerGuess(const TPlayerName& player, const geo::Point& guess) override;
+    void registerPlayerGuess(const TPlayerName& player, const std::optional<geo::Point>& guess) override;
 
     void startNextRound(const geo::Point& correctLocation) override;
     void pauseGame() override;

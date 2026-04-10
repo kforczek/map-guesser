@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QPushButton>
+#include <QTimeEdit>
 
 #include "ui/mapfile/access.h"
 #include "ui/mapfile/selector.h"
@@ -84,6 +85,20 @@ unsigned int PositiveNumberPropertyEditor::getValue() const
 void PositiveNumberPropertyEditor::setValue(unsigned int value)
 {
     m_valueEdit->setValue(static_cast<int>(value));
+}
+
+TimePropertyEditor::TimePropertyEditor(QWidget* parent)
+    : QWidget(parent)
+    , m_valueEdit(new QTimeEdit(this))
+{
+    initEditor(*this, "Round time:", *m_valueEdit);
+
+    m_valueEdit->setDisplayFormat("mm:ss");
+}
+
+QTime TimePropertyEditor::getValue() const
+{
+    return m_valueEdit->time();
 }
 
 }

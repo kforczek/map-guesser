@@ -5,6 +5,7 @@
 #include <QShortcut>
 #include <QTimer>
 
+#include "params.h"
 #include "api_usage/msg.h"
 #include "pages/start.h"
 #include "pages/game_setup.h"
@@ -118,7 +119,9 @@ void MainWindow::initConnections()
 
     // Game setup page
     connect(m_gameSetupPage, &pages::GameSetupPage::startGame, this, &MainWindow::onStartGameRequested);
-    connect(m_gameplayPage, &pages::GameplayPage::guessMade, this, &MainWindow::guessSubmitted);
+
+    // Gameplay page
+    connect(m_gameplayPage, &pages::GameplayPage::playerFinishedRound, this, &MainWindow::playerFinishedRound);
 
     // Round results page
     connect(m_roundResultsPage, &pages::RoundResultsPage::closePage, this, &MainWindow::nextRoundRequested);
@@ -172,12 +175,14 @@ void MainWindow::onSettingsRequested()
     m_layout->setCurrentWidget(m_settingsPage);
 }
 
-void MainWindow::onStartGameRequested(util::consumable<game::Params> gameParams, const geo::Point& centerPoint)
+void MainWindow::onStartGameRequested(const Params& params)
 {
-    m_gameplayPage->setMapCenter(centerPoint);
-    m_roundResultsPage->setCenter(centerPoint);
+    m_gameplayPage->prepareNewGame(params.roundsCnt, params.roundTimeLimit);
 
-    emit startGameRequested(std::move(gameParams));
+    m_gameplayPage->setMapCenter(params.map.center());
+    m_roundResultsPage->setCenter(params.map.center());
+
+    emit startGameRequested(params);
 }
 
 void MainWindow::onGhostWalkEnterRequested()

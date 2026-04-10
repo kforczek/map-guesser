@@ -60,17 +60,8 @@
     }
 
     function setMarkerGuessed(lat, lng) {
-        const pos = {lat, lng};
-        const pin = new google.maps.marker.PinElement({
-            background: "#0f9fea",
-            borderColor: "#594040",
-            glyphColor: "#000000",
-        });
-        if (!markerGuessed) {
-            markerGuessed = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "B", content: pin.element });
-        } else {
-            markerGuessed.position = pos;
-        }
+        updateMarkerGuessed(lat, lng);
+
         updateLine();
         updateMapCenter();
     }
@@ -88,6 +79,25 @@
     function updateZoom(distance) {
         let zoom = getZoom(distance);
         map.setZoom(zoom);
+    }
+
+    function updateMarkerGuessed(lat, lng) {
+        if (lat == null || lng == null) {
+            markerGuessed = null;
+            return;
+        }
+
+        const pos = {lat: Number(lat), lng: Number(lng)};
+        const pin = new google.maps.marker.PinElement({
+            background: "#0f9fea",
+            borderColor: "#594040",
+            glyphColor: "#000000",
+        });
+        if (!markerGuessed) {
+            markerGuessed = new google.maps.marker.AdvancedMarkerElement({ map, position: pos, title: "B", content: pin.element });
+        } else {
+            markerGuessed.position = pos;
+        }
     }
 
     function updateMapCenter() {
@@ -119,10 +129,13 @@
 
         new QWebChannel(qt.webChannelTransport, (channel) => {
             bridge = channel.objects.bridge;
+
             bridge.updateCenter.connect(setCenter);
+            bridge.updateDistance.connect(setDistance);
             bridge.updateMarkerActual.connect(setMarkerActual);
             bridge.updateMarkerGuessed.connect(setMarkerGuessed);
-            bridge.updateDistance.connect(setDistance);
+            bridge.clearMarkerGuessed.connect(() => setMarkerGuessed(null, null));
+
             bridge.onHtmlReady();
         });
     }

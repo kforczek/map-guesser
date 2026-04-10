@@ -10,6 +10,7 @@ struct Params
 {
     planar::Map projectedMap;
 
+    // TODO: more like playerCnt (?) backend could operate on IDs
     std::vector<std::string> playerNames;
 
     unsigned int roundsCnt = 0;

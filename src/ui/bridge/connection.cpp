@@ -1,12 +1,34 @@
 #include "connection.h"
 #include "commands.h"
 #include "game/game.h"
+#include "lambert/projection.h"
 #include "ui/main_window.h"
+#include "ui/params.h"
 
 namespace
 {
 using namespace ui;
 using namespace ui::bridge;
+
+// ##################################################################################################################
+
+game::Params toLogicLayerParams(const ui::Params& uiParams)
+{
+    game::Params gameParams;
+
+    gameParams.projectedMap = lambert::project(uiParams.map);
+    gameParams.roundsCnt = uiParams.roundsCnt;
+    gameParams.maxRoundPoints = uiParams.maxRoundPoints;
+
+    // TODO: player names - to be removed from backend?
+    gameParams.playerNames.reserve(uiParams.playerNames.size());
+    for (const auto& playerName : uiParams.playerNames)
+        gameParams.playerNames.push_back(playerName.toStdString());
+
+    return gameParams;
+}
+
+// ##################################################################################################################
 
 // game -> ui
 Commands createUiCommands(MainWindow& mainWindow)
@@ -45,8 +67,8 @@ Commands createUiCommands(MainWindow& mainWindow)
 void connectUiSignals(const MainWindow& mainWindow, game::MapGuesserGame& logicLayer)
 {
     QObject::connect(&mainWindow, &MainWindow::startGameRequested,
-        [&logicLayer](util::consumable<game::Params> gameParams) {
-            logicLayer.onCreateSession(gameParams.consume());
+        [&logicLayer](const ui::Params& uiParams) {
+            logicLayer.onCreateSession(toLogicLayerParams(uiParams));
         });
 
     QObject::connect(&mainWindow, &MainWindow::nextRoundRequested,
@@ -54,9 +76,9 @@ void connectUiSignals(const MainWindow& mainWindow, game::MapGuesserGame& logicL
             logicLayer.onNextRoundRequested();
         });
 
-    QObject::connect(&mainWindow, &MainWindow::guessSubmitted,
-        [&logicLayer](const geo::Point& guess) {
-            logicLayer.onGuessSubmitted(guess);
+    QObject::connect(&mainWindow, &MainWindow::playerFinishedRound,
+        [&logicLayer](const std::optional<geo::Point>& guess) {
+            logicLayer.onPlayerFinishedRound(guess);
         });
 }
 
