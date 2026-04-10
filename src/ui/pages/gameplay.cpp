@@ -3,6 +3,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QTimer>
+#include <QFont>
 
 #include "ui/google/interactive_map.h"
 #include "ui/google/streetview.h"
@@ -143,7 +144,9 @@ void GameplayPage::initMembers()
     m_streetView = new google::StreetView(this);
     m_interactiveMap = new google::InteractiveMap(this);
     m_roundInfoLabel = new QLabel(this);
+    m_roundInfoLabel->setObjectName("roundInfo");
     m_timerInfoLabel = new QLabel(this);
+    m_timerInfoLabel->setObjectName("timerInfo");
     m_roundTimer = new QTimer(this);
     m_returnToStartButton = new QPushButton("Return to start", this);
     m_guessButton = new QPushButton("Guess", this);
@@ -167,17 +170,24 @@ void GameplayPage::initGeometries()
     m_enlargeMapButton->setFixedSize(30, 30);
 
     auto* leftInfoBoxBackground = new QWidget(this);
-    leftInfoBoxBackground->setFixedSize(150, 70);
+    leftInfoBoxBackground->setFixedSize(220, 100);
     leftInfoBoxBackground->move(10, 10);
 
     m_roundInfoLabel->setParent(leftInfoBoxBackground);
-    m_roundInfoLabel->setFixedSize(140, 25);
-    m_roundInfoLabel->move(5, 5);
+    m_roundInfoLabel->setFixedSize(220, 40);
+    m_roundInfoLabel->move(0, 10);
+    m_roundInfoLabel->setAlignment(Qt::AlignCenter);
     m_roundInfoLabel->setText(formatRoundInfo(m_currRoundNumber, m_roundsCnt));
 
     m_timerInfoLabel->setParent(leftInfoBoxBackground);
-    m_timerInfoLabel->setFixedSize(140, 25);
-    m_timerInfoLabel->move(5, 35);
+    m_timerInfoLabel->setFixedSize(220, 40);
+    m_timerInfoLabel->move(0, 50);
+    m_timerInfoLabel->setAlignment(Qt::AlignCenter);
+    {
+        QFont f = m_timerInfoLabel->font();
+        f.setPointSize(14);
+        m_timerInfoLabel->setFont(f);
+    }
     m_timerInfoLabel->setVisible(false);
 }
 

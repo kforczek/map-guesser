@@ -81,6 +81,14 @@ QLabel {
     background: transparent;
 }
 
+QLabel#roundInfo, QLabel#timerInfo {
+    font-size: 18px;
+}
+
+QLabel#timerInfo {
+    font-weight: bold;
+}
+
 QLabel[urgency="normal"]   { color: #d6e1ee; }   /* neutral */
 QLabel[urgency="warning"]  { color: #f0a832; }   /* amber */
 QLabel[urgency="critical"] { color: #ff4d4d; }   /* red */
