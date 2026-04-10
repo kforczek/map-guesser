@@ -68,9 +68,9 @@ private /*fields*/:
 private /*methods*/:
     void ensureInitialized();
 
-    void initMembers();
-    void initGeometries();
-    void initConnections();
+    void setupMembers();
+    void setupGeometries();
+    void setupConnections();
 
     void resize();
     void resizeStreetView();

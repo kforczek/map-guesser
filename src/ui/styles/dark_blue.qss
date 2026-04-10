@@ -75,19 +75,34 @@ QPushButton[role="multiplayer"]:pressed:!disabled {
     background-color: #36005f;   /* pressed */
 }
 
+/* Main/secondary action buttons */
+
+QPushButton[role="mainAction"], QPushButton[role="secondaryAction"] {
+    min-width: 120px;
+    max-width: 160px;
+    min-height: 35px;
+    max-height: 35px;
+    padding: 12px 24px;
+}
+
+QPushButton[role="mainAction"] {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+QPushButton[role="secondaryAction"] {
+    font-size: 18px;
+}
 
 /* Labels */
 QLabel {
     background: transparent;
 }
 
-QLabel#roundInfo, QLabel#timerInfo {
-    font-size: 18px;
-}
+QLabel#roundInfo, QLabel#timerInfo { font-size: 18px; }
+QLabel#timerInfo { font-weight: bold; }
 
-QLabel#timerInfo {
-    font-weight: bold;
-}
+QLabel#resultDistance, QLabel#resultPoints { font-size: 24px; }
 
 QLabel[urgency="normal"]   { color: #ffffff; }   /* white */
 QLabel[urgency="warning"]  { color: #f0a832; }   /* amber */

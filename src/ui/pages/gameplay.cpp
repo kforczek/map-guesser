@@ -132,15 +132,15 @@ void GameplayPage::ensureInitialized()
 
     setContentsMargins(0, 0, 0, 0);
 
-    initMembers();
-    initGeometries();
-    initConnections();
+    setupMembers();
+    setupGeometries();
+    setupConnections();
 
     m_initialized = true;
     resize();
 }
 
-void GameplayPage::initMembers()
+void GameplayPage::setupMembers()
 {
     m_streetView = new google::StreetView(this);
     m_interactiveMap = new google::InteractiveMap(this);
@@ -160,7 +160,7 @@ void GameplayPage::initMembers()
         m_interactiveMap->setCenter(m_mapCenter);
 }
 
-void GameplayPage::initGeometries()
+void GameplayPage::setupGeometries()
 {
     // TODO: necessary? resize() is called in the end anyway
     m_streetView->setGeometry(rect());
@@ -187,7 +187,7 @@ void GameplayPage::initGeometries()
     m_timerInfoLabel->setVisible(false);
 }
 
-void GameplayPage::initConnections()
+void GameplayPage::setupConnections()
 {
     connect(m_interactiveMap, &google::InteractiveMap::guessMarkerPlaced, this, &GameplayPage::onGuessMarkerPlaced);
     connect(m_roundTimer, &QTimer::timeout, this, &GameplayPage::onTimerTick);

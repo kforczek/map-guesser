@@ -30,13 +30,17 @@ GameSetupPage::GameSetupPage(QWidget* parent)
     auto* layout = new QVBoxLayout(this);
     setLayout(layout);
 
-    layout->addStretch();
+    layout->addStretch(10);
     layout->addWidget(m_propMap);
     layout->addWidget(m_propRoundsCnt);
     layout->addWidget(m_propMaxRoundPoints);
     layout->addWidget(m_propRoundTimeLimit);
-    layout->addStretch();
+    layout->addStretch(9);
     layout->addWidget(m_startGameButton);
+    layout->addStretch(1);
+
+    m_startGameButton->setProperty("role", "mainAction");
+    layout->setAlignment(m_startGameButton, Qt::AlignHCenter);
 
     connect(m_startGameButton, &QPushButton::clicked, this, &GameSetupPage::onStartGameButtonClicked);
 }

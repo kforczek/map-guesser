@@ -38,7 +38,7 @@ void GhostWalkPage::ensureInitialized()
     layout->setContentsMargins(layoutMargins);
 
     auto* exitButton = new QPushButton("Back", this);
-    exitButton->setMinimumSize(100, 40);
+    exitButton->setProperty("role", "secondaryAction");
 
     auto* bottomBar = new QHBoxLayout();
     bottomBar->setContentsMargins(10, 0, 0, 0);

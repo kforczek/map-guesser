@@ -82,8 +82,8 @@ void RoundResultsPage::setupInfoLabels()
     m_distanceLabel = new QLabel(this);
     m_pointsLabel = new QLabel(this);
 
-    m_distanceLabel->setFont(QFont{"Times New Roman", 20});
-    m_pointsLabel->setFont(QFont{"Times New Roman", 20});
+    m_distanceLabel->setObjectName("resultDistance");
+    m_pointsLabel->setObjectName("resultPoints");
 
     m_layout->addWidget(m_distanceLabel, 0, Qt::AlignCenter);
     m_layout->addWidget(m_pointsLabel, 0, Qt::AlignCenter);
@@ -105,8 +105,8 @@ void RoundResultsPage::setupBottomButtons()
     m_proceedButton = new QPushButton(BUTTON_TEXT_NEXT_ROUND, this);
     auto* ghostWalkButton = new QPushButton("Ghost Walk", this);
 
-    m_proceedButton->setMinimumSize(100, 40);
-    ghostWalkButton->setMinimumSize(100, 40);
+    m_proceedButton->setProperty("role", "mainAction");
+    ghostWalkButton->setProperty("role", "secondaryAction");
 
     auto* leftWidget = new QWidget(this);
     auto* leftLayout = new QHBoxLayout(leftWidget);
