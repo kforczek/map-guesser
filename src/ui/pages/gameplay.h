@@ -80,6 +80,7 @@ private /*methods*/:
 
     void updateMapRatios();
     void setMapSizeButtonsEnabledState();
+    void setTimerLabelUrgency(const QString& urgency);
 
 private slots:
     void onGuessMarkerPlaced();

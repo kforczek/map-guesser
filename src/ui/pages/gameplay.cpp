@@ -3,7 +3,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QTimer>
-#include <QFont>
+#include <qstyle.h>
 
 #include "ui/google/interactive_map.h"
 #include "ui/google/streetview.h"
@@ -42,8 +42,8 @@ QString formatTimerInfo(unsigned int currTimeSecs)
 
     static const QString FORMAT = "%1:%2";
     return FORMAT
-        .arg(static_cast<qulonglong>(minutes), 2, 10, QLatin1Char('0'))
-        .arg(static_cast<qulonglong>(seconds), 2, 10, QLatin1Char('0'));
+        .arg(minutes, 2, 10, QLatin1Char('0'))
+        .arg(seconds, 2, 10, QLatin1Char('0'));
 }
 
 // ##############################################################################
@@ -95,6 +95,7 @@ void GameplayPage::startNextRound(const geo::Point& location)
 
     if (m_roundTimeLimit > 0)
     {
+        setTimerLabelUrgency("normal");
         m_timerInfoLabel->setVisible(true);
         m_roundTimer->start(1000);
     }
@@ -183,11 +184,6 @@ void GameplayPage::initGeometries()
     m_timerInfoLabel->setFixedSize(220, 40);
     m_timerInfoLabel->move(0, 50);
     m_timerInfoLabel->setAlignment(Qt::AlignCenter);
-    {
-        QFont f = m_timerInfoLabel->font();
-        f.setPointSize(14);
-        m_timerInfoLabel->setFont(f);
-    }
     m_timerInfoLabel->setVisible(false);
 }
 
@@ -286,6 +282,14 @@ void GameplayPage::setMapSizeButtonsEnabledState()
     m_enlargeMapButton->setEnabled(canEnlarge);
 }
 
+void GameplayPage::setTimerLabelUrgency(const QString& urgency)
+{
+    m_timerInfoLabel->setProperty("urgency", urgency);
+    m_timerInfoLabel->style()->unpolish(m_timerInfoLabel);
+    m_timerInfoLabel->style()->polish(m_timerInfoLabel);
+    m_timerInfoLabel->update();
+}
+
 void GameplayPage::onGuessMarkerPlaced()
 {
     m_guessButton->setEnabled(true);
@@ -296,10 +300,20 @@ void GameplayPage::onTimerTick()
     --m_currRoundTimeLeft;
     m_timerInfoLabel->setText(formatTimerInfo(m_currRoundTimeLeft));
 
-    if (m_currRoundTimeLeft == 0)
+    switch (m_currRoundTimeLeft)
     {
-        m_roundTimer->stop();
-        emit playerFinishedRound(m_interactiveMap->currLocation());
+        case 15:
+            setTimerLabelUrgency("warning");
+            break;
+        case 5:
+            setTimerLabelUrgency("critical");
+            break;
+        case 0:
+            m_roundTimer->stop();
+            emit playerFinishedRound(m_interactiveMap->currLocation());
+            break;
+        default:
+            break;
     }
 }
 

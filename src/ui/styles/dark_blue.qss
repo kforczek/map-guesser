@@ -89,7 +89,7 @@ QLabel#timerInfo {
     font-weight: bold;
 }
 
-QLabel[urgency="normal"]   { color: #d6e1ee; }   /* neutral */
+QLabel[urgency="normal"]   { color: #ffffff; }   /* white */
 QLabel[urgency="warning"]  { color: #f0a832; }   /* amber */
 QLabel[urgency="critical"] { color: #ff4d4d; }   /* red */
 
