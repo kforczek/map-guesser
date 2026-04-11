@@ -25,6 +25,9 @@ constexpr int MAP_Y_INCR = mapHeightFromWidth(MAP_X_INCR);
 constexpr double MIN_MAP_WIDTH_RATIO = 2.0 / 10.0;
 constexpr double MAX_MAP_WIDTH_RATIO = 6.0 / 10.0;
 
+constexpr QSize LEFT_INFO_BOX_SIZE_NO_TIMER{ 220, 60 };
+constexpr QSize LEFT_INFO_BOX_SIZE_WITH_TIMER{ 220, 100 };
+
 // ##############################################################################
 
 QString formatRoundInfo(unsigned int roundNum, unsigned int roundsCnt)
@@ -73,17 +76,28 @@ const geo::Point& GameplayPage::getStreetViewLocation() const
     return m_streetView->getLocation();
 }
 
-void GameplayPage::prepareNewGame(unsigned int roundsCnt, std::optional<QTime> roundTimeLimit)
+void GameplayPage::prepareNewGame(unsigned int roundsCnt, QTime roundTimeLimit)
 {
+    ensureInitialized();
+
     m_currRoundNumber = 0;
     m_roundsCnt = roundsCnt;
-    m_roundTimeLimit = roundTimeLimit ? QTime{0, 0}.secsTo(*roundTimeLimit) : 0;
+
+    m_roundTimeLimit = QTime{0, 0}.secsTo(roundTimeLimit);
+    if (m_roundTimeLimit > 0)
+    {
+        m_timerInfoLabel->setVisible(true);
+        m_leftInfoBox->setFixedSize(LEFT_INFO_BOX_SIZE_WITH_TIMER);
+    }
+    else
+    {
+        m_timerInfoLabel->setVisible(false);
+        m_leftInfoBox->setFixedSize(LEFT_INFO_BOX_SIZE_NO_TIMER);
+    }
 }
 
 void GameplayPage::startNextRound(const geo::Point& location)
 {
-    ensureInitialized();
-
     ++m_currRoundNumber;
     m_roundInfoLabel->setText(formatRoundInfo(m_currRoundNumber, m_roundsCnt));
 
@@ -96,12 +110,8 @@ void GameplayPage::startNextRound(const geo::Point& location)
     if (m_roundTimeLimit > 0)
     {
         setTimerLabelUrgency("normal");
-        m_timerInfoLabel->setVisible(true);
         m_roundTimer->start(1000);
-    }
-    else
-    {
-        m_timerInfoLabel->setVisible(false);
+        m_timerInfoLabel->setVisible(true);
     }
 }
 
@@ -144,11 +154,17 @@ void GameplayPage::setupMembers()
 {
     m_streetView = new google::StreetView(this);
     m_interactiveMap = new google::InteractiveMap(this);
-    m_roundInfoLabel = new QLabel(this);
-    m_roundInfoLabel->setObjectName("roundInfo");
-    m_timerInfoLabel = new QLabel(this);
-    m_timerInfoLabel->setObjectName("timerInfo");
+
     m_roundTimer = new QTimer(this);
+
+    m_leftInfoBox = new QWidget(this);
+
+    m_roundInfoLabel = new QLabel(m_leftInfoBox);
+    m_roundInfoLabel->setObjectName("roundInfo");
+
+    m_timerInfoLabel = new QLabel(m_leftInfoBox);
+    m_timerInfoLabel->setObjectName("timerInfo");
+
     m_returnToStartButton = new QPushButton("Return to start", this);
     m_guessButton = new QPushButton("Guess", this);
     m_shrinkMapButton = new QPushButton("-", this);
@@ -170,17 +186,13 @@ void GameplayPage::setupGeometries()
     m_shrinkMapButton->setFixedSize(30, 30);
     m_enlargeMapButton->setFixedSize(30, 30);
 
-    auto* leftInfoBoxBackground = new QWidget(this);
-    leftInfoBoxBackground->setFixedSize(220, 100);
-    leftInfoBoxBackground->move(10, 10);
+    m_leftInfoBox->move(10, 10);
 
-    m_roundInfoLabel->setParent(leftInfoBoxBackground);
     m_roundInfoLabel->setFixedSize(220, 40);
     m_roundInfoLabel->move(0, 10);
     m_roundInfoLabel->setAlignment(Qt::AlignCenter);
     m_roundInfoLabel->setText(formatRoundInfo(m_currRoundNumber, m_roundsCnt));
 
-    m_timerInfoLabel->setParent(leftInfoBoxBackground);
     m_timerInfoLabel->setFixedSize(220, 40);
     m_timerInfoLabel->move(0, 50);
     m_timerInfoLabel->setAlignment(Qt::AlignCenter);

@@ -16,7 +16,7 @@ struct Params
     int roundsCnt = 0;
     int maxRoundPoints = 0;
 
-    std::optional<QTime> roundTimeLimit;
+    QTime roundTimeLimit;
 };
 
 }

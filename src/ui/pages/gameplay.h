@@ -28,7 +28,7 @@ public:
 
     const geo::Point& getStreetViewLocation() const;
 
-    void prepareNewGame(unsigned int roundsCnt, std::optional<QTime> roundTimeLimit);
+    void prepareNewGame(unsigned int roundsCnt, QTime roundTimeLimit);
     void startNextRound(const geo::Point& location);
 
     void setMapCenter(const geo::Point& center);
@@ -52,9 +52,11 @@ private /*fields*/:
     unsigned int m_roundsCnt = 0;
     unsigned int m_roundTimeLimit = 0;
 
+    QTimer* m_roundTimer = nullptr;
+
+    QWidget* m_leftInfoBox = nullptr;
     QLabel* m_roundInfoLabel = nullptr;
     QLabel* m_timerInfoLabel = nullptr;
-    QTimer* m_roundTimer = nullptr;
 
     QPushButton* m_returnToStartButton = nullptr;
     QPushButton* m_guessButton = nullptr;
