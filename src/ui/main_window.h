@@ -1,12 +1,7 @@
 #pragma once
 #include <QFrame>
 #include <QMessageBox>
-
-#include "game/params.h"
 #include "geo/point.h"
-#include "geo/map.h"
-#include "planar/map.h"
-#include "util/consumable.h"
 
 class QStackedLayout;
 class QShortcut;

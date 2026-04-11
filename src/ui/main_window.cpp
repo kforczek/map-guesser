@@ -7,6 +7,7 @@
 
 #include "params.h"
 #include "api_usage/msg.h"
+#include "cache/player_data.h"
 #include "pages/start.h"
 #include "pages/game_setup.h"
 #include "pages/gameplay.h"
@@ -177,8 +178,9 @@ void MainWindow::onSettingsRequested()
 
 void MainWindow::onStartGameRequested(const Params& params)
 {
-    m_gameplayPage->prepareNewGame(params.roundsCnt, params.roundTimeLimit);
+    cache::ResetPlayerData(params.playerNames);
 
+    m_gameplayPage->prepareNewGame(params.roundsCnt, params.roundTimeLimit);
     m_gameplayPage->setMapCenter(params.map.center());
     m_roundResultsPage->setCenter(params.map.center());
 

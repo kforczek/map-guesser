@@ -99,8 +99,11 @@ QLabel {
     background: transparent;
 }
 
-QLabel#roundInfo, QLabel#timerInfo { font-size: 18px; }
-QLabel#timerInfo { font-weight: bold; }
+QLabel#roundInfo, QLabel#lbPlayerName { font-size: 18px; }
+QLabel#timerInfo, QLabel#lbHeader, QLabel#lbPlayerScore {
+    font-size: 18px;
+    font-weight: bold;
+}
 
 QLabel#resultDistance, QLabel#resultPoints { font-size: 24px; }
 

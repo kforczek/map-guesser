@@ -102,6 +102,8 @@ add_library(ui STATIC
         src/ui/pages/settings.cpp
         src/ui/api_usage/msg.cpp
         src/ui/api_usage/limit.cpp
+        src/ui/cache/player_data.cpp
+        src/ui/widgets/leaderboard_info_box.cpp
 )
 target_include_directories(ui PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(ui PUBLIC cxx_std_23)

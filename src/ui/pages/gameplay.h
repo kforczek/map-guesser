@@ -14,7 +14,7 @@ class InteractiveMap;
 
 namespace ui::widgets
 {
-class GameplayRoundInfoBox;
+class LeaderboardInfoBox;
 }
 
 namespace ui::pages
@@ -58,6 +58,8 @@ private /*fields*/:
     QLabel* m_roundInfoLabel = nullptr;
     QLabel* m_timerInfoLabel = nullptr;
 
+    widgets::LeaderboardInfoBox* m_rightInfoBox = nullptr;
+
     QPushButton* m_returnToStartButton = nullptr;
     QPushButton* m_guessButton = nullptr;
 
@@ -74,9 +76,12 @@ private /*methods*/:
     void setupGeometries();
     void setupConnections();
 
+    void prepareLeftInfoBox();
+
     void resize();
     void resizeStreetView();
     void resizeAndMoveMap(int newWidth = 0, int newHeight = 0);
+    void moveRightInfoBox();
     void moveMapSizeButtons();
     void moveFunctionalButtons();
 
