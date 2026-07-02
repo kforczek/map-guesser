@@ -1,14 +1,15 @@
-#include "engine_fixed_rounds.h"
+#include "engine_server_fixed_rounds.h"
 #include <cassert>
 
-#include "game/params.h"
-#include "game/round_results.h"
+#include "params.h"
+#include "round_results.h"
 
-namespace game::mode
+namespace game
 {
 
-FixedRoundsEngine::FixedRoundsEngine(Params&& gameParams)
-    : m_gameParams(std::move(gameParams)) { }
+FixedRoundsEngine::FixedRoundsEngine(Params&& gameParams, IEngineStateObserver& observer)
+    : EngineBase(observer)
+    , m_gameParams(std::move(gameParams)) { }
 
 const Params& FixedRoundsEngine::params() const
 {

@@ -2,6 +2,8 @@
 #include "random_point.h"
 #include <cassert>
 
+#include "engine_server_fixed_rounds.h"
+
 namespace game
 {
 
@@ -12,7 +14,7 @@ void MapGuesserGame::setUiCommands(ui::bridge::Commands commands)
 
 void MapGuesserGame::onCreateSession(Params&& gameParams)
 {
-    m_gameSession = Session{std::move(gameParams), *this};
+    m_gameEngine = std::make_unique<FixedRoundsEngine>(std::move(gameParams), *this);
 
     onNextRoundRequested();
 }
@@ -20,8 +22,8 @@ void MapGuesserGame::onCreateSession(Params&& gameParams)
 // ReSharper disable CppMemberFunctionMayBeConst
 void MapGuesserGame::onNextRoundRequested()
 {
-    assert(m_gameSession);
-    if (m_gameSession->engine().isGameOver())
+    assert(m_gameEngine);
+    if (m_gameEngine->isGameOver())
     {
         showGameSummary();
     }
@@ -34,32 +36,32 @@ void MapGuesserGame::onNextRoundRequested()
 
 void MapGuesserGame::onPlayerFinishedRound(const std::optional<geo::Point>& guessedLocation)
 {
-    assert(m_gameSession);
-    m_gameSession->engine().registerPlayerGuess("", guessedLocation);
+    assert(m_gameEngine);
+    m_gameEngine->registerPlayerGuess("", guessedLocation);
 
     onRoundFinished();
 }
 
 void MapGuesserGame::onRoundFinished()
 {
-    assert(m_gameSession);
+    assert(m_gameEngine);
 
-    RoundResults roundResults = m_gameSession->engine().calcRoundResults();
+    RoundResults roundResults = m_gameEngine->calcRoundResults();
     m_roundsHistory.push_back(std::move(roundResults));
 
-    m_uiCommands.showRoundResults(m_roundsHistory.back(), m_gameSession->engine().isGameOver());
+    m_uiCommands.showRoundResults(m_roundsHistory.back(), m_gameEngine->isGameOver());
 }
 
 void MapGuesserGame::startNextRound()
 {
-    assert(m_gameSession);
+    assert(m_gameEngine);
 
     std::optional<geo::Point> location;
     while (!location)
     {
         try
         {
-            location = game::GetRandomStreetViewPoint(m_gameSession->params().projectedMap);
+            location = game::GetRandomStreetViewPoint(m_gameEngine->params().projectedMap);
         }
         catch (std::runtime_error& err)
         {
@@ -70,7 +72,7 @@ void MapGuesserGame::startNextRound()
     }
 
     m_uiCommands.startNextRound(*location);
-    m_gameSession->engine().startNextRound(*location);
+    m_gameEngine->startNextRound(*location);
 }
 
 void MapGuesserGame::showGameSummary()

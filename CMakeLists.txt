@@ -57,10 +57,9 @@ target_link_libraries(google PUBLIC geo curl)
 add_library(game STATIC
         src/game/random_point.cpp
         src/game/round_results.cpp
-        src/game/session.cpp
         src/game/game.cpp
-        src/game/mode/engine_base.cpp
-        src/game/mode/engine_fixed_rounds.cpp
+        src/game/engine_base.cpp
+        src/game/engine_server_fixed_rounds.cpp
 )
 target_include_directories(game PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(game PUBLIC cxx_std_23)

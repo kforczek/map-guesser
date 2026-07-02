@@ -1,6 +1,7 @@
 #include "connection.h"
 #include "commands.h"
 #include "game/game.h"
+#include "game/params.h"
 #include "lambert/projection.h"
 #include "ui/main_window.h"
 #include "ui/params.h"

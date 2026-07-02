@@ -1,13 +1,13 @@
 #pragma once
-#include "session.h"
+#include <memory>
+#include "engine.h"
 #include "round_results.h"
-#include "mode/observer.h"
 #include "ui/bridge/commands.h"
 
 namespace game
 {
 
-class MapGuesserGame final : public game::mode::IGameStateObserver
+class MapGuesserGame final : public IEngineStateObserver
 {
 public:
     // game -> ui
@@ -22,7 +22,7 @@ public:
     void onRoundFinished() override;
 
 private /*fields*/:
-    std::optional<Session> m_gameSession;
+    std::unique_ptr<IEngine> m_gameEngine;
     std::vector<RoundResults> m_roundsHistory;
 
     ui::bridge::Commands m_uiCommands;

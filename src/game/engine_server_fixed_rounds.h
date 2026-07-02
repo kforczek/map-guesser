@@ -3,13 +3,13 @@
 #include "engine_base.h"
 #include "game/params.h"
 
-namespace game::mode
+namespace game
 {
 
 class FixedRoundsEngine final : public EngineBase
 {
 public:
-    explicit FixedRoundsEngine(Params&& gameParams);
+    explicit FixedRoundsEngine(Params&& gameParams, IEngineStateObserver& observer);
 
     const Params& params() const override;
     RoundResults calcRoundResults() const override;

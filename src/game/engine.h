@@ -7,18 +7,13 @@
 namespace game
 {
 struct Params;
-}
 
-namespace game::mode
-{
-struct IGameStateObserver;
+// ###################################################################################################################
 
 class IEngine
 {
 public:
     virtual ~IEngine() = default;
-
-    virtual void setObserver(IGameStateObserver& observer) = 0;
 
     virtual const Params& params() const = 0;
     virtual RoundResults calcRoundResults() const = 0;
@@ -31,6 +26,16 @@ public:
     virtual void pauseGame() = 0;
 };
 
-// #################################################################
+// ###################################################################################################################
+
+struct IEngineStateObserver
+{
+    virtual ~IEngineStateObserver() = default;
+
+    virtual void onRoundFinished() = 0;
+    // virtual void onOpponentGuessed(TPlayerId opponentId) const = 0; // TODO: probably remove - it's more of a ServerSession responsibility
+};
+
+// ###################################################################################################################
 
 }

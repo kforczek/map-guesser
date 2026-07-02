@@ -1,16 +1,9 @@
 #pragma once
 #include "engine.h"
-#include "game/defs.h"
 
 namespace game
 {
-struct RoundResults;
-}
-
-namespace game::mode
-{
-
-struct IGameStateObserver;
+struct IEngineStateObserver;
 
 // #################################################################
 
@@ -18,14 +11,14 @@ struct IGameStateObserver;
 class EngineBase : public IEngine
 {
 public:
-    void setObserver(IGameStateObserver& observer) override;
+    explicit EngineBase(IEngineStateObserver& observer);
 
 protected /*methods*/:
-    void notifyRoundFinished();
+    void notifyRoundFinished() const;
     //void notifyOpponentGuessed(TPlayerId opponentId) const;
 
 private:
-    IGameStateObserver* m_observer = nullptr;
+    IEngineStateObserver& m_observer;
 };
 
 // #################################################################
