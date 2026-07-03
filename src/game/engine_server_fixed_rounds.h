@@ -6,10 +6,10 @@
 namespace game
 {
 
-class FixedRoundsEngine final : public EngineBase
+class FixedRoundsServerEngine final : public EngineBase
 {
 public:
-    explicit FixedRoundsEngine(Params&& gameParams, IEngineStateObserver& observer);
+    explicit FixedRoundsServerEngine(Params&& gameParams, IEngineStateObserver& observer);
 
     const Params& params() const override;
     RoundResults calcRoundResults() const override;

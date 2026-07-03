@@ -7,33 +7,33 @@
 namespace game
 {
 
-FixedRoundsEngine::FixedRoundsEngine(Params&& gameParams, IEngineStateObserver& observer)
+FixedRoundsServerEngine::FixedRoundsServerEngine(Params&& gameParams, IEngineStateObserver& observer)
     : EngineBase(observer)
     , m_gameParams(std::move(gameParams)) { }
 
-const Params& FixedRoundsEngine::params() const
+const Params& FixedRoundsServerEngine::params() const
 {
     return m_gameParams;
 }
 
-RoundResults FixedRoundsEngine::calcRoundResults() const
+RoundResults FixedRoundsServerEngine::calcRoundResults() const
 {
     return RoundResults{m_correctLocation, m_guesses, m_gameParams};
 }
 
-double FixedRoundsEngine::getTotalPoints(const TPlayerName& player) const
+double FixedRoundsServerEngine::getTotalPoints(const TPlayerName& player) const
 {
     // TODO
     return 0.0;
 }
 
-bool FixedRoundsEngine::isGameOver() const
+bool FixedRoundsServerEngine::isGameOver() const
 {
     assert(m_gameParams.roundsCnt > 0);
     return m_roundNumber >= m_gameParams.roundsCnt;
 }
 
-void FixedRoundsEngine::registerPlayerGuess(const TPlayerName& player, const std::optional<geo::Point>& guess)
+void FixedRoundsServerEngine::registerPlayerGuess(const TPlayerName& player, const std::optional<geo::Point>& guess)
 {
     assert(!m_guesses.contains(player));
     m_guesses[player] = guess;
@@ -42,14 +42,14 @@ void FixedRoundsEngine::registerPlayerGuess(const TPlayerName& player, const std
         notifyRoundFinished();
 }
 
-void FixedRoundsEngine::startNextRound(const geo::Point& correctLocation)
+void FixedRoundsServerEngine::startNextRound(const geo::Point& correctLocation)
 {
     ++m_roundNumber;
     m_correctLocation = correctLocation;
     m_guesses.clear();
 }
 
-void FixedRoundsEngine::pauseGame()
+void FixedRoundsServerEngine::pauseGame()
 {
     // TODO
 }

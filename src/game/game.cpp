@@ -14,7 +14,7 @@ void MapGuesserGame::setUiCommands(ui::bridge::Commands commands)
 
 void MapGuesserGame::onCreateSession(Params&& gameParams)
 {
-    m_gameEngine = std::make_unique<FixedRoundsEngine>(std::move(gameParams), *this);
+    m_gameEngine = std::make_unique<FixedRoundsServerEngine>(std::move(gameParams), *this);
 
     onNextRoundRequested();
 }
