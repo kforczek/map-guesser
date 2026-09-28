@@ -8,7 +8,8 @@ namespace ui::google
 QString ReadAndFillApiToken(const QString& path)
 {
     QFile file(path);
-    file.open(QIODevice::ReadOnly);
+    if (!file.open(QIODevice::ReadOnly))
+        throw std::runtime_error("Failed to retrieve API token - unable to open file at " + path.toStdString());
 
     QString htmlTemplate = file.readAll();
     htmlTemplate.replace("__API_KEY__", ::google::LoadApiToken());

@@ -65,6 +65,7 @@ target_include_directories(game PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(game PUBLIC cxx_std_23)
 target_link_libraries(game PUBLIC geo planar lambert google)
 
+# --- user ---
 add_library(user STATIC
         src/user/dir.cpp
         src/user/api_usage.cpp

@@ -36,7 +36,12 @@ QString getStyleSheet()
     if (!file.exists())
         return QString{};
 
-    file.open(QIODevice::ReadOnly);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        assert(!"Missing stylesheet file!");
+        return QString{};
+    };
+
     return file.readAll();
 }
 
